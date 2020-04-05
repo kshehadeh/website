@@ -1,7 +1,7 @@
 # Site settings
 title:          Karim Shehadeh
 description:    "Jumping off point for everything that is me."
-baseurl:        "/kshehadeh"
+baseurl:        "/website"
 url:            "https://kshehadeh.github.io"
 
 # Google Analytics

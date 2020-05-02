@@ -7,6 +7,7 @@ summary: Some thoughts on how to decide when to build or buy and how to build if
 ---
 
 The decision to build a solution vs. buy one is a point of some contention.  There are so many factors that serve as inputs to that decision - which, themselves, are contentious - making consistent decision making elusive.  Over the years, here's the set of questions I've come to ask myself when making this decision.  This is divided into two sections.  First the question of *IF* then the question of *HOW*
+{:.first-paragraph}
 
 ## Deciding IF you should build or buy
 
@@ -38,7 +39,8 @@ If there are tools that are currently being used that provide *some* aspect of t
 
 This is a big one - because it could mean that you are only building glue code that provides a purpose-built interface to existing functionality.  
 
-Ultimately, if you can create a solution without persisting data in a new data store, then you have created a **much** more maintainable solution.{:.important}
+Ultimately, if you can create a solution without persisting data in a new data store, then you have created a **much** more maintainable solution.
+{:.important}
 
 
 ### Using Zapier, IFTTT, Open Source

@@ -1,3 +1,82 @@
-body {
-    background-image: url('/assets/images/lookingup.png');     
+body {    
+    font-family: 'Open Sans', sans-serif; 
+}
+
+h1.post-title, h1.catalogue-title {
+    font-family: 'Amatic SC', cursive;
+}
+
+.pagination {
+    font-family: 'Amatic SC', cursive;
+}
+
+footer {
+    font-family: 'Amatic SC', cursive;
+    
+}
+
+.nav {
+
+    h2 {
+        padding:0;
+    }
+
+    img {
+        height: 35px;
+        margin:0;
+        margin-top: 15px;
+    }  
+    
+    li {
+        padding:0;
+        margin: 0;
+    }
+}
+.post-line {
+    border: 0;
+    background-image: url('/assets/images/horiz-line-drawn.png');
+    background-repeat: no-repeat;
+    width:370px;
+    height:32px;
+}
+
+.post-info {
+    font-family: 'Open Sans', sans-serif; 
+    font-size: 0.8em;
+}
+
+.catalogue {
+
+    .catalogue-time { 
+        font-family: 'Open Sans', sans-serif; 
+        font-size: 0.8em;
+    }
+
+    .catalogue-line {
+        border: 0;
+        background-image: url('/assets/images/short-line-drawn.png');
+        background-repeat: no-repeat;
+        background-size: 100px auto;
+        width: 70px;
+        height:10px;
+    }
+}
+
+
+
+.important {
+    display: block;
+    margin: 5px;
+    padding:10px;
+    background-color: #efefef;
+
+    &::first-letter {
+        font-size: 24px;
+    }
+}
+
+.first-paragraph {
+    &::first-letter {
+        font-size: 42px;
+    }
 }

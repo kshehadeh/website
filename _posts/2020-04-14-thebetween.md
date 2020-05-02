@@ -3,6 +3,7 @@ layout: post
 title:  "The Importance of the In-Between"
 author: "Karim"
 comments: false
+summary: A thought about how devastating the connective tissue that makes up organizations to the success or failure of a project.
 ---
 
 The in-between hosts necessity but not much in the way of excitement.  It is the connecting tissue between high-impact projects without which those projects could not be completed.  But the in-between, as I'm calling it, is subtle in its importance and will often be forgotten in the excitement of a new project.

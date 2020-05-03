@@ -12,7 +12,7 @@ function updateWeather() {
     const zip = "21286";
     const country = "us";
 
-    const url = `http://api.openweathermap.org/data/2.5/weather`
+    const url = `https://api.openweathermap.org/data/2.5/weather`
 
     $.get(url, {
         zip: `${zip},${country}`,

@@ -80,3 +80,79 @@ footer {
         font-size: 42px;
     }
 }
+
+#weather {
+    background-repeat: no-repeat;
+
+    position:fixed;
+	left:-80%; /* Set initial position for each image off-screen left -- adjust according to image width */
+	animation:weatherMovement 50s infinite;	/* total animation time for each image is 8 seconds, loops forever */
+	animation-direction:alternate;	
+	/* Firefox */
+	-moz-animation:weatherMovement 50s infinite;
+	-moz-animation-direction:alternate;		
+	/* Safari, Chrome, and Webkit Opera */
+	-webkit-animation:weatherMovement 50s infinite;
+    -webkit-animation-direction:alternate;	
+    
+    animation-delay:0s;
+    -webkit-animation-delay:0s;
+
+    z-index: -100;
+    background-position: 0px;
+    opacity: 20%;
+
+    &.cloudy {
+        background-image: url('/assets/images/weather/cloudy-drawn.png');
+        width: 350px;
+        height: 124px;
+        background-size: 350px auto;
+    }
+
+    &.partly-cloudy {
+        background-image: url('/assets/images/weather/partly-cloudy-drawn.png');
+        width: 350px;
+        height: 124px;
+        background-size: 350px auto;
+    }
+
+    &.thunderstorm {
+        background-image: url('/assets/images/weather/thunderstorm-drawn.png');
+        width: 350px;
+        height: 124px;
+        background-size: 350px auto;
+    }
+
+    &.rain {
+        background-image: url('/assets/images/weather/rain-drawn.png');
+        width: 350px;
+        height: 124px;
+        background-size: 350px auto;
+    }
+    
+    &.snow {
+        background-image: url('/assets/images/weather/snow-drawn.png');
+        width: 350px;
+        height: 124px;
+        background-size: 350px auto;
+    }
+    
+    &.clear-day {
+        background-image: url('/assets/images/weather/clear-day-drawn.png');
+        width: 200px;
+        height: 189px;
+        background-size: 200px auto;
+    }
+
+    &.clear-night {
+        background-image: url('/assets/images/weather/clear-night-full-drawn.png');
+        width: 200px;
+        height: 189px;
+        background-size: 200px auto;
+    }
+}
+
+@keyframes weatherMovement {
+	from {left:-30%; top:75%}	/*off-screen left (adjust for image width)*/
+	to {left:100%; top: 85%}		/*off-screen right*/
+}

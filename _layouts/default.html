@@ -7,10 +7,14 @@
 
     {% include navigation.html %}
 
+    <div id="weather"></div>
+    
     <main>
       {{ content }}
     </main>
 
     {% include footer.html %}
   </body>
+  
+  {% include weather.html %}
 </html>

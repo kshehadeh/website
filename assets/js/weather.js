@@ -35,7 +35,11 @@ function updateWeather() {
                 }            
             }
             if (weather.main === 'Clear') {
-                weatherClass = 'clear';
+                weatherClass = 'clear-day';
+                const now = new Date();
+                if (now.getHours() > 20 || now.getHours() < 5) {
+                    weatherClass = 'clear-night';
+                }
             }
             if (weather.main === 'Thunderstorm') {
                 weatherClass = 'thunderstorm';

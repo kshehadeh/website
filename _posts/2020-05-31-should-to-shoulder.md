@@ -49,6 +49,6 @@ The manager's role in all this is to be *available* to support decision making b
 It's probably this last fact that can encourage managers to take a more prominent role in decision making.  But this is a truly short-term way of thinking that really does not scale across all your reports.  Trying to influence the decisions of everyone who reports to you will do a couple of things:
 
 1. Drive you crazy
-2. Drive your employees craze
+2. Drive your employees crazy
 3. Lead to really bad decisions.
 

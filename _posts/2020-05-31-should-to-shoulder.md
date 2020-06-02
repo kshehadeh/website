@@ -10,11 +10,11 @@ I am most happy when I play even a small part in someone's success.  The challen
 
 To be clear, I'm a believer that having someone who can provide focus, encouragement and course correction is critical.  **But it's less about leading and more about supporting.**  
 
-Here's the situation.  Two people are hiking down a trail.  There are really only two ways to do this: you can have someone leading or you can be walking shoulder to shoulder.  
+Let's say there are two people hiking down a trail.  There are really only two ways to do this: you can have someone leading or you can be walking shoulder to shoulder.  
 
-When one person is following another, that person tends to be focused only on one thing: the leader.  When walking side-by-side, both tend to be more alert and looking down the trail and imaging where it could go next.  
+When one person is following another, that person tends to be focused only on one thing: the leader.  When walking side-by-side, both tend to be more alert and looking down the trail and imagining where it could go next.  
 
-In other words: W**hen being lead, you learn to follow. When walking together, you learn to lead.**
+In other words: **When being lead, you learn to follow. When walking together, you learn to lead.**
 
 The Should to Shoulder approach has a few benefits that we can briefly discuss:
 

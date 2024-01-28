@@ -17,7 +17,7 @@ import numberedListItemBlockRenderer from './blocks/numbered-list-item-block.ren
 import paragraphBlockRenderer from './blocks/paragraph-block.renderer';
 import quoteBlockRenderer from './blocks/quote-block.renderer';
 import tableBlockRenderer from './blocks/table-block.renderer';
-import tableRowRenderer from './blocks/table-row.renderer.ts';
+import tableRowRenderer from './blocks/table-row.renderer';
 import textBlockRenderer from './blocks/text-block.renderer';
 import toDoBlockRenderer from './blocks/to-do-block.renderer';
 import toDoListBlockRenderer from './blocks/to-do-list-block.renderer';
@@ -28,34 +28,34 @@ import toDoListExtension from './extensions/to-do-list.extension';
 import { BlockRenderer, ExtensionFunc } from './types';
 
 export const BLOCK_RENDERERS: BlockRenderer[] = [
-  bookmarkBlockRenderer,
-  mentionBlockRenderer,
-  textBlockRenderer,
-  paragraphBlockRenderer,
-  imageBlockRenderer,
-  heading1BlockRenderer,
-  heading2BlockRenderer,
-  heading3BlockRenderer,
-  emojiBlockRenderer,
-  codeBlockRenderer,
-  calloutBlockRenderer,
-  bulletedListBlockRenderer,
-  bulletedListItemBlockRenderer,
-  numberedListBlockRenderer,
-  numberedListItemBlockRenderer,
-  quoteBlockRenderer,
-  dividerBlockRenderer,
-  columnListBlockRenderer,
-  columnBlockRenderer,
-  toggleBlockRenderer,
-  toDoListBlockRenderer,
-  toDoBlockRenderer,
-  tableBlockRenderer,
-  tableRowRenderer,
+    bookmarkBlockRenderer,
+    mentionBlockRenderer,
+    textBlockRenderer,
+    paragraphBlockRenderer,
+    imageBlockRenderer,
+    heading1BlockRenderer,
+    heading2BlockRenderer,
+    heading3BlockRenderer,
+    emojiBlockRenderer,
+    codeBlockRenderer,
+    calloutBlockRenderer,
+    bulletedListBlockRenderer,
+    bulletedListItemBlockRenderer,
+    numberedListBlockRenderer,
+    numberedListItemBlockRenderer,
+    quoteBlockRenderer,
+    dividerBlockRenderer,
+    columnListBlockRenderer,
+    columnBlockRenderer,
+    toggleBlockRenderer,
+    toDoListBlockRenderer,
+    toDoBlockRenderer,
+    tableBlockRenderer,
+    tableRowRenderer,
 ];
 
 export const EXTENSIONS: ExtensionFunc[] = [
-  numberedListExtension,
-  bulletedListExtension,
-  toDoListExtension,
+    numberedListExtension,
+    bulletedListExtension,
+    toDoListExtension,
 ];

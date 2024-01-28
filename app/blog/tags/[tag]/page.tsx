@@ -1,7 +1,7 @@
 import React from 'react';
 import '../globals.css';
 import { getRecentBlogPosts } from '@/lib/blog';
-import { Post, PostList } from '@/components/Post/Post';
+import { PostBrief, PostList } from '@/components/Post/PostBrief';
 
 export default async function MainBlogPage() {
     // Get the list the last X posts from Notion
@@ -10,7 +10,7 @@ export default async function MainBlogPage() {
         <PostList>
             {posts.map(post => {
                 return (
-                    <Post key={`post-${post.id}`} post={post}/>
+                    <PostBrief key={`post-${post.id}`} post={post}/>
                 );
             })}
         </PostList>

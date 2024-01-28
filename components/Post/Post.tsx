@@ -1,21 +1,21 @@
-import { BlogPostBrief } from '@/lib/blog';
 import React from 'react';
+import { BlogPostFull } from '@/lib/blog';
+import { notion } from '@/lib/notion';
+import { NotionRenderer } from '@/lib/notion-renderer';
+import { H1, Img } from '../primitives';
+import { Author } from './Author';
 
-export function PostList ({ children }: React.PropsWithChildren) {
+export async function Post({ post }: { post: BlogPostFull }) {
+    const renderer = new NotionRenderer({ client: notion });
+    const postElements = await renderer.render(...(post?.blocks || []));
     return (
-        <ul className="post-list">
-            {children}
-        </ul>
+        <div className="bg-white m-5 p-10 rounded-md">
+            <div className="mb-10">
+                <H1>{post.title}</H1>
+                <Author post={post}></Author>
+            </div>            
+            {post.coverUrl && <Img src={post.coverUrl} alt={post.title} />}
+            {postElements}
+        </div>
     );
 }
-
-export function Post ({ post }: { post: BlogPostBrief }) {
-    return (
-        <li>
-            <h2>{post.title}</h2>
-            <p>{post.abstract}</p>
-            <p>{post.date}</p>
-        </li>
-    );
-}
-    

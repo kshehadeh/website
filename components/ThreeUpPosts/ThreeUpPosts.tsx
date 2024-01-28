@@ -1,5 +1,7 @@
 import { BlogPostBrief } from '@/lib/blog';
 import React from 'react';
+import PostTime from '../Post/PostTime';
+import { Author } from '../Post/Author';
 
 export default function ThreeUpPosts({ posts }: { posts: BlogPostBrief[] }) {
     return (
@@ -19,12 +21,7 @@ export default function ThreeUpPosts({ posts }: { posts: BlogPostBrief[] }) {
                             <div className="h-32 grow bg-cover" style={{backgroundImage:`url(${post.coverUrl})`}} />
                             
                             <div className="flex items-center gap-x-4 text-xs">
-                                <time
-                                    dateTime={post.date}
-                                    className="text-gray-500"
-                                >
-                                    {post.date}
-                                </time>
+                                <PostTime post={post} />
                                 {post.tags.map(tag => <a
                                     key={`${post.id}-${tag}-tag`}
                                     href={`/blog/tag/${tag}`}
@@ -44,24 +41,7 @@ export default function ThreeUpPosts({ posts }: { posts: BlogPostBrief[] }) {
                                     {post.abstract}
                                 </p>
                             </div>
-                            <div className="relative mt-8 flex items-center gap-x-4">
-                                <img
-                                    src={post.author.image}
-                                    alt=""
-                                    className="h-10 w-10 rounded-full bg-gray-50"
-                                />
-                                <div className="text-sm leading-6">
-                                    <p className="font-semibold text-gray-900">
-                                        <a href={post.author.href}>
-                                            <span className="absolute inset-0" />
-                                            {post.author.name}
-                                        </a>
-                                    </p>
-                                    <p className="text-gray-600">
-                                        {post.author.role}
-                                    </p>
-                                </div>
-                            </div>
+                            <Author post={post}/>
                         </article>
                     ))}
                 </div>

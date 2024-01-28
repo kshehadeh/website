@@ -1,6 +1,6 @@
 import { BlockObjectResponse, PageObjectResponse, RichTextItemResponse } from '@notionhq/client/build/src/api-endpoints';
-import { fetchPageBlocks, fetchPageBySlug, fetchPages, isAuthorProperty, isCoverProperty, isDateProperty, isFullAuthorDescriptor, isMultiSelectProperty, isPageObjectResponse, isParagraphBlockObject, isRichTextProperty, isTitleProperty, notion } from './notion';
-import { NotionRenderer } from './notion-renderer';
+import { fetchPageBlocks, fetchPageBySlug, fetchPages, isAuthorProperty, isCoverProperty, isDateProperty, isFullAuthorDescriptor, isMultiSelectProperty, isPageObjectResponse, isParagraphBlockObject, isRichTextProperty, isTitleProperty } from './notion';
+import { Block } from './notion-renderer/types';
 
 export interface AuthorDetails {
     name: string;
@@ -22,7 +22,7 @@ export interface BlogPostBrief {
 }
 
 export interface BlogPostFull extends BlogPostBrief {
-    contentAsRenderedHtml: string;
+    blocks: Block[];
 }
 
 export function getPlainTextFromRichTextResponse(rich?: RichTextItemResponse[]): string {
@@ -86,7 +86,7 @@ export async function getBlogBrief({ post, blocks, fetchAbstract = false }: { po
     const tags = getTagsFromPage(post);
     const author = getAuthorFromPage(post);
     const coverUrl = getCoverUrlFromPage(post);
-    const href = `/blog/post/${slug}`;
+    const href = `/blog/posts/${slug}`;
     const abstract = blocks ? getAbstractFromBlocks(blocks) : fetchAbstract ? await getAbstractFromPageId(post.id) : undefined;
 
     return {
@@ -118,7 +118,6 @@ export async function getRecentBlogPosts(
 }
 
 export async function getBlogPostBySlug(slug: string): Promise<BlogPostFull | undefined> {
-
     // get the page for this slug
     const post = await fetchPageBySlug(slug);
     if (post) {
@@ -127,7 +126,7 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPostFull | un
 
         return {
             ...(await getBlogBrief({ post, blocks })),
-            contentAsRenderedHtml: await (new NotionRenderer({client: notion}).render(...blocks))
+            blocks
         }
     }
 }

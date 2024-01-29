@@ -1,5 +1,5 @@
 import React from 'react';
-import ThreeUpPosts from '@/components/ThreeUpPosts/ThreeUpPosts';
+import ThreeUpPosts from '@/components/Post/ThreeUpPosts';
 import { getRecentBlogPosts } from '@/lib/blog';
 
 export default async function Home() {

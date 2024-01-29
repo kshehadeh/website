@@ -10,7 +10,7 @@ function buildAdditionalClasses(additionalClasses?: string[]) {
 
 export function H1({ children, additionalClasses }: PrimitiveProps) {
     return (
-        <h1 className={`text-3xl mt-3 font-bold leading-tight text-gray-900 dark:text-gray-100 ${buildAdditionalClasses(additionalClasses)}`}>
+        <h1 className={`text-2xl mt-5 font-bold leading-tight text-gray-900 dark:text-gray-100 ${buildAdditionalClasses(additionalClasses)}`}>
             {children}
         </h1>
     );
@@ -18,7 +18,7 @@ export function H1({ children, additionalClasses }: PrimitiveProps) {
 
 export function H2({ children, additionalClasses }: PrimitiveProps) {
     return (
-        <h2 className={`text-2xl mt-2 font-semibold leading-snug text-gray-800 dark:text-gray-200 ${buildAdditionalClasses(additionalClasses)}`}>
+        <h2 className={`text-xl mt-5 font-semibold leading-snug text-gray-800 dark:text-gray-200 ${buildAdditionalClasses(additionalClasses)}`}>
             {children}
         </h2>
     );
@@ -26,7 +26,7 @@ export function H2({ children, additionalClasses }: PrimitiveProps) {
 
 export function H3({ children, additionalClasses }: PrimitiveProps) {
     return (
-        <h3 className={`text-xl mt-1 font-medium leading-relaxed text-gray-700 dark:text-gray-300 ${buildAdditionalClasses(additionalClasses)}`}>
+        <h3 className={`text-lg mt-5 font-medium leading-relaxed text-gray-700 dark:text-gray-300 ${buildAdditionalClasses(additionalClasses)}`}>
             {children}
         </h3>
     );
@@ -34,7 +34,7 @@ export function H3({ children, additionalClasses }: PrimitiveProps) {
 
 export function P({ children, additionalClasses }: PrimitiveProps) {
     return (
-        <p className={`text-lg mt-2 mb-2 leading-normal text-gray-600 dark:text-gray-400 ${buildAdditionalClasses(additionalClasses)}`}>
+        <p className={`mt-5 mb-5 leading-normal text-gray-600 dark:text-gray-400 ${buildAdditionalClasses(additionalClasses)}`}>
             {children}
         </p>
     );
@@ -72,7 +72,7 @@ export function A({
 }: PrimitiveProps<{ href: string; target?: string }>) {
     return (
         <a
-            className={`text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-500 ${buildAdditionalClasses(additionalClasses)}`}
+            className={`text-gray-900 hover:text-blue-600 dark:text-white dark:hover:text-blue-500 ${buildAdditionalClasses(additionalClasses)}`}
             href={href}
             target={target}
         >

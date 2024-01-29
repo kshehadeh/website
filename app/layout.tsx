@@ -2,6 +2,9 @@ import React from 'react';
 import type { Metadata } from 'next';
 import './globals.css';
 import Navigation from '@/components/Navigation/Navigation';
+import { Content } from '@/components/Content';
+import { GeistSans } from 'geist/font/sans';
+import { GeistMono } from 'geist/font/mono';
 
 export const metadata: Metadata = {
     title: 'Create Next App',
@@ -14,24 +17,13 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html className="h-full bg-gray-100" lang="en">
+        <html className={`h-full bg-gray-100 ${GeistSans.variable} ${GeistMono.variable}`} lang="en">
             <body className="h-full">
                 <div className="min-h-full">
                     <Navigation />
-                    <header className="bg-white shadow">
-                        <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                            <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-                                Karim Shehadeh
-                            </h1>
-                        </div>
-                    </header>
-                    <main>
-                        <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-                            {children}
-                        </div>
-                    </main>
+                    <Content>{children}</Content>
                 </div>
             </body>
         </html>
-    );
+    );  
 }

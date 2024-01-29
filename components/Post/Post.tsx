@@ -9,13 +9,13 @@ export async function Post({ post }: { post: BlogPostFull }) {
     const renderer = new NotionRenderer({ client: notion });
     const postElements = await renderer.render(...(post?.blocks || []));
     return (
-        <div className="bg-white m-5 p-10 rounded-md">
+        <>
             <div className="mb-10">
                 <H1>{post.title}</H1>
                 <Author post={post}></Author>
             </div>            
-            {post.coverUrl && <Img src={post.coverUrl} alt={post.title} />}
+            {post.coverUrl && <Img src={post.coverUrl} alt={post.title} additionalClasses={["float-right"]}/>}
             {postElements}
-        </div>
+        </>
     );
 }

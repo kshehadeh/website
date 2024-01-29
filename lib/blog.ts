@@ -1,6 +1,24 @@
-import { BlockObjectResponse, PageObjectResponse, RichTextItemResponse } from '@notionhq/client/build/src/api-endpoints';
-import { fetchPageBlocks, fetchPageBySlug, fetchPages, isAuthorProperty, isCoverProperty, isDateProperty, isFullAuthorDescriptor, isMultiSelectProperty, isPageObjectResponse, isParagraphBlockObject, isRichTextProperty, isTitleProperty } from './notion';
+import {
+    BlockObjectResponse,
+    PageObjectResponse,
+    QueryDatabaseResponse,
+    RichTextItemResponse,
+} from '@notionhq/client/build/src/api-endpoints';
+import {
+    fetchPageBlocks,
+    isAuthorProperty,
+    isDateProperty,
+    isExternalFileProperty,
+    isFullAuthorDescriptor,
+    isInternalFileProperty,
+    isMultiSelectProperty,
+    isPageObjectResponse,
+    isParagraphBlockObject,
+    isRichTextProperty,
+    isTitleProperty,
+} from './notion';
 import { Block } from './notion-renderer/types';
+import { notion } from './notion';
 
 export interface AuthorDetails {
     name: string;
@@ -25,33 +43,45 @@ export interface BlogPostFull extends BlogPostBrief {
     blocks: Block[];
 }
 
-export function getPlainTextFromRichTextResponse(rich?: RichTextItemResponse[]): string {
+export function getPlainTextFromRichTextResponse(
+    rich?: RichTextItemResponse[],
+): string {
     return rich?.[0]?.plain_text || '';
 }
 
 export function getAbstractFromBlocks(blocks: BlockObjectResponse[]): string {
-    return  getPlainTextFromRichTextResponse(blocks.find(isParagraphBlockObject)?.paragraph.rich_text);
+    return getPlainTextFromRichTextResponse(
+        blocks.find(isParagraphBlockObject)?.paragraph.rich_text,
+    );
 }
 
 export async function getAbstractFromPageId(id: string): Promise<string> {
     const result = await fetchPageBlocks(id);
-    return getAbstractFromBlocks(result);    
+    return getAbstractFromBlocks(result);
 }
 
 export function getSlugFromPage(page: PageObjectResponse): string {
-    return isRichTextProperty(page.properties.Slug) ? page.properties.Slug.rich_text[0].plain_text : '';
+    return isRichTextProperty(page.properties.Slug)
+        ? page.properties.Slug?.rich_text[0]?.plain_text
+        : '';
 }
 
 export function getTitleFromPage(page: PageObjectResponse): string {
-    return isTitleProperty(page.properties.Name) ? page.properties.Name.title[0].plain_text : '';
+    return isTitleProperty(page.properties.Name)
+        ? page.properties.Name.title[0].plain_text
+        : '';
 }
 
 export function getPostedDateFromPage(page: PageObjectResponse): string {
-    return isDateProperty(page.properties.Posted) ? page.properties.Posted.date?.start || '' : '';
+    return isDateProperty(page.properties.Posted)
+        ? page.properties.Posted.date?.start || ''
+        : '';
 }
 
 export function getTagsFromPage(page: PageObjectResponse): string[] {
-    return isMultiSelectProperty(page.properties.Tags) ? page.properties.Tags.multi_select.map((tag) => tag.name) : [];
+    return isMultiSelectProperty(page.properties.Tags)
+        ? page.properties.Tags.multi_select.map(tag => tag.name)
+        : [];
 }
 
 export function getAuthorFromPage(page: PageObjectResponse): AuthorDetails {
@@ -62,23 +92,36 @@ export function getAuthorFromPage(page: PageObjectResponse): AuthorDetails {
                 name: author.name ?? '',
                 href: `/blog/author/${author.id}`,
                 image: author.avatar_url ?? '',
-                role: 'Developer'
-            }    
+                role: 'Developer',
+            };
         }
     }
     return {
         name: '',
         href: `/blog/author/${page.created_by.id}`,
         image: '',
-        role: ''
-    }
+        role: '',
+    };
 }
 
 export function getCoverUrlFromPage(page: PageObjectResponse): string {
-    return isCoverProperty(page.cover) ? page.cover.external.url : '';
+    if (isInternalFileProperty(page.cover)) {
+        return page.cover.file.url;
+    } else if (isExternalFileProperty(page.cover)) {
+        return page.cover.external.url;
+    }
+    return '';
 }
 
-export async function getBlogBrief({ post, blocks, fetchAbstract = false }: { post: PageObjectResponse; blocks?: BlockObjectResponse[]; fetchAbstract?: boolean; }): Promise<BlogPostBrief> {    
+export async function getBlogBrief({
+    post,
+    blocks,
+    fetchAbstract = false,
+}: {
+    post: PageObjectResponse;
+    blocks?: BlockObjectResponse[];
+    fetchAbstract?: boolean;
+}): Promise<BlogPostBrief> {
     const id = post.id;
     const slug = getSlugFromPage(post);
     const title = getTitleFromPage(post);
@@ -87,7 +130,11 @@ export async function getBlogBrief({ post, blocks, fetchAbstract = false }: { po
     const author = getAuthorFromPage(post);
     const coverUrl = getCoverUrlFromPage(post);
     const href = `/blog/posts/${slug}`;
-    const abstract = blocks ? getAbstractFromBlocks(blocks) : fetchAbstract ? await getAbstractFromPageId(post.id) : undefined;
+    const abstract = blocks
+        ? getAbstractFromBlocks(blocks)
+        : fetchAbstract
+          ? await getAbstractFromPageId(post.id)
+          : undefined;
 
     return {
         id,
@@ -104,29 +151,130 @@ export async function getBlogBrief({ post, blocks, fetchAbstract = false }: { po
 
 export async function getRecentBlogPosts(
     limit: number,
-    includeAbstract: boolean
+    includeAbstract: boolean,
 ): Promise<BlogPostBrief[]> {
-    const result = await fetchPages(limit);
-    const entries = []
-    for (const post of result?.results || []) {
+    const result = await getBlogPosts({limit});
+    const entries = [];
+    for (const post of result || []) {
         if (isPageObjectResponse(post)) {
-            entries.push(await getBlogBrief({ post, fetchAbstract: includeAbstract }));
+            entries.push(
+                await getBlogBrief({ post, fetchAbstract: includeAbstract }),
+            );
         }
     }
 
-    return entries
+    return entries;
 }
 
-export async function getBlogPostBySlug(slug: string): Promise<BlogPostFull | undefined> {
+export async function getBlogPostBySlug(
+    slug: string,
+): Promise<BlogPostFull | undefined> {
     // get the page for this slug
-    const post = await fetchPageBySlug(slug);
-    if (post) {
+    const post = (await getBlogPosts({ limit: 1, slug }))?.[0];
+
+    if (isPageObjectResponse(post)) {
         // get the blocks for this page, including content
         const blocks = await fetchPageBlocks(post.id);
 
         return {
             ...(await getBlogBrief({ post, blocks })),
-            blocks
+            blocks,
+        };
+    }
+}
+
+export async function getBlogPostsByTag(tag: string): Promise<BlogPostBrief[]> {
+    const result = await getBlogPosts({
+        limit: 100,
+        tag,
+    });
+
+    const entries = [];
+    for (const post of result) {
+        if (isPageObjectResponse(post)) {
+            const tags = getTagsFromPage(post);
+            if (tags.includes(tag)) {
+                entries.push(await getBlogBrief({ post }));
+            }
         }
+    }
+
+    return entries;
+}
+
+export async function getBlogPosts({
+    limit,
+    tag,
+    authorId,
+    slug,
+    status = 'Published',
+    sortBy = {
+        property: 'Posted',
+        direction: 'descending',
+    },
+}: {
+    limit?: number;
+    tag?: string;
+    authorId?: string;
+    slug?: string;
+    status?: 'Published' | 'Draft';
+    sortBy?: {
+        property: string;
+        direction: 'ascending' | 'descending';
+    };
+}): Promise<QueryDatabaseResponse['results']>{
+    const and = [];
+    if (status) {
+        and.push({
+            property: 'Status',
+            select: {
+                equals: status,
+            },
+        });
+    }
+
+    if (tag) {
+        and.push({
+            property: 'Tags',
+            multi_select: {
+                contains: tag,
+            },
+        });
+    }
+
+    if (authorId) {
+        and.push({
+            property: 'Author',
+            people: {
+                contains: authorId,
+            },
+        });
+    }
+
+    if (slug) {
+        and.push({
+            property: 'Slug',
+            rich_text: {
+                equals: slug,
+            },
+        });
+    }
+
+    const results = await notion.databases.query({
+        database_id: process.env.NOTION_BLOG_POSTS_DATABASE_ID!,
+        sorts: [
+            {
+                property: sortBy.property,
+                direction: sortBy.direction,
+            },
+        ],
+        filter: { and },
+        page_size: limit,
+    });
+
+    if (results) {
+        return results.results
+    } else {
+        return [];
     }
 }

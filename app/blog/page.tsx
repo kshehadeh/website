@@ -1,18 +1,15 @@
 import React from 'react';
-import '../globals.css';
 import { getRecentBlogPosts } from '@/lib/blog';
-import { PostBrief, PostList } from '@/components/Post/PostBrief';
+import { PostList } from '@/components/Post/PostList';
+import { H1 } from '@/components/primitives';
 
 export default async function MainBlogPage() {
     // Get the list the last X posts from Notion
-    const posts = await getRecentBlogPosts(10, true)
+    const posts = await getRecentBlogPosts(12, true);
     return (
-        <PostList>
-            {posts.map(post => {
-                return (
-                    <PostBrief key={`post-${post.id}`} post={post}/>
-                );
-            })}
-        </PostList>
+        <>
+            <H1>All Posts</H1>
+            <PostList posts={posts} />
+        </>
     );
 }

@@ -48,7 +48,7 @@ export function PostBrief({
                 </div>
 
                 {!hideAbstract && (
-                    <p className="mt-5 line-clampœ-3 text-sm leading-6 text-gray-600 h-48 overflow-hidden text-ellipsis">
+                    <p className="mt-5 line-clampœ-3 text-sm leading-6 text-gray-600 md:h-48 overflow-hidden text-ellipsis">
                         {post.abstract}
                     </p>
                 )}

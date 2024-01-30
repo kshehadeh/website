@@ -2,7 +2,6 @@ import React from 'react';
 import { H1, H2, HR, Img } from '@/components/primitives';
 import { getPersonalReferences } from '@/lib/about';
 import {
-    fetchPageBlocks,
     isRichTextProperty,
     notion,
 } from '@/lib/notion';
@@ -13,18 +12,9 @@ import { getCoverUrlFromPage } from '@/lib/blog';
 
 export default async function AboutMePage() {
     const page = await getAboutPage();
-
-    const blocks = await fetchPageBlocks(page.id);
-
-    const referencesDb = blocks.find(
-        block =>
-            block.type === 'child_database' &&
-            block.child_database.title === 'References',
-    );
-
-    const references = referencesDb ? await getPersonalReferences(referencesDb.id) : [];
+    const references = page ? await getPersonalReferences(page) : [];
     const renderer = new NotionRenderer({ client: notion });
-    const postElements = await renderer.render(...(blocks || []));
+    const postElements = await renderer.render(...(page.blocks || []));
     const title = isRichTextProperty(page.properties.Name)
         ? page.properties.Name.rich_text[0].plain_text
         : 'About Me';

@@ -8,6 +8,13 @@ const config: Config = {
     ],
     theme: {
         extend: {
+            listStyleType: {
+                none: 'none',
+                disc: 'disc',
+                decimal: 'decimal',
+                square: 'square',
+                roman: 'upper-roman',
+            },
             fontFamily: {
                 sans: ['var(--font-geist-sans)'],
                 mono: ['var(--font-geist-mono)'],

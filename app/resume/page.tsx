@@ -1,41 +1,43 @@
 import React from 'react';
-import { getEducation, getExperienceList, getResumePage } from '@/lib/resume';
+import {
+    getEducation,
+    getExperienceList,
+    getResumePage,
+} from '@/lib/resume';
 import { notFound } from 'next/navigation';
-import { H1, H2, H3, LI, P, UL } from '@/components/primitives';
+import { H1, H2 } from '@/components/primitives';
+import PersonalReferencesList from '@/components/About/References';
+import { getAboutPage, getPersonalReferences } from '@/lib/about';
+import { EducationItem } from '@/components/Resume/EducationItem';
+import { ExperienceItem } from '@/components/Resume/ExperienceItem';
+
+
+
 
 export default async function ResumePage() {
     const resume = await getResumePage();
-    if (resume) {
+    const about = await getAboutPage();
+
+    if (resume && about) {
+        const references = await getPersonalReferences(about);
         const experienceList = await getExperienceList(resume);
         const education = await getEducation(resume);
 
         return (
             <>
-                <H1>Karim Shehadeh</H1>
+                <H1 additionalClasses={['mb-3']}>Karim Shehadeh</H1>
+                <PersonalReferencesList references={references}></PersonalReferencesList>
                 <div>
-                    <H2>Experience</H2>
+                    <H2 additionalClasses={["bg-black", "text-white", "p-2"]}>Experience</H2>
                     {experienceList.map(e => (
-                        <div key={e?.id}>
-                            <H3 key={e?.id}>{e?.name}</H3>
-                            <P>{e?.company.title}</P>
-                            <P>{e?.overview}</P>
-                            <UL>
-                                {e?.bullets.map(b => (
-                                    <LI key={b.id}>{b.text}</LI>
-                                ))}
-                            </UL>
-                        </div>
+                        <ExperienceItem key={e.id} experience={e} />
                     ))}
                 </div>
 
                 <div>
-                    <H2>Education</H2>
+                    <H2 additionalClasses={["bg-black", "text-white", "p-2"]}>Education</H2>
                     {education.map(e => (
-                        <LI key={e.id}>
-                            <P>{e?.title}</P>
-                            <P>{e?.degree}</P>
-                            <P>{e?.graduationDate}</P>
-                        </LI>
+                        <EducationItem key={e.id} education={e} />
                     ))}
                 </div>
             </>

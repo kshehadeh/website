@@ -15,7 +15,7 @@ export function ExperienceItem({ experience }: { experience: Experience }) {
                     {experience?.end ? experience.end.toFormat('y') : 'Present'}
                 </div>
             </h3>
-            <p className={'m-1 flex flex-row'}>
+            <div className={'m-1 flex flex-row'}>
                 <div className="mr-2">
                     <img
                         src={experience?.company?.icon}
@@ -24,7 +24,7 @@ export function ExperienceItem({ experience }: { experience: Experience }) {
                     />
                 </div>
                 <div>{experience?.company.title}</div>
-            </p>
+            </div>
             <p className={'m-1'}>{experience?.overview}</p>
             <ul className={'ml-10'}>
                 {experience?.bullets.map(b => (

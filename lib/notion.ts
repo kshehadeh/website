@@ -16,7 +16,7 @@ export const notion = new Client({
 export function isPageObjectResponse(
     response: unknown
 ): response is PageObjectResponse {
-    return (response as PageObjectResponse).parent !== undefined && (response as PageObjectResponse).object === 'page';
+    return (response as PageObjectResponse)?.parent !== undefined && (response as PageObjectResponse)?.object === 'page';
 }
 
 export function isBlockObjectResponse(
@@ -97,11 +97,11 @@ export function isFilesProperty(value: unknown): value is FilesProperty {
 }
 
 export function isInternalFileProperty(value: unknown): value is InternalFileProperty {
-    return (value as FileProperty).type === 'file'
+    return (value as FileProperty)?.type === 'file'
 }
 
 export function isExternalFileProperty(value: unknown): value is ExternalFileProperty {
-    return (value as FileProperty).type === 'external'
+    return (value as FileProperty)?.type === 'external'
 }
 
 export function isRelationProperty(value: unknown): value is RelationProperty {

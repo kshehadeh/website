@@ -170,7 +170,7 @@ export async function getBlogPostBySlug(
     slug: string,
 ): Promise<BlogPostFull | undefined> {
     // get the page for this slug
-    const post = (await getBlogPosts({ limit: 1, slug }))?.[0];
+    const post = (await getBlogPosts({ limit: 1, slug, status: 'Any' }))?.[0];
 
     if (isPageObjectResponse(post)) {
         // get the blocks for this page, including content
@@ -217,14 +217,14 @@ export async function getBlogPosts({
     tag?: string;
     authorId?: string;
     slug?: string;
-    status?: 'Published' | 'Draft';
+    status?: 'Published' | 'Draft' | 'Any';
     sortBy?: {
         property: string;
         direction: 'ascending' | 'descending';
     };
 }): Promise<QueryDatabaseResponse['results']>{
     const and = [];
-    if (status) {
+    if (status && status !== 'Any') {
         and.push({
             property: 'Status',
             select: {
@@ -259,7 +259,7 @@ export async function getBlogPosts({
             },
         });
     }
-
+    
     const results = await notion.databases.query({
         database_id: process.env.NOTION_BLOG_POSTS_DATABASE_ID!,
         sorts: [

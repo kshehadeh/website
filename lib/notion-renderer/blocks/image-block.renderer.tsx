@@ -12,13 +12,12 @@ export default createBlockRenderer<ImageBlockObjectResponse>(
             'file' in data.image
                 ? data.image.file.url
                 : data.image.external.url;
-
         return (
-            <Figure>
-                <img src={`${src}`} />$
+            <Figure key={`figure-${data.id}`} additionalClasses={["float-left"]}>
+                <img src={src} alt={data.image.caption?.[0]?.plain_text || 'src'}/>
                 {data.image.caption.length > 0 ? (
-                    <Legend>
-                        ${await renderer.render(...data.image.caption)}
+                    <Legend additionalClasses={["text-sm"]}>
+                        {await renderer.render(...data.image.caption)}
                     </Legend>
                 ) : (
                     <></>

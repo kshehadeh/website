@@ -10,10 +10,10 @@ export default createBlockRenderer<BookmarkBlockObjectResponse>(
         return (
             <A
                 key={`bookmark-${data.id}`}
-                href="${data.bookmark.url}"
+                href={data.bookmark.url}
                 target="_blank"                
             >
-                ${data.bookmark.url}
+                {data.bookmark.url}
             </A>
         );
     },

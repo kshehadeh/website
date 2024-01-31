@@ -23,23 +23,23 @@ export function tailWindClassFromTextColor (color: string) {
         case 'red':
             return 'text-red-500';
         case 'gray_background':
-            return 'text-gray-900 bg-gray-500';
+            return 'text-gray-900 bg-gray-500 p-1 rounded-md';
         case 'brown_background':
-            return 'text-gray-900 bg-yellow-500';
+            return 'text-gray-900 bg-yellow-500 p-1 rounded-md';
         case 'orange_background':
-            return 'text-gray-900 bg-orange-500';
+            return 'text-gray-900 bg-orange-500 p-1 rounded-md';
         case 'yellow_background':
-            return 'text-gray-900 bg-yellow-500';
+            return 'text-gray-900 bg-yellow-500 p-1 rounded-md';
         case 'green_background':
-            return 'text-gray-900 bg-green-500';
+            return 'text-gray-900 bg-green-500 p-1 rounded-md';
         case 'blue_background':
-            return 'text-gray-900 bg-blue-500';
+            return 'text-gray-900 bg-blue-500 p-1 rounded-md';
         case 'purple_background':
-            return 'text-gray-900 bg-purple-500';
+            return 'text-gray-900 bg-purple-500 p-1 rounded-md';
         case 'pink_background':
-            return 'text-gray-900 bg-pink-500';
+            return 'text-gray-900 bg-pink-500 p-1 rounded-md';
         case 'red_background':
-            return 'text-gray-900 bg-red-500';
+            return 'text-gray-900 bg-red-500 p-1 rounded-md';
         default:
             return 'text-gray-900';
     }

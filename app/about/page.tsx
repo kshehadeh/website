@@ -7,6 +7,8 @@ import { NotionRenderer } from '@/lib/notion-renderer';
 import PersonalReferencesList from '@/components/About/References';
 import { getCoverUrlFromPage } from '@/lib/blog';
 
+export const revalidate = 60 * 60; // 1 hour
+
 const getPageData = cache(async () => {
     const page = await getAboutPage();
     return { page };

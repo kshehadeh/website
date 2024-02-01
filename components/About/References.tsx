@@ -8,7 +8,6 @@ function PersonalReferenceItem({
     reference: PersonalReference;
 }) {
     return (
-        <ul>
             <li>
                 <A href={reference.url} target="_blank" additionalClasses={["flex","flex-row","gap-1"]}>
                 {reference.icon && (
@@ -21,7 +20,6 @@ function PersonalReferenceItem({
                 {reference.title}
                 </A>
             </li>
-        </ul>
     );
 }
 
@@ -31,10 +29,10 @@ export default function PersonalReferencesList({
     references: PersonalReference[];
 }) {
     return (
-        <div className="flex flex-row gap-3">
+        <ul className="flex flex-row gap-3 flex-wrap">
             {references.map(ref => (
                 <PersonalReferenceItem key={ref.title} reference={ref} />
             ))}
-        </div>
+        </ul>
     );
 }

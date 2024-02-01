@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { cache } from 'react';
 import {
     getEducation,
     getExperienceList,
@@ -14,9 +14,15 @@ import { ExperienceItem } from '@/components/Resume/ExperienceItem';
 
 export const revalidate = 60 * 60; // 1 hour
 
-export default async function ResumePage() {
+const getPageData = cache(async () => {
     const resume = await getResumePage();
     const about = await getAboutPage();
+    return { resume, about };
+})
+
+export default async function ResumePage() {
+
+    const { resume, about } = await getPageData();
 
     if (resume && about) {
         const references = await getPersonalReferences(about);

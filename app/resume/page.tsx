@@ -12,7 +12,7 @@ import { EducationItem } from '@/components/Resume/EducationItem';
 import { ExperienceItem } from '@/components/Resume/ExperienceItem';
 
 
-
+export const revalidate = 60 * 60; // 1 hour
 
 export default async function ResumePage() {
     const resume = await getResumePage();

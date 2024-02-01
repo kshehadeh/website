@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation';
 import { getBlogPostBySlug } from '@/lib/blog';
 import { Post } from '@/components/Post/Post';
 
+export const revalidate = 60 * 60; // 1 hour
+
 export default async function Page({
     params,
 }: Readonly<{ params: { slug: string } }>) {    

@@ -2,26 +2,23 @@ import React from 'react';
 import { CodeBlockObjectResponse } from '@notionhq/client/build/src/api-endpoints';
 
 import { createBlockRenderer } from '../utils/create-block-renderer';
-import { Code, Legend, Pre } from '@/components/primitives';
+import { Mermaid } from '@/components/Mermaid';
+import { Code } from '@/components/Code';
 
 export default createBlockRenderer<CodeBlockObjectResponse>(
     'code',
-    async (data, renderer) => {
-        const code = await renderer.render(...data.code.rich_text)
-
-        return (
-            <div key={`code-block-${data.id}`}>
-                <Pre>
-                    <Code language={data.code.language}>
-                        {code}
-                    </Code>
-                </Pre>
-                {data.code.caption.length > 0 && (
-                    <Legend>
-                        {await renderer.render(...data.code.caption)}
-                    </Legend>
-                )}
-            </div>
-        );
+    async data => {
+        if (data.code.language === 'mermaid') {
+            return <Mermaid key={`mermaid-${data.id}`}>{data.code.rich_text[0].plain_text}</Mermaid>;
+        } else {
+            return (
+                <Code
+                    key={`code-${data.id}`}
+                    language={data.code.language}
+                    text={data.code.rich_text[0].plain_text}
+                    showLineNumbers={true}
+                />
+            );
+        }
     },
 );

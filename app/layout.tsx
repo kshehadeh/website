@@ -5,11 +5,11 @@ import Navigation from '@/components/Navigation/Navigation';
 import { Content } from '@/components/Content';
 import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 export const metadata: Metadata = {
     title: 'Karim Shehadeh',
-    description: 'Karim Shehadeh\'s personal website and blog.',
+    description: "Karim Shehadeh's personal website and blog.",
 };
 
 export default function RootLayout({
@@ -18,7 +18,10 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html className={`h-full bg-gray-100 ${GeistSans.variable} ${GeistMono.variable}`} lang="en">
+        <html
+            className={`h-full bg-gray-100 ${GeistSans.variable} ${GeistMono.variable}`}
+            lang="en"
+        >
             <body className="h-full">
                 <div className="min-h-full">
                     <Navigation />
@@ -27,5 +30,5 @@ export default function RootLayout({
                 </div>
             </body>
         </html>
-    );  
+    );
 }

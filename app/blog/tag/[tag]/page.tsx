@@ -8,14 +8,27 @@ export const revalidate = 60 * 60; // 1 hour
 const getPageData = cache(async (tag: string) => {
     const posts = await getBlogPostsByTag(tag);
     return { posts };
-})
+});
 
-export default async function PostsByTagPage({params: { tag }}: { params: { tag: string } }) {
+export default async function PostsByTagPage({
+    params: { tag },
+}: {
+    params: { tag: string };
+}) {
     const { posts } = await getPageData(tag);
     return (
         <>
             <H1>{tag}</H1>
-            <PostList posts={posts} hideAbstract={true} hideAuthor={true} hideTags={true} />
+            <PostList
+                posts={posts}
+                hideAbstract={true}
+                hideAuthor={true}
+                hideTags={true}
+            />
         </>
     );
 }
+
+export const generateStaticParams = async () => {
+    return [];
+};

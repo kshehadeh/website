@@ -42,7 +42,7 @@ export function P({ children, additionalClasses }: PrimitiveProps) {
 
 export function UL({ children, additionalClasses }: PrimitiveProps) {
     return (
-        <ul className={`list-disc list-inside text-lg mt-2 mb-2 leading-normal text-gray-600 dark:text-gray-400 ${buildAdditionalClasses(additionalClasses)}`}>
+        <ul className={`list-disc list-inside mt-2 mb-2 leading-normal text-gray-600 dark:text-gray-400 ${buildAdditionalClasses(additionalClasses)}`}>
             {children}
         </ul>
     );
@@ -50,7 +50,7 @@ export function UL({ children, additionalClasses }: PrimitiveProps) {
 
 export function OL({ children, additionalClasses }: PrimitiveProps) {
     return (
-        <ol className={`list-decimal list-inside text-lg mt-2 mb-2 leading-normal text-gray-600 dark:text-gray-400 ${buildAdditionalClasses(additionalClasses)}`}>
+        <ol className={`list-decimal list-inside mt-2 mb-2 leading-normal text-gray-600 dark:text-gray-400 ${buildAdditionalClasses(additionalClasses)}`}>
             {children}
         </ol>
     );
@@ -58,7 +58,7 @@ export function OL({ children, additionalClasses }: PrimitiveProps) {
 
 export function LI({ children, additionalClasses }: PrimitiveProps) {
     return (
-        <li className={`text-lg mt-2 mb-2 leading-normal text-gray-600 dark:text-gray-400 ${buildAdditionalClasses(additionalClasses)}`}>
+        <li className={`mt-2 mb-2 leading-normal text-gray-600 dark:text-gray-400 ${buildAdditionalClasses(additionalClasses)}`}>
             {children}
         </li>
     );
@@ -72,7 +72,7 @@ export function A({
 }: PrimitiveProps<{ href: string; target?: string }>) {
     return (
         <a
-            className={`text-gray-900 hover:text-blue-600 dark:text-white dark:hover:text-blue-500 ${buildAdditionalClasses(additionalClasses)}`}
+            className={`text-gray-600 hover:text-blue-600 dark:text-white dark:hover:text-blue-500 ${buildAdditionalClasses(additionalClasses)}`}
             href={href}
             target={target}
         >

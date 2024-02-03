@@ -1,4 +1,5 @@
 import { Education } from '@/lib/resume';
+import { DateTime } from 'luxon';
 import React from 'react';
 
 export function EducationItem({ education }: { education: Education }) {
@@ -11,7 +12,7 @@ export function EducationItem({ education }: { education: Education }) {
             >
                 <div>{education?.degree}</div>
                 <div
-                className={'text-sm font-normal'}>{education?.graduationDate.toFormat('y')}</div>
+                className={'text-sm font-normal'}>{education?.graduationDate ? DateTime.fromISO(education.graduationDate).toFormat('y') : ''}</div>
             </h3>
 
             <p>{education?.title}</p>

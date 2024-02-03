@@ -16,7 +16,8 @@ import {
     notion,
 } from './notion';
 import { toDate } from './util';
-import { DateTime } from 'luxon';
+import { getAboutPage } from './about';
+import { cache } from 'react';
 
 export interface ResumePageInterface extends PageObjectResponse {
     blocks: BlockObjectResponse[];
@@ -26,8 +27,8 @@ export interface Experience {
     id: string;
     name: string;
     company: Company;
-    start: DateTime;
-    end: DateTime | undefined;
+    start: string;          // ISO 8601 date string
+    end: string | undefined;// ISO 8601 date string
     overview: string;
     bullets: ExperienceBullet[];
 }
@@ -47,10 +48,17 @@ export interface Company {
 export interface Education {
     id: string;
     title: string;
-    graduationDate: DateTime;
+    graduationDate: string; // ISO 8601 date string
     awards: string[];
     degree: string;
 }
+
+export const getResumePageData = cache(async () => {
+    const resume = await getResumePage();
+    const about = await getAboutPage();
+    return { resume, about };
+})
+
 
 export async function getResumePage(): Promise<ResumePageInterface> {
     const response = await notion.pages.retrieve({
@@ -66,7 +74,7 @@ export async function getResumePage(): Promise<ResumePageInterface> {
     throw new Error('Unable to fetch about page');
 }
 
-export async function getExperienceList(page: ResumePageInterface) {
+export async function getExperienceList(page: ResumePageInterface): Promise<Experience[]> {
     const db = page.blocks.find(
         block =>
             block.type === 'child_database' &&
@@ -85,10 +93,10 @@ export async function getExperienceList(page: ResumePageInterface) {
                     ? row.properties.Company.relation[0].id
                     : '';
                 const start = isDateProperty(row.properties.Start)
-                    ? toDate(row.properties.Start.date?.start)
+                    ? toDate(row.properties.Start.date?.start)?.toISO()
                     : '';
                 const end = isDateProperty(row.properties.End)
-                    ? toDate(row.properties.End.date?.start)
+                    ? toDate(row.properties.End.date?.start)?.toISO()
                     : '';
                 const overview = isRichTextProperty(row.properties.Overview)
                     ? row.properties.Overview.rich_text[0].plain_text
@@ -118,7 +126,7 @@ export async function getExperienceList(page: ResumePageInterface) {
             (experience): experience is Experience => experience !== undefined,
         )
         .sort((e1, e2) =>
-            e1.start.toUnixInteger() < e2.start.toUnixInteger() ? 1 : -1,
+            e1.start < e2.start ? 1 : -1,
         );
 }
 
@@ -181,7 +189,7 @@ export async function getEducation(
                         )
                             ? toDate(
                                   row.properties.GraduationDate.date?.start,
-                              ) || ''
+                              )?.toISO()|| ''
                             : '',
                         awards: isMultiSelectProperty(row.properties.Awards)
                             ? row.properties.Awards.multi_select.map(

@@ -1,5 +1,6 @@
 import React from "react";
 import { Experience } from "@/lib/resume";
+import { DateTime } from "luxon";
 
 export function ExperienceItem({ experience }: { experience: Experience }) {
     return (
@@ -11,8 +12,8 @@ export function ExperienceItem({ experience }: { experience: Experience }) {
             >
                 <div>{experience?.name}</div>
                 <div className={'text-sm font-normal'}>
-                    {experience?.start.toFormat('y')}-
-                    {experience?.end ? experience.end.toFormat('y') : 'Present'}
+                    {DateTime.fromISO(experience?.start).toFormat('y')}-
+                    {experience?.end ? DateTime.fromISO(experience.end).toFormat('y') : 'Present'}
                 </div>
             </h3>
             <div className={'m-1 flex flex-row'}>

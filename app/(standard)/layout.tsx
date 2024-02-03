@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Metadata } from 'next';
-import './globals.css';
+import '../globals.css';
 import Navigation from '@/components/Navigation/Navigation';
 import { Content } from '@/components/Content';
 import { GeistSans } from 'geist/font/sans';

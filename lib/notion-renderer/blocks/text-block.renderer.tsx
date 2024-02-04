@@ -12,17 +12,34 @@ export default createBlockRenderer<TextRichTextItemResponse>(
         const text = data.plain_text;
         let result: React.ReactNode = <>{text}</>;
 
-        const additionalClasses = tailWindClassesFromTextAnnotations(data.annotations);
+        const additionalClasses = tailWindClassesFromTextAnnotations(
+            data.annotations,
+        );
         if (data.href) {
             result = (
-                <A key={`bookmark-${data.plain_text.slice(0,5)}`} href={data.href} additionalClasses={additionalClasses}>
+                <A
+                    key={`bookmark-${data.plain_text.slice(0, 5)}`}
+                    href={data.href}
+                    additionalClasses={additionalClasses}
+                >
                     {text}
                 </A>
             );
         } else if (data.annotations.code) {
-            result = <Code language="text" additionalClasses={additionalClasses}>{text}</Code>;
+            result = (
+                <Code language="text" additionalClasses={additionalClasses}>
+                    {text}
+                </Code>
+            );
         } else {
-            result = <Span key={`s-${data.plain_text.slice(0,5)}`} additionalClasses={additionalClasses}>{text}</Span>;
+            result = (
+                <Span
+                    key={`s-${data.plain_text.slice(0, 5)}`}
+                    additionalClasses={additionalClasses}
+                >
+                    {text}
+                </Span>
+            );
         }
 
         return result;

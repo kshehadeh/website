@@ -3,48 +3,48 @@ import { ToDoBlockObjectResponse } from '@notionhq/client/build/src/api-endpoint
 import { Block, ExtensionFunc } from '../types';
 
 export type ToDoListBlock = Block<
-  'to_do_list',
-  (ToDoBlockObjectResponse & { processed?: boolean })[]
+    'to_do_list',
+    (ToDoBlockObjectResponse & { processed?: boolean })[]
 >;
 
-const toDoListExtension: ExtensionFunc = async (blocks) => {
-  let start = false;
-  let items: ToDoListBlock['to_do_list'] = [];
-  const next = [];
+const toDoListExtension: ExtensionFunc = async blocks => {
+    let start = false;
+    let items: ToDoListBlock['to_do_list'] = [];
+    const next = [];
 
-  const pushList = () => {
-    next.push({
-      type: 'to_do_list',
-      to_do_list: items,
-    });
+    const pushList = () => {
+        next.push({
+            type: 'to_do_list',
+            to_do_list: items,
+        });
 
-    start = false;
-    items = [];
-  };
+        start = false;
+        items = [];
+    };
 
-  for (const block of blocks) {
-    if ('processed' in block && block.processed) {
-      next.push(block);
-      continue;
+    for (const block of blocks) {
+        if ('processed' in block && block.processed) {
+            next.push(block);
+            continue;
+        }
+
+        if (block.type === 'to_do') {
+            if (!start) start = true;
+
+            items.push({
+                ...(block as ToDoBlockObjectResponse),
+                processed: true,
+            });
+        } else if (start) {
+            pushList();
+        } else {
+            next.push(block);
+        }
     }
 
-    if (block.type === 'to_do') {
-      if (!start) start = true;
+    if (start) pushList();
 
-      items.push({
-        ...(block as ToDoBlockObjectResponse),
-        processed: true,
-      });
-    } else if (start) {
-      pushList();
-    } else {
-      next.push(block);
-    }
-  }
-
-  if (start) pushList();
-
-  return next;
+    return next;
 };
 
 export default toDoListExtension;

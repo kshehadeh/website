@@ -24,13 +24,20 @@ export default function Navigation() {
                     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                         <div className="flex h-16 items-center justify-between">
                             <div className="flex items-center">
-                                <a className="flex-shrink-0 text-gray-800 weight-100 bg-white p-2 rounded-sm" href="/">
+                                <a
+                                    className="flex-shrink-0 text-gray-800 weight-100 bg-white p-2 rounded-sm"
+                                    href="/"
+                                >
                                     {user.name}
                                 </a>
                                 <div className="hidden md:block">
                                     <div className="ml-10 flex items-baseline space-x-4">
                                         {navigation.map(item => (
-                                            <NavigationItem key={item.href} item={item} mobile={false} />
+                                            <NavigationItem
+                                                key={item.href}
+                                                item={item}
+                                                mobile={false}
+                                            />
                                         ))}
                                     </div>
                                 </div>
@@ -61,10 +68,13 @@ export default function Navigation() {
                     <Disclosure.Panel className="md:hidden">
                         <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
                             {navigation.map(item => (
-                                <NavigationItem item={item} mobile={true} key={item.href} />
+                                <NavigationItem
+                                    item={item}
+                                    mobile={true}
+                                    key={item.href}
+                                />
                             ))}
                         </div>
-
                     </Disclosure.Panel>
                 </>
             )}

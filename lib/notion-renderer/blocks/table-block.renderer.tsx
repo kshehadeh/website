@@ -8,6 +8,10 @@ import { Table } from '@/components/primitives';
 export default createBlockRenderer<TableBlockObjectResponse>(
     'table',
     async (data, renderer) => {
-        return <Table key={`table-${data.id}`}>{await renderer.renderBlock(data.id)}</Table>;
+        return (
+            <Table key={`table-${data.id}`}>
+                {await renderer.renderBlock(data.id)}
+            </Table>
+        );
     },
 );

@@ -11,8 +11,13 @@ export function Code({
     text: string;
     showLineNumbers: boolean;
 }) {
-    return <SyntaxHighlighter language={language.toLowerCase()}
-        style={dark}
-        showLineNumbers={showLineNumbers}
-    >{text}</SyntaxHighlighter>;
+    return (
+        <SyntaxHighlighter
+            language={language.toLowerCase()}
+            style={dark}
+            showLineNumbers={showLineNumbers}
+        >
+            {text}
+        </SyntaxHighlighter>
+    );
 }

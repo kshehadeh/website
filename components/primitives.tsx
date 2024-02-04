@@ -1,16 +1,19 @@
 import React, { PropsWithChildren } from 'react';
 
-export type PrimitiveProps<T = unknown> = T & PropsWithChildren & {
-    additionalClasses?: string[];
-}
+export type PrimitiveProps<T = unknown> = T &
+    PropsWithChildren & {
+        additionalClasses?: string[];
+    };
 
-function buildAdditionalClasses(additionalClasses?: string[]) {    
+function buildAdditionalClasses(additionalClasses?: string[]) {
     return additionalClasses?.join(' ') || '';
 }
 
 export function H1({ children, additionalClasses }: PrimitiveProps) {
     return (
-        <h1 className={`text-2xl mt-5 mb-3 font-bold leading-tight text-gray-900 dark:text-gray-100 ${buildAdditionalClasses(additionalClasses)}`}>
+        <h1
+            className={`text-2xl mt-5 mb-3 font-bold leading-tight text-gray-900 dark:text-gray-100 ${buildAdditionalClasses(additionalClasses)}`}
+        >
             {children}
         </h1>
     );
@@ -18,7 +21,9 @@ export function H1({ children, additionalClasses }: PrimitiveProps) {
 
 export function H2({ children, additionalClasses }: PrimitiveProps) {
     return (
-        <h2 className={`text-xl mt-5 font-semibold leading-snug text-gray-800 dark:text-gray-200 ${buildAdditionalClasses(additionalClasses)}`}>
+        <h2
+            className={`text-xl mt-5 font-semibold leading-snug text-gray-800 dark:text-gray-200 ${buildAdditionalClasses(additionalClasses)}`}
+        >
             {children}
         </h2>
     );
@@ -26,7 +31,9 @@ export function H2({ children, additionalClasses }: PrimitiveProps) {
 
 export function H3({ children, additionalClasses }: PrimitiveProps) {
     return (
-        <h3 className={`text-lg mt-5 font-medium leading-relaxed text-gray-700 dark:text-gray-300 ${buildAdditionalClasses(additionalClasses)}`}>
+        <h3
+            className={`text-lg mt-5 font-medium leading-relaxed text-gray-700 dark:text-gray-300 ${buildAdditionalClasses(additionalClasses)}`}
+        >
             {children}
         </h3>
     );
@@ -34,7 +41,9 @@ export function H3({ children, additionalClasses }: PrimitiveProps) {
 
 export function P({ children, additionalClasses }: PrimitiveProps) {
     return (
-        <p className={`mt-5 mb-5 leading-normal text-gray-600 dark:text-gray-400 ${buildAdditionalClasses(additionalClasses)}`}>
+        <p
+            className={`mt-5 mb-5 leading-normal text-gray-600 dark:text-gray-400 ${buildAdditionalClasses(additionalClasses)}`}
+        >
             {children}
         </p>
     );
@@ -42,7 +51,9 @@ export function P({ children, additionalClasses }: PrimitiveProps) {
 
 export function UL({ children, additionalClasses }: PrimitiveProps) {
     return (
-        <ul className={`list-disc list-inside mt-2 mb-2 leading-normal text-gray-600 dark:text-gray-400 ${buildAdditionalClasses(additionalClasses)}`}>
+        <ul
+            className={`list-disc list-inside mt-2 mb-2 leading-normal text-gray-600 dark:text-gray-400 ${buildAdditionalClasses(additionalClasses)}`}
+        >
             {children}
         </ul>
     );
@@ -50,7 +61,9 @@ export function UL({ children, additionalClasses }: PrimitiveProps) {
 
 export function OL({ children, additionalClasses }: PrimitiveProps) {
     return (
-        <ol className={`list-decimal list-inside mt-2 mb-2 leading-normal text-gray-600 dark:text-gray-400 ${buildAdditionalClasses(additionalClasses)}`}>
+        <ol
+            className={`list-decimal list-inside mt-2 mb-2 leading-normal text-gray-600 dark:text-gray-400 ${buildAdditionalClasses(additionalClasses)}`}
+        >
             {children}
         </ol>
     );
@@ -58,7 +71,9 @@ export function OL({ children, additionalClasses }: PrimitiveProps) {
 
 export function LI({ children, additionalClasses }: PrimitiveProps) {
     return (
-        <li className={`mt-2 mb-2 leading-normal text-gray-600 dark:text-gray-400 ${buildAdditionalClasses(additionalClasses)}`}>
+        <li
+            className={`mt-2 mb-2 leading-normal text-gray-600 dark:text-gray-400 ${buildAdditionalClasses(additionalClasses)}`}
+        >
             {children}
         </li>
     );
@@ -68,7 +83,7 @@ export function A({
     children,
     href,
     target,
-    additionalClasses
+    additionalClasses,
 }: PrimitiveProps<{ href: string; target?: string }>) {
     return (
         <a
@@ -81,13 +96,19 @@ export function A({
     );
 }
 
-export function HR({additionalClasses}: PrimitiveProps) {
-    return <hr className={`my-4 border-gray-200 dark:border-gray-700 ${buildAdditionalClasses(additionalClasses)}`} />;
+export function HR({ additionalClasses }: PrimitiveProps) {
+    return (
+        <hr
+            className={`my-4 border-gray-200 dark:border-gray-700 ${buildAdditionalClasses(additionalClasses)}`}
+        />
+    );
 }
 
 export function Blockquote({ children, additionalClasses }: PrimitiveProps) {
     return (
-        <blockquote className={`border-l-4 border-gray-200 dark:border-gray-700 pl-4 my-4 ${buildAdditionalClasses(additionalClasses)}`}>
+        <blockquote
+            className={`border-l-4 border-gray-200 dark:border-gray-700 pl-4 my-4 ${buildAdditionalClasses(additionalClasses)}`}
+        >
             {children}
         </blockquote>
     );
@@ -96,7 +117,7 @@ export function Blockquote({ children, additionalClasses }: PrimitiveProps) {
 export function Code({
     children,
     language,
-    additionalClasses
+    additionalClasses,
 }: PrimitiveProps<{ language: string }>) {
     return (
         <code
@@ -110,7 +131,9 @@ export function Code({
 
 export function Pre({ children, additionalClasses }: PrimitiveProps) {
     return (
-        <pre className={`bg-gray-100 dark:bg-gray-800 dark:text-gray-200 p-1 rounded ${buildAdditionalClasses(additionalClasses)}`}>
+        <pre
+            className={`bg-gray-100 dark:bg-gray-800 dark:text-gray-200 p-1 rounded ${buildAdditionalClasses(additionalClasses)}`}
+        >
             {children}
         </pre>
     );
@@ -118,66 +141,136 @@ export function Pre({ children, additionalClasses }: PrimitiveProps) {
 
 export function InlineCode({ children, additionalClasses }: PrimitiveProps) {
     return (
-        <code className={`text-sm bg-gray-100 dark:bg-gray-800 dark:text-gray-200 p-1 rounded ${buildAdditionalClasses(additionalClasses)}`}>
+        <code
+            className={`text-sm bg-gray-100 dark:bg-gray-800 dark:text-gray-200 p-1 rounded ${buildAdditionalClasses(additionalClasses)}`}
+        >
             {children}
         </code>
     );
 }
 
 export function Strong({ children, additionalClasses }: PrimitiveProps) {
-    return <strong className={`font-semibold ${buildAdditionalClasses(additionalClasses)}`}>{children}</strong>;
+    return (
+        <strong
+            className={`font-semibold ${buildAdditionalClasses(additionalClasses)}`}
+        >
+            {children}
+        </strong>
+    );
 }
 
 export function Em({ children, additionalClasses }: PrimitiveProps) {
-    return <em className={`italic ${buildAdditionalClasses(additionalClasses)}`}>{children}</em>;
+    return (
+        <em className={`italic ${buildAdditionalClasses(additionalClasses)}`}>
+            {children}
+        </em>
+    );
 }
 
 export function Del({ children, additionalClasses }: PrimitiveProps) {
-    return <del className={`line-through ${buildAdditionalClasses(additionalClasses)}`}>{children}</del>;
+    return (
+        <del
+            className={`line-through ${buildAdditionalClasses(additionalClasses)}`}
+        >
+            {children}
+        </del>
+    );
 }
 
 export function Br() {
     return <br />;
 }
 
-export function Img({ src, alt, additionalClasses }: PrimitiveProps<{ src: string; alt: string }>) {
-    return <img src={src} alt={alt} className={`rounded ${buildAdditionalClasses(additionalClasses)}`} />;
+export function Img({
+    src,
+    alt,
+    additionalClasses,
+}: PrimitiveProps<{ src: string; alt: string }>) {
+    return (
+        <img
+            src={src}
+            alt={alt}
+            className={`rounded ${buildAdditionalClasses(additionalClasses)}`}
+        />
+    );
 }
 
 export function Table({ children, additionalClasses }: PrimitiveProps) {
-    return <table className={`table-auto ${buildAdditionalClasses(additionalClasses)}`}>{children}</table>;
+    return (
+        <table
+            className={`table-auto ${buildAdditionalClasses(additionalClasses)}`}
+        >
+            {children}
+        </table>
+    );
 }
 
 export function THead({ children, additionalClasses }: PrimitiveProps) {
-    return <thead className={buildAdditionalClasses(additionalClasses)}>{children}</thead>;
+    return (
+        <thead className={buildAdditionalClasses(additionalClasses)}>
+            {children}
+        </thead>
+    );
 }
 
 export function TBody({ children, additionalClasses }: PrimitiveProps) {
-    return <tbody  className={buildAdditionalClasses(additionalClasses)}>{children}</tbody>;
+    return (
+        <tbody className={buildAdditionalClasses(additionalClasses)}>
+            {children}
+        </tbody>
+    );
 }
 
 export function TR({ children, additionalClasses }: PrimitiveProps) {
-    return <tr  className={buildAdditionalClasses(additionalClasses)}>{children}</tr>;
+    return (
+        <tr className={buildAdditionalClasses(additionalClasses)}>
+            {children}
+        </tr>
+    );
 }
 
 export function TH({ children, additionalClasses }: PrimitiveProps) {
-    return <th className={`border px-4 py-2 ${buildAdditionalClasses(additionalClasses)}`}>{children}</th>;
+    return (
+        <th
+            className={`border px-4 py-2 ${buildAdditionalClasses(additionalClasses)}`}
+        >
+            {children}
+        </th>
+    );
 }
 
 export function TD({ children, additionalClasses }: PrimitiveProps) {
-    return <td className={`border px-4 py-2 ${buildAdditionalClasses(additionalClasses)}`}>{children}</td>;
+    return (
+        <td
+            className={`border px-4 py-2 ${buildAdditionalClasses(additionalClasses)}`}
+        >
+            {children}
+        </td>
+    );
 }
 
 export function Div({ children, additionalClasses }: PrimitiveProps) {
-    return <div className={buildAdditionalClasses(additionalClasses)}>{children}</div>;
+    return (
+        <div className={buildAdditionalClasses(additionalClasses)}>
+            {children}
+        </div>
+    );
 }
 
 export function Span({ children, additionalClasses }: PrimitiveProps) {
-    return <span className={buildAdditionalClasses(additionalClasses)}>{children}</span>;
+    return (
+        <span className={buildAdditionalClasses(additionalClasses)}>
+            {children}
+        </span>
+    );
 }
 
 export function Legend({ children, additionalClasses }: PrimitiveProps) {
-    return <legend className={buildAdditionalClasses(additionalClasses)}>{children}</legend>;
+    return (
+        <legend className={buildAdditionalClasses(additionalClasses)}>
+            {children}
+        </legend>
+    );
 }
 
 export function Emoji({ emoji }: { emoji: string }) {
@@ -190,7 +283,9 @@ export function Emoji({ emoji }: { emoji: string }) {
 
 export function Details({ children, additionalClasses }: PrimitiveProps) {
     return (
-        <details className={`bg-white text-gray-700 p-4 mt-4 mb-4 rounded shadow ${buildAdditionalClasses(additionalClasses)}`}>
+        <details
+            className={`bg-white text-gray-700 p-4 mt-4 mb-4 rounded shadow ${buildAdditionalClasses(additionalClasses)}`}
+        >
             {children}
         </details>
     );
@@ -198,19 +293,27 @@ export function Details({ children, additionalClasses }: PrimitiveProps) {
 
 export function Summary({ children, additionalClasses }: PrimitiveProps) {
     return (
-        <summary className={`cursor-pointer text-lg font-bold mb-2 text-gray-700 ${buildAdditionalClasses(additionalClasses)}`}>
+        <summary
+            className={`cursor-pointer text-lg font-bold mb-2 text-gray-700 ${buildAdditionalClasses(additionalClasses)}`}
+        >
             {children}
         </summary>
     );
 }
 
 export function Figure({ children, additionalClasses }: PrimitiveProps) {
-    return <figure className={`my-4 ${buildAdditionalClasses(additionalClasses)}`}>{children}</figure>;
+    return (
+        <figure className={`my-4 ${buildAdditionalClasses(additionalClasses)}`}>
+            {children}
+        </figure>
+    );
 }
 
 export function Mention({ children, additionalClasses }: PrimitiveProps) {
     return (
-        <span className={`bg-gray-200 dark:bg-gray-700 rounded px-1 ${buildAdditionalClasses(additionalClasses)}`}>
+        <span
+            className={`bg-gray-200 dark:bg-gray-700 rounded px-1 ${buildAdditionalClasses(additionalClasses)}`}
+        >
             {children}
         </span>
     );

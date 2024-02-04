@@ -9,5 +9,5 @@ interface EmojiBlock {
 }
 
 export default createBlockRenderer<EmojiBlock>('emoji', async data => (
-    <Emoji emoji={data.emoji}/>
+    <Emoji emoji={data.emoji} />
 ));

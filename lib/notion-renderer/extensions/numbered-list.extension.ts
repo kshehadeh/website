@@ -3,48 +3,48 @@ import { NumberedListItemBlockObjectResponse } from '@notionhq/client/build/src/
 import { Block, ExtensionFunc } from '../types';
 
 export type NumberedListblock = Block<
-  'numbered_list',
-  (NumberedListItemBlockObjectResponse & { processed?: boolean })[]
+    'numbered_list',
+    (NumberedListItemBlockObjectResponse & { processed?: boolean })[]
 >;
 
-const numberedListExtension: ExtensionFunc = async (blocks) => {
-  let start = false;
-  let items: NumberedListblock['numbered_list'] = [];
-  const next = [];
+const numberedListExtension: ExtensionFunc = async blocks => {
+    let start = false;
+    let items: NumberedListblock['numbered_list'] = [];
+    const next = [];
 
-  const pushList = () => {
-    next.push({
-      type: 'numbered_list',
-      numbered_list: items,
-    });
+    const pushList = () => {
+        next.push({
+            type: 'numbered_list',
+            numbered_list: items,
+        });
 
-    start = false;
-    items = [];
-  };
+        start = false;
+        items = [];
+    };
 
-  for (const block of blocks) {
-    if ('processed' in block && block.processed) {
-      next.push(block);
-      continue;
+    for (const block of blocks) {
+        if ('processed' in block && block.processed) {
+            next.push(block);
+            continue;
+        }
+
+        if (block.type === 'numbered_list_item') {
+            if (!start) start = true;
+
+            items.push({
+                ...(block as NumberedListItemBlockObjectResponse),
+                processed: true,
+            });
+        } else if (start) {
+            pushList();
+        } else {
+            next.push(block);
+        }
     }
 
-    if (block.type === 'numbered_list_item') {
-      if (!start) start = true;
+    if (start) pushList();
 
-      items.push({
-        ...(block as NumberedListItemBlockObjectResponse),
-        processed: true,
-      });
-    } else if (start) {
-      pushList();
-    } else {
-      next.push(block);
-    }
-  }
-
-  if (start) pushList();
-
-  return next;
+    return next;
 };
 
 export default numberedListExtension;

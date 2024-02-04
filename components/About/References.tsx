@@ -8,8 +8,12 @@ function PersonalReferenceItem({
     reference: PersonalReference;
 }) {
     return (
-            <li>
-                <A href={reference.url} target="_blank" additionalClasses={["flex","flex-row","gap-1"]}>
+        <li>
+            <A
+                href={reference.url}
+                target="_blank"
+                additionalClasses={['flex', 'flex-row', 'gap-1']}
+            >
                 {reference.icon && (
                     <img
                         src={reference.icon}
@@ -18,8 +22,8 @@ function PersonalReferenceItem({
                     />
                 )}
                 {reference.title}
-                </A>
-            </li>
+            </A>
+        </li>
     );
 }
 

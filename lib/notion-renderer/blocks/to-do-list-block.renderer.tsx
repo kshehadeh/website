@@ -7,8 +7,6 @@ import { UL } from '@/components/primitives';
 export default createBlockRenderer<ToDoListBlock>(
     'to_do_list',
     async (data, renderer) => (
-        <UL>
-            {await renderer.render(...data.to_do_list)}
-        </UL>
+        <UL>{await renderer.render(...data.to_do_list)}</UL>
     ),
 );

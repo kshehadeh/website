@@ -52,9 +52,12 @@ export function PostBrief({
                         {post.abstract}
                     </p>
                 )}
-                
             </div>
-            {!hideAuthor && <div className="hidden md:block"><Author post={post} /></div>}
+            {!hideAuthor && (
+                <div className="hidden md:block">
+                    <Author post={post} />
+                </div>
+            )}
         </article>
     );
 }

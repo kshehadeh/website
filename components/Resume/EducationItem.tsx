@@ -11,8 +11,13 @@ export function EducationItem({ education }: { education: Education }) {
                 }
             >
                 <div>{education?.degree}</div>
-                <div
-                className={'text-sm font-normal'}>{education?.graduationDate ? DateTime.fromISO(education.graduationDate).toFormat('y') : ''}</div>
+                <div className={'text-sm font-normal'}>
+                    {education?.graduationDate
+                        ? DateTime.fromISO(education.graduationDate).toFormat(
+                              'y',
+                          )
+                        : ''}
+                </div>
             </h3>
 
             <p>{education?.title}</p>

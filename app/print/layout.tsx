@@ -19,9 +19,7 @@ export default function RootLayout({
             className={`h-full bg-gray-100 ${GeistSans.variable} ${GeistMono.variable}`}
             lang="en"
         >
-            <body className="h-full">
-                {children}
-            </body>
+            <body className="h-full">{children}</body>
         </html>
     );
 }

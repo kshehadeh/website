@@ -27,8 +27,8 @@ export interface Experience {
     id: string;
     name: string;
     company: Company;
-    start: string;          // ISO 8601 date string
-    end: string | undefined;// ISO 8601 date string
+    start: string; // ISO 8601 date string
+    end: string | undefined; // ISO 8601 date string
     overview: string;
     bullets: ExperienceBullet[];
 }
@@ -57,8 +57,7 @@ export const getResumePageData = cache(async () => {
     const resume = await getResumePage();
     const about = await getAboutPage();
     return { resume, about };
-})
-
+});
 
 export async function getResumePage(): Promise<ResumePageInterface> {
     const response = await notion.pages.retrieve({
@@ -74,7 +73,9 @@ export async function getResumePage(): Promise<ResumePageInterface> {
     throw new Error('Unable to fetch about page');
 }
 
-export async function getExperienceList(page: ResumePageInterface): Promise<Experience[]> {
+export async function getExperienceList(
+    page: ResumePageInterface,
+): Promise<Experience[]> {
     const db = page.blocks.find(
         block =>
             block.type === 'child_database' &&
@@ -125,9 +126,7 @@ export async function getExperienceList(page: ResumePageInterface): Promise<Expe
         .filter(
             (experience): experience is Experience => experience !== undefined,
         )
-        .sort((e1, e2) =>
-            e1.start < e2.start ? 1 : -1,
-        );
+        .sort((e1, e2) => (e1.start < e2.start ? 1 : -1));
 }
 
 export async function getExperienceBulletsFromIds(
@@ -189,7 +188,7 @@ export async function getEducation(
                         )
                             ? toDate(
                                   row.properties.GraduationDate.date?.start,
-                              )?.toISO()|| ''
+                              )?.toISO() || ''
                             : '',
                         awards: isMultiSelectProperty(row.properties.Awards)
                             ? row.properties.Awards.multi_select.map(

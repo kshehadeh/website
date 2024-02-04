@@ -9,7 +9,11 @@ export default createBlockRenderer<CodeBlockObjectResponse>(
     'code',
     async data => {
         if (data.code.language === 'mermaid') {
-            return <Mermaid key={`mermaid-${data.id}`}>{data.code.rich_text[0].plain_text}</Mermaid>;
+            return (
+                <Mermaid key={`mermaid-${data.id}`}>
+                    {data.code.rich_text[0].plain_text}
+                </Mermaid>
+            );
         } else {
             return (
                 <Code

@@ -1,5 +1,8 @@
 import { fetchPageBlocks, notion } from './notion';
-import { BlockObjectResponse, PageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
+import {
+    BlockObjectResponse,
+    PageObjectResponse,
+} from '@notionhq/client/build/src/api-endpoints';
 import {
     fetchDatabaseRows,
     isPageObjectResponse,
@@ -20,8 +23,9 @@ export interface AboutPageInterface extends PageObjectResponse {
     blocks: BlockObjectResponse[];
 }
 
-export async function getPersonalReferences(page: AboutPageInterface): Promise<PersonalReference[]> {
-
+export async function getPersonalReferences(
+    page: AboutPageInterface,
+): Promise<PersonalReference[]> {
     const referencesDb = page.blocks.find(
         block =>
             block.type === 'child_database' &&
@@ -36,7 +40,9 @@ export async function getPersonalReferences(page: AboutPageInterface): Promise<P
         title: isTitleProperty(row.properties.Name)
             ? row.properties.Name.title[0].plain_text || 'Reference'
             : '',
-        url: isUrlProperty(row.properties.URL) ? row.properties.URL.url || '' : '',
+        url: isUrlProperty(row.properties.URL)
+            ? row.properties.URL.url || ''
+            : '',
         icon: isFilesProperty(row.properties.Icon)
             ? getFilesFromProperty(row.properties.Icon)[0]
             : '',
@@ -44,13 +50,15 @@ export async function getPersonalReferences(page: AboutPageInterface): Promise<P
 }
 
 export async function getAboutPage(): Promise<AboutPageInterface> {
-    const response = await notion.pages.retrieve({ page_id: process.env.NOTION_ABOUT_PAGE_ID! });
+    const response = await notion.pages.retrieve({
+        page_id: process.env.NOTION_ABOUT_PAGE_ID!,
+    });
     if (isPageObjectResponse(response)) {
         const blocks = await fetchPageBlocks(response.id);
 
         return {
             ...response,
-            blocks
+            blocks,
         };
     }
     throw new Error('Unable to fetch about page');

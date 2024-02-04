@@ -8,6 +8,10 @@ import { P } from '@/components/primitives';
 export default createBlockRenderer<ParagraphBlockObjectResponse>(
     'paragraph',
     async (data, renderer) => {
-        return <P key={`p-${data.id}`}>{await renderer.render(...data.paragraph.rich_text)}</P>;
+        return (
+            <P key={`p-${data.id}`}>
+                {await renderer.render(...data.paragraph.rich_text)}
+            </P>
+        );
     },
 );

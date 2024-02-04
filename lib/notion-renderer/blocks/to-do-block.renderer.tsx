@@ -9,9 +9,7 @@ export default createBlockRenderer<ToDoBlockObjectResponse>(
     'to_do',
     async (data, renderer) => {
         return (
-            <LI                
-                data-checked="${data.to_do.checked}"
-            >
+            <LI data-checked="${data.to_do.checked}">
                 <input
                     type="checkbox"
                     checked={data.to_do.checked}

@@ -9,7 +9,9 @@ export default createBlockRenderer<Heading2BlockObjectResponse>(
     'heading_2',
     async (data, renderer) => {
         let result = (
-            <H2 key={`h2-${data.id}`}>{await renderer.render(...data.heading_2.rich_text)}</H2>
+            <H2 key={`h2-${data.id}`}>
+                {await renderer.render(...data.heading_2.rich_text)}
+            </H2>
         );
 
         if (

@@ -153,7 +153,7 @@ export async function getRecentBlogPosts(
     limit: number,
     includeAbstract: boolean,
 ): Promise<BlogPostBrief[]> {
-    const result = await getBlogPosts({limit});
+    const result = await getBlogPosts({ limit });
     const entries = [];
     for (const post of result || []) {
         if (isPageObjectResponse(post)) {
@@ -222,7 +222,7 @@ export async function getBlogPosts({
         property: string;
         direction: 'ascending' | 'descending';
     };
-}): Promise<QueryDatabaseResponse['results']>{
+}): Promise<QueryDatabaseResponse['results']> {
     const and = [];
     if (status && status !== 'Any') {
         and.push({
@@ -259,7 +259,7 @@ export async function getBlogPosts({
             },
         });
     }
-    
+
     const results = await notion.databases.query({
         database_id: process.env.NOTION_BLOG_POSTS_DATABASE_ID!,
         sorts: [
@@ -273,7 +273,7 @@ export async function getBlogPosts({
     });
 
     if (results) {
-        return results.results
+        return results.results;
     } else {
         return [];
     }

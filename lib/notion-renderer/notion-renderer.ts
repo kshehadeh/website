@@ -71,7 +71,7 @@ export class NotionRenderer {
             .filter(({ renderer }) => Boolean(renderer))
             .map(({ block, renderer }) => renderer!(block, this));
 
-        return Promise.all(promises)
+        return Promise.all(promises);
     }
 
     public async renderBlock(blockId: string): Promise<ReactElement[]> {

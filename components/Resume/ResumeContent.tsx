@@ -9,14 +9,14 @@ import { ExperienceItem } from './ExperienceItem';
 import { Education, Experience } from '@/lib/resume';
 import { PersonalReference } from '@/lib/about';
 import { toPng } from 'html-to-image';
-import { FiPrinter } from "react-icons/fi";
+import { FiPrinter } from 'react-icons/fi';
 import { FaDownload } from 'react-icons/fa';
 
 export function ResumeContent({
     references,
     experienceList,
     education,
-    printerFriendly
+    printerFriendly,
 }: {
     references: PersonalReference[];
     experienceList: Experience[];
@@ -37,40 +37,47 @@ export function ResumeContent({
         setTimeout(() => {
             if (!targetRef.current) return;
             toPng(targetRef.current, { cacheBust: true })
-            .then((dataUrl: string) => {
-                const link = document.createElement('a');
-                link.download = 'karim-shehadeh-resume.png';
-                link.href = dataUrl;
-                link.click();
-            })
-            .catch((err: Error) => {
-                console.log(err);
-            })
-            .finally(() => {
-                setDownloading(false);
-            });
+                .then((dataUrl: string) => {
+                    const link = document.createElement('a');
+                    link.download = 'karim-shehadeh-resume.png';
+                    link.href = dataUrl;
+                    link.click();
+                })
+                .catch((err: Error) => {
+                    console.log(err);
+                })
+                .finally(() => {
+                    setDownloading(false);
+                });
         }, 0);
     }, [targetRef]);
 
     return (
         <div className="relative">
-            {!printerFriendly && <div className="absolute top-1 right-5 flex-row gap-2 hidden md:flex">
-                <a 
-                    href="/print/resume"                   
-                    className="flex flex-row gap-2  text-sm content-center  bg-slate-800 text-white px-3 py-1 rounded-sm"
-                >
-                    <FiPrinter className="self-center"/><div>Print</div>
-                </a>
-                <button
-                    className={`flex flex-row gap-1 text-sm bg-slate-800 ${downloading ? 'text-slate-200' : 'text-white'} px-3 py-1 rounded-sm`}
-                    onClick={onDownloadPdf}
-                    disabled={downloading}
-                >
-                    <FaDownload className="self-center" />
-                    <span className={downloading ? 'invisible absolute' : ''}>Download</span>
-                    {downloading && <span>Downloading...</span>}
-                </button>
-            </div>}
+            {!printerFriendly && (
+                <div className="absolute top-1 right-5 flex-row gap-2 hidden md:flex">
+                    <a
+                        href="/print/resume"
+                        className="flex flex-row gap-2  text-sm content-center  bg-slate-800 text-white px-3 py-1 rounded-sm"
+                    >
+                        <FiPrinter className="self-center" />
+                        <div>Print</div>
+                    </a>
+                    <button
+                        className={`flex flex-row gap-1 text-sm bg-slate-800 ${downloading ? 'text-slate-200' : 'text-white'} px-3 py-1 rounded-sm`}
+                        onClick={onDownloadPdf}
+                        disabled={downloading}
+                    >
+                        <FaDownload className="self-center" />
+                        <span
+                            className={downloading ? 'invisible absolute' : ''}
+                        >
+                            Download
+                        </span>
+                        {downloading && <span>Downloading...</span>}
+                    </button>
+                </div>
+            )}
             <PrintableContent ref={targetRef}>
                 <H1>Karim Shehadeh</H1>
                 <PersonalReferencesList references={references} />

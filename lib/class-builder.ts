@@ -1,6 +1,6 @@
-import { TextRichTextItemResponse } from "@notionhq/client/build/src/api-endpoints";
+import { TextRichTextItemResponse } from '@notionhq/client/build/src/api-endpoints';
 
-export function tailWindClassFromTextColor (color: string) {
+export function tailWindClassFromTextColor(color: string) {
     switch (color) {
         case 'default':
             return 'text-gray-900';
@@ -45,7 +45,7 @@ export function tailWindClassFromTextColor (color: string) {
     }
 }
 
-export function tailWindClassFromBgColor (color: string) {
+export function tailWindClassFromBgColor(color: string) {
     switch (color) {
         case 'default':
             return 'bg-gray-900';
@@ -72,7 +72,9 @@ export function tailWindClassFromBgColor (color: string) {
     }
 }
 
-export function tailWindClassesFromTextAnnotations(annotations: TextRichTextItemResponse['annotations']): string[] {
+export function tailWindClassesFromTextAnnotations(
+    annotations: TextRichTextItemResponse['annotations'],
+): string[] {
     const classes = [];
     if (annotations.bold) {
         classes.push('font-bold');
@@ -92,5 +94,5 @@ export function tailWindClassesFromTextAnnotations(annotations: TextRichTextItem
     if (annotations.color) {
         classes.push(tailWindClassFromTextColor(annotations.color));
     }
-    return classes
+    return classes;
 }

@@ -10,7 +10,7 @@ function buildAdditionalClasses(additionalClasses?: string[]) {
 
 export function H1({ children, additionalClasses }: PrimitiveProps) {
     return (
-        <h1 className={`text-2xl mt-5 font-bold leading-tight text-gray-900 dark:text-gray-100 ${buildAdditionalClasses(additionalClasses)}`}>
+        <h1 className={`text-2xl mt-5 mb-3 font-bold leading-tight text-gray-900 dark:text-gray-100 ${buildAdditionalClasses(additionalClasses)}`}>
             {children}
         </h1>
     );

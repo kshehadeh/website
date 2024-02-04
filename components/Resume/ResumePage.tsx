@@ -4,7 +4,7 @@ import { getEducation, getExperienceList, getResumePageData } from '@/lib/resume
 import { notFound } from 'next/navigation';
 import { ResumeContent } from './ResumeContent';
 
-export async function ResumePage() {
+export async function ResumePage({printerFriendly}: {printerFriendly: boolean}) {
     const { resume, about } = await getResumePageData();
 
     if (resume && about) {
@@ -12,7 +12,7 @@ export async function ResumePage() {
         const experienceList = await getExperienceList(resume);
         const education = await getEducation(resume);
 
-        return <ResumeContent {...{ references, experienceList, education }} />;
+        return <ResumeContent {...{ references, experienceList, education, printerFriendly }} />;
     }
     notFound();
 }

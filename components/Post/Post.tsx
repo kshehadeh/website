@@ -14,7 +14,7 @@ export async function Post({ post }: { post: BlogPostFull }) {
                 <H1>{post.title}</H1>
                 <Author post={post}></Author>
             </div>            
-            {post.coverUrl && <Img src={post.coverUrl} alt={post.title} additionalClasses={["md:float-right md:m-5 md:w-[33%]"]}/>}
+            {post.coverUrl && <Img src={post.coverUrl} alt={post.title} additionalClasses={["hidden md:block md:float-right md:m-5 md:w-[33%]"]}/>}
             {postElements}
         </>
     );

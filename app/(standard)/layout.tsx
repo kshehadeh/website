@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
     return (
         <html
-            className={`h-full bg-gray-100 ${GeistSans.variable} ${GeistMono.variable}`}
+            className={`h-full ${GeistSans.variable} ${GeistMono.variable}`}
             lang="en"
         >
             <body className="h-full">

@@ -22,7 +22,7 @@ export function PostBrief({
     return (
         <article key={post.id} className="flex flex-col justify-between">
             <div
-                className="h-32 grow bg-cover"
+                className="h-32 grow bg-cover hidden md:block"
                 style={{ backgroundImage: `url(${post.coverUrl})` }}
             />
             <div className="group relative">
@@ -54,7 +54,7 @@ export function PostBrief({
                 )}
                 
             </div>
-            {!hideAuthor && <Author post={post} />}
+            {!hideAuthor && <div className="hidden md:block"><Author post={post} /></div>}
         </article>
     );
 }

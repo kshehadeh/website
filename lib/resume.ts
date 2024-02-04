@@ -23,6 +23,12 @@ export interface ResumePageInterface extends PageObjectResponse {
     blocks: BlockObjectResponse[];
 }
 
+export interface CoverLetter {
+    id: string;
+    title: string;
+    tags: string[];
+}
+
 export interface Experience {
     id: string;
     name: string;
@@ -53,11 +59,56 @@ export interface Education {
     degree: string;
 }
 
+export async function getCoverLetters(): Promise<CoverLetter[]> {
+    const results = await notion.databases.query({
+        database_id: process.env.NOTION_COVER_LETTER_DATABASE_ID!,
+        sorts: [
+            {
+                property: 'Name',
+                direction: 'ascending',
+            },
+        ],
+    });
+
+    return results.results
+        .map(page => {
+            if (isPageObjectResponse(page)) {
+                return {
+                    id: page.id,
+                    title: isTitleProperty(page.properties.Name)
+                        ? page.properties.Name.title[0].plain_text
+                        : '',
+                    tags: isMultiSelectProperty(page.properties.Tags) ? page.properties.Tags.multi_select.map(tag => tag.name) : [],
+                } satisfies CoverLetter;
+            }
+        })
+        .filter((e: unknown): e is CoverLetter => e !== undefined);
+}
+
 export const getResumePageData = cache(async () => {
     const resume = await getResumePage();
     const about = await getAboutPage();
     return { resume, about };
 });
+
+export const getCoverLetterPageData = cache(async (id: string) => {
+    const coverLetter = await getCoverLetterPage(id);
+    return { coverLetter };
+});
+
+export async function getCoverLetterPage(id: string): Promise<ResumePageInterface> {
+    const response = await notion.pages.retrieve({
+        page_id: id,
+    });
+    if (isPageObjectResponse(response)) {
+        const blocks = await fetchPageBlocks(response.id);
+        return {
+            ...response,
+            blocks,
+        };
+    }
+    throw new Error('Unable to fetch cover letter');
+}
 
 export async function getResumePage(): Promise<ResumePageInterface> {
     const response = await notion.pages.retrieve({

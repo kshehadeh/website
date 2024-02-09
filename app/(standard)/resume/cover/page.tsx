@@ -1,8 +1,9 @@
 import { A, H1, LI, UL } from '@/components/primitives';
 import { getCoverLetters } from '@/lib/resume';
+import timeouts from '@/lib/timeouts';
 import React from 'react';
 
-export const revalidate = 60 * 60; // 1 hour
+export const revalidate = timeouts.resume;
 
 export default async function Page() {
     const covers = await getCoverLetters();

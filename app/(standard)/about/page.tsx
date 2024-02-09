@@ -6,8 +6,9 @@ import { getAboutPage } from '@/lib/about';
 import { NotionRenderer } from '@/lib/notion-renderer';
 import PersonalReferencesList from '@/components/About/References';
 import { getCoverUrlFromPage } from '@/lib/blog';
+import timeouts from '@/lib/timeouts';
 
-export const revalidate = 60 * 60; // 1 hour
+export const revalidate = timeouts.about;
 
 const getPageData = cache(async () => {
     const page = await getAboutPage();

@@ -2,8 +2,9 @@ import React, { cache } from 'react';
 import { getRecentBlogPosts } from '@/lib/blog';
 import { PostList } from '@/components/Post/PostList';
 import { H1 } from '@/components/primitives';
+import timeouts from '@/lib/timeouts';
 
-export const revalidate = 60 * 60; // 1 hour
+export const revalidate = timeouts.blog;
 
 const getPageData = cache(async () => {
     const posts = await getRecentBlogPosts(12, true);

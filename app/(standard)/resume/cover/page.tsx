@@ -13,10 +13,20 @@ export default async function Page() {
             <UL>
                 {covers.map(cover => (
                     <LI key={cover.id}>
-                        <A additionalClasses={["font-bold"]} href={`/resume/cover/${cover.id}`}>{cover.title}</A>
+                        <A
+                            additionalClasses={['font-bold']}
+                            href={`/resume/cover/${cover.id}`}
+                        >
+                            {cover.title}
+                        </A>
                         <ul className="inline-block">
                             {cover.tags.map(tag => (
-                                <li className=" text-xs bg-yellow-200 p-1 ml-1 rounded-lg inline-block" key={tag}>{tag}</li>
+                                <li
+                                    className=" text-xs bg-yellow-200 p-1 ml-1 rounded-lg inline-block"
+                                    key={tag}
+                                >
+                                    {tag}
+                                </li>
                             ))}
                         </ul>
                     </LI>

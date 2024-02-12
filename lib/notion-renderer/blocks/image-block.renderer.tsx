@@ -4,14 +4,12 @@ import { ImageBlockObjectResponse } from '@notionhq/client/build/src/api-endpoin
 
 import { createBlockRenderer } from '../utils/create-block-renderer';
 import { Figure, Legend } from '@/components/primitives';
+import { getFinalFileUrl } from '@/lib/notion';
 
 export default createBlockRenderer<ImageBlockObjectResponse>(
     'image',
     async (data, renderer) => {
-        const src =
-            'file' in data.image
-                ? data.image.file.url
-                : data.image.external.url;
+        const src = await getFinalFileUrl(data.image, data.id);
         return (
             <Figure
                 key={`figure-${data.id}`}

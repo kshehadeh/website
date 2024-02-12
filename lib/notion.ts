@@ -4,10 +4,12 @@ import { Client } from '@notionhq/client';
 import React from 'react';
 import {
     BlockObjectResponse,
+    ImageBlockObjectResponse,
     PageObjectResponse,
     ParagraphBlockObjectResponse,
     UserObjectResponse,
 } from '@notionhq/client/build/src/api-endpoints';
+import { r2FileExists, uploadToR2 } from './bucket';
 
 export const notion = new Client({
     auth: process.env.NOTION_TOKEN,
@@ -164,6 +166,60 @@ export function getFilesFromProperty(property: FilesProperty): string[] {
     );
 }
 
+export function getFileNameFromUrl(url: string) {
+    const urlObject = new URL(url);
+    return urlObject.pathname.split('/').at(-1);
+}
+
+/**
+ * This will take the internal image property and upload it to R2 and return the R2 URL.  If the image property is
+ * an external URL then it will just return the external URL.  If the file has already been uploaded to R2 then it will
+ * return the existing R2 URL.
+ * 
+ * @param image The image property from Notion
+ * @param folder The folder in R2 to upload the image to - it will prepend this to the file name in the URL
+ * @returns 
+ */
+export async function getFinalFileUrl(image: ImageBlockObjectResponse['image'], folder: string) {
+    if (isInternalFileProperty(image)) {
+        const name = getFileNameFromUrl(image.file.url)
+        if (!name) throw new Error('Failed to extract file name from URL');
+        const url = await r2FileExists(`${folder}/${name}`);
+        if (!url) {
+            return await uploadToR2(image.file.url, `${folder}/${name}`);
+        }        
+        return url
+
+    } else if (isExternalFileProperty(image)) {
+        return image.external.url;
+    }
+}
+
+/**
+ * 
+ * @param files 
+ * @returns 
+ */
+export async function getFinalFileUrls(files: FilesProperty, folder: string): Promise<string[]> {
+    const urls: string[] = [];
+    for (const file of files.files) {
+        if (isInternalFileProperty(file)) {
+            let url = await r2FileExists(`${folder}/${file.name}`);
+            if (!url) {
+                url = await uploadToR2(file.file.url, `${folder}/${file.name}`);
+            }
+            if (url) {
+                urls.push(url);
+            } else {
+                urls.push(file.file.url);
+            }
+        } else if (isExternalFileProperty(file)) {
+            urls.push(file.external.url);
+        }
+    }
+    return urls;
+}
+
 export const fetchDatabaseRows = React.cache((dbId: string, limit: number) => {
     return notion.databases.query({
         database_id: dbId!,
@@ -175,4 +231,8 @@ export const fetchPageBlocks = React.cache((pageId: string) => {
     return notion.blocks.children
         .list({ block_id: pageId })
         .then(res => res.results as BlockObjectResponse[]);
+});
+
+export const fetchBlock = React.cache((blockId: string) => {
+    return notion.blocks.retrieve({ block_id: blockId });
 });

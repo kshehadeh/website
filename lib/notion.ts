@@ -51,7 +51,7 @@ type MultiSelectProperty = Extract<
     PageObjectResponse['properties'][string],
     { type: 'multi_select' }
 >;
-type CoverProperty = Extract<PageObjectResponse['cover'], { type: 'external' }>;
+type CoverProperty = Extract<PageObjectResponse['cover'], { type: 'external' } | { type: 'file'}>;
 type AuthorProperty = Extract<
     PageObjectResponse['properties'][string],
     { type: 'people' }
@@ -175,32 +175,37 @@ export function getFileNameFromUrl(url: string) {
  * This will take the internal image property and upload it to R2 and return the R2 URL.  If the image property is
  * an external URL then it will just return the external URL.  If the file has already been uploaded to R2 then it will
  * return the existing R2 URL.
- * 
+ *
  * @param image The image property from Notion
  * @param folder The folder in R2 to upload the image to - it will prepend this to the file name in the URL
- * @returns 
+ * @returns
  */
-export async function getFinalFileUrl(image: ImageBlockObjectResponse['image'], folder: string) {
+export async function getFinalFileUrl(
+    image: ImageBlockObjectResponse['image'] | CoverProperty,
+    folder: string,
+) {
     if (isInternalFileProperty(image)) {
-        const name = getFileNameFromUrl(image.file.url)
+        const name = getFileNameFromUrl(image.file.url);
         if (!name) throw new Error('Failed to extract file name from URL');
         const url = await r2FileExists(`${folder}/${name}`);
         if (!url) {
             return await uploadToR2(image.file.url, `${folder}/${name}`);
-        }        
-        return url
-
+        }
+        return url;
     } else if (isExternalFileProperty(image)) {
         return image.external.url;
     }
 }
 
 /**
- * 
- * @param files 
- * @returns 
+ *
+ * @param files
+ * @returns
  */
-export async function getFinalFileUrls(files: FilesProperty, folder: string): Promise<string[]> {
+export async function getFinalFileUrls(
+    files: FilesProperty,
+    folder: string,
+): Promise<string[]> {
     const urls: string[] = [];
     for (const file of files.files) {
         if (isInternalFileProperty(file)) {

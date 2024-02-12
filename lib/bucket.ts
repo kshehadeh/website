@@ -1,12 +1,17 @@
-import { HeadObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import {
+    HeadObjectCommand,
+    PutObjectCommand,
+    S3Client,
+    S3ServiceException,
+} from '@aws-sdk/client-s3';
 import { Readable } from 'stream';
 
 /**
- * Convert a ReadableStream to a Node.js Readable stream.  This handles the case 
+ * Convert a ReadableStream to a Node.js Readable stream.  This handles the case
  * where we are using web streams in the browser and need to convert them to Node.js
  * streams.
- * @param readableStream 
- * @returns 
+ * @param readableStream
+ * @returns
  */
 function readableStreamToReadable(readableStream: ReadableStream<Uint8Array>) {
     return new Readable({
@@ -30,10 +35,10 @@ function readableStreamToReadable(readableStream: ReadableStream<Uint8Array>) {
 }
 
 /**
- * Make a URL to an object in R2 from the key.  We are using a static URL 
+ * Make a URL to an object in R2 from the key.  We are using a static URL
  * for all R2 objects.  This has been configured in the R2 bucket settings.
  * @param key
- * @returns 
+ * @returns
  */
 export function makeR2UrlFromKey(key: string) {
     return `https://static.karim.cloud/${key}`;
@@ -41,9 +46,9 @@ export function makeR2UrlFromKey(key: string) {
 
 /**
  * Upload a file to R2 and return the URL to the file.
- * @param fileUrl 
- * @param key 
- * @returns 
+ * @param fileUrl
+ * @param key
+ * @returns
  */
 export async function uploadToR2(fileUrl: string, key: string) {
     const client = new S3Client({
@@ -72,7 +77,8 @@ export async function uploadToR2(fileUrl: string, key: string) {
             Key: key,
             Body: readableStreamToReadable(response.body),
             ContentType: response.headers.get('content-type') || undefined,
-            ContentLength: Number(response.headers.get('content-length')) || undefined,
+            ContentLength:
+                Number(response.headers.get('content-length')) || undefined,
         });
 
         await client.send(params);
@@ -80,7 +86,6 @@ export async function uploadToR2(fileUrl: string, key: string) {
         console.log('Successfully uploaded file:', key);
 
         return makeR2UrlFromKey(key);
-
     } catch (err) {
         console.error('Error uploading file: ', err);
     }
@@ -88,10 +93,10 @@ export async function uploadToR2(fileUrl: string, key: string) {
 
 /**
  * Check to see if an object exists in R2.  If it does, return the URL to the object, otherwise return undefined.
- * @param key 
- * @returns 
+ * @param key
+ * @returns
  */
-export async function r2FileExists(key: string): Promise<string|undefined> {
+export async function r2FileExists(key: string): Promise<string | undefined> {
     const client = new S3Client({
         endpoint: process.env.R2_ENDPOINT as string,
         region: 'us-east-1', // 'us-east-1' is the default region for R2, but you can change it to your desired region
@@ -101,16 +106,22 @@ export async function r2FileExists(key: string): Promise<string|undefined> {
         },
         forcePathStyle: true,
     });
-    
+
     const command = new HeadObjectCommand({
         Bucket: process.env.R2_BUCKET_NAME,
         Key: key,
-    })
-    const response = await client.send(command)
-    if (response.$metadata.httpStatusCode === 200) {
-        return makeR2UrlFromKey(key);
-    } 
-        
+    });
+
+    try {
+        const response = await client.send(command);
+        if (response.$metadata.httpStatusCode === 200) {
+            return makeR2UrlFromKey(key);
+        }    
+    } catch (e) {
+        if ((e as S3ServiceException).name !== 'NotFound') {
+            console.error('Error checking if file exists:', e);
+        }
+    }
+
     return undefined;
-    
 }

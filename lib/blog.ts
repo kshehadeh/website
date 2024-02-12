@@ -6,11 +6,10 @@ import {
 } from '@notionhq/client/build/src/api-endpoints';
 import {
     fetchPageBlocks,
+    getFinalFileUrl,
     isAuthorProperty,
     isDateProperty,
-    isExternalFileProperty,
     isFullAuthorDescriptor,
-    isInternalFileProperty,
     isMultiSelectProperty,
     isPageObjectResponse,
     isParagraphBlockObject,
@@ -104,13 +103,13 @@ export function getAuthorFromPage(page: PageObjectResponse): AuthorDetails {
     };
 }
 
-export function getCoverUrlFromPage(page: PageObjectResponse): string {
-    if (isInternalFileProperty(page.cover)) {
-        return page.cover.file.url;
-    } else if (isExternalFileProperty(page.cover)) {
-        return page.cover.external.url;
+export async function getCoverUrlFromPage(
+    page: PageObjectResponse,
+): Promise<string | undefined> {
+    if (page.cover) {
+        return getFinalFileUrl(page.cover, page.id);
     }
-    return '';
+    return undefined;
 }
 
 export async function getBlogBrief({
@@ -128,7 +127,7 @@ export async function getBlogBrief({
     const date = getPostedDateFromPage(post);
     const tags = getTagsFromPage(post);
     const author = getAuthorFromPage(post);
-    const coverUrl = getCoverUrlFromPage(post);
+    const coverUrl = await getCoverUrlFromPage(post);
     const href = `/blog/posts/${slug}`;
     const abstract = blocks
         ? getAbstractFromBlocks(blocks)

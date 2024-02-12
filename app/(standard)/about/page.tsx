@@ -1,12 +1,12 @@
 import React, { cache } from 'react';
-import { H1, H2, HR, Img } from '@/components/primitives';
+import { H1, H2, HR } from '@/components/primitives';
 import { getPersonalReferences } from '@/lib/about';
 import { isRichTextProperty, notion } from '@/lib/notion';
 import { getAboutPage } from '@/lib/about';
 import { NotionRenderer } from '@/lib/notion-renderer';
 import PersonalReferencesList from '@/components/About/References';
-import { getCoverUrlFromPage } from '@/lib/blog';
 import timeouts from '@/lib/timeouts';
+import { Cover } from '@/components/Cover.server';
 
 export const revalidate = timeouts.about;
 
@@ -24,19 +24,11 @@ export default async function AboutMePage() {
         ? page.properties.Name.rich_text[0].plain_text
         : 'About Me';
 
-    const coverUrl = getCoverUrlFromPage(page);
-
     return (
         <>
             <H1>{title}</H1>
             <div className="">
-                {coverUrl && (
-                    <Img
-                        additionalClasses={['float-end', 'hidden', 'md:block']}
-                        src={coverUrl}
-                        alt={`Cover image for ${title}`}
-                    />
-                )}
+                <Cover page={page} />
                 {postElements}
             </div>
             <HR />

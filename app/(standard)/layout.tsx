@@ -6,6 +6,7 @@ import { Content } from '@/components/Content';
 import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import { Analytics } from '@vercel/analytics/react';
 
 export const metadata: Metadata = {
     title: 'Karim Shehadeh',
@@ -27,6 +28,7 @@ export default function RootLayout({
                     <Navigation />
                     <Content>{children}</Content>
                     <SpeedInsights />
+                    <Analytics />
                 </div>
             </body>
         </html>

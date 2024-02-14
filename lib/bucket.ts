@@ -116,7 +116,7 @@ export async function r2FileExists(key: string): Promise<string | undefined> {
         const response = await client.send(command);
         if (response.$metadata.httpStatusCode === 200) {
             return makeR2UrlFromKey(key);
-        }    
+        }
     } catch (e) {
         if ((e as S3ServiceException).name !== 'NotFound') {
             console.error('Error checking if file exists:', e);

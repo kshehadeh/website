@@ -51,7 +51,10 @@ type MultiSelectProperty = Extract<
     PageObjectResponse['properties'][string],
     { type: 'multi_select' }
 >;
-type CoverProperty = Extract<PageObjectResponse['cover'], { type: 'external' } | { type: 'file'}>;
+type CoverProperty = Extract<
+    PageObjectResponse['cover'],
+    { type: 'external' } | { type: 'file' }
+>;
 type AuthorProperty = Extract<
     PageObjectResponse['properties'][string],
     { type: 'people' }

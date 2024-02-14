@@ -2,6 +2,8 @@ import React from 'react';
 import { BlogPostBrief } from '@/lib/blog';
 
 export function Author({ post }: { post: BlogPostBrief }) {
+    if (!post.author) return null;
+    
     return (
         <div className="relative mt-8 flex items-center gap-x-4">
             <img

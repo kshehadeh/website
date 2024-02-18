@@ -13,11 +13,11 @@ const getPageData = cache(async (slug: string) => {
 
 export default async function Page({
     params,
-}: Readonly<{ params: { slug: string } }>) {    
+}: Readonly<{ params: { slug: string } }>) {
     const { post } = await getPageData(params.slug);
     if (!post) {
         notFound();
-    } else {        
+    } else {
         return <Post post={post} />;
     }
 }

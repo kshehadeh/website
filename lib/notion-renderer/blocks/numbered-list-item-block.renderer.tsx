@@ -15,9 +15,9 @@ export default createBlockRenderer<NumberedListItemBlockObjectResponse>(
         }
 
         return (
-            <LI key={`li-${data.id}`}>                
-                {await renderer.render(...data.numbered_list_item.rich_text)}                
-                {children && await renderer.render(...children)}
+            <LI key={`li-${data.id}`}>
+                {await renderer.render(...data.numbered_list_item.rich_text)}
+                {children && (await renderer.render(...children))}
             </LI>
         );
     },

@@ -16,7 +16,7 @@ export default createBlockRenderer<BulletedListItemBlockObjectResponse>(
         return (
             <LI key={`li-${data.id}`}>
                 {await renderer.render(...data.bulleted_list_item.rich_text)}
-                {children && await renderer.render(...children)}
+                {children && (await renderer.render(...children))}
             </LI>
         );
     },

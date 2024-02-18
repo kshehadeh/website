@@ -52,7 +52,7 @@ export function P({ children, additionalClasses }: PrimitiveProps) {
 export function UL({ children, additionalClasses }: PrimitiveProps) {
     return (
         <ul
-            className={`list-disc list-inside mt-2 mb-2 leading-normal text-gray-600  ${buildAdditionalClasses(additionalClasses)}`}
+            className={`list-inside mt-2 mb-2 leading-normal text-gray-600  ${buildAdditionalClasses(additionalClasses)}`}
         >
             {children}
         </ul>
@@ -62,7 +62,7 @@ export function UL({ children, additionalClasses }: PrimitiveProps) {
 export function OL({ children, additionalClasses }: PrimitiveProps) {
     return (
         <ol
-            className={`list-decimal list-inside mt-2 mb-2 leading-normal text-gray-600  ${buildAdditionalClasses(additionalClasses)}`}
+            className={`list-inside mt-2 mb-2 leading-normal text-gray-600  ${buildAdditionalClasses(additionalClasses)}`}
         >
             {children}
         </ol>

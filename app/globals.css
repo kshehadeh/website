@@ -25,3 +25,44 @@ body {
         text-wrap: balance;
     }
 }
+
+ul {
+    @apply list-disc;
+    @apply ps-4;
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+  }
+
+ol {
+    @apply list-disc;
+    @apply ps-4;
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    list-style-type: decimal;
+}
+
+ul ul {
+    list-style-type: circle;
+}
+
+ul ul ul {
+    list-style-type: square;
+}
+
+ul ul ul ul {
+    list-style-type: disc;
+}
+
+ol ol {
+    list-style-type: upper-alpha;
+}
+
+ol ol ol {
+    list-style-type: lower-alpha;
+}
+
+ol ol ol ol {
+    list-style-type: lower-roman;
+}

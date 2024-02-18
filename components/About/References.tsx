@@ -33,7 +33,7 @@ export default function PersonalReferencesList({
     references: PersonalReference[];
 }) {
     return (
-        <ul className="flex flex-row gap-3 flex-wrap">
+        <ul className="list-none flex flex-row gap-3 flex-wrap">
             {references.map(ref => (
                 <PersonalReferenceItem key={ref.title} reference={ref} />
             ))}

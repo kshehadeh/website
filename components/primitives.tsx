@@ -87,7 +87,7 @@ export function A({
 }: PrimitiveProps<{ href: string; target?: string }>) {
     return (
         <a
-            className={`text-gray-600 hover:text-blue-60  ${buildAdditionalClasses(additionalClasses)}`}
+            className={`text-blue-600 hover:text-purple-60 ${buildAdditionalClasses(additionalClasses)}`}
             href={href}
             target={target}
         >

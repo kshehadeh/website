@@ -2,8 +2,6 @@ import { TextRichTextItemResponse } from '@notionhq/client/build/src/api-endpoin
 
 export function tailWindClassFromTextColor(color: string) {
     switch (color) {
-        case 'default':
-            return 'text-gray-900';
         case 'gray':
             return 'text-gray-500';
         case 'brown':
@@ -41,7 +39,7 @@ export function tailWindClassFromTextColor(color: string) {
         case 'red_background':
             return 'text-gray-900 bg-red-500 p-1 rounded-md';
         default:
-            return 'text-gray-900';
+            return '';
     }
 }
 

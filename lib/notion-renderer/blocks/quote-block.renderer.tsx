@@ -9,7 +9,7 @@ export default createBlockRenderer<QuoteBlockObjectResponse>(
     'quote',
     async (data, renderer) => {
         return (
-            <Blockquote>
+            <Blockquote key={`blockquote-${data.id}`}>
                 {await renderer.render(...data.quote.rich_text)}
             </Blockquote>
         );

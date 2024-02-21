@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 import { TextRichTextItemResponse } from '@notionhq/client/build/src/api-endpoints';
 
@@ -33,12 +33,23 @@ export default createBlockRenderer<TextRichTextItemResponse>(
             );
         } else {
             result = (
-                <Span
-                    key={`s-${data.plain_text.slice(0, 5)}`}
-                    additionalClasses={additionalClasses}
-                >
-                    {text}
-                </Span>
+                <>
+                    {text.split('\n').map((t, i) => (
+                        <Fragment key={`${i}`}>
+                            <Span
+                                key={`s-${data.plain_text.slice(0, 5)}-${i}`}
+                                additionalClasses={additionalClasses}
+                            >
+                                {t}
+                            </Span>
+                            {i > 0 ? (
+                                <br
+                                    key={`br-${data.plain_text.slice(0, 5)}-${i}`}
+                                />
+                            ) : null}
+                        </Fragment>
+                    ))}
+                </>
             );
         }
 

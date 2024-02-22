@@ -1,11 +1,11 @@
 import React from 'react';
 
 export default React.forwardRef(function PrintableContent(
-    { children }: React.PropsWithChildren,
-    ref: React.Ref<HTMLDivElement>,
+    { children, className }: React.PropsWithChildren<{ className?: string }>,
+    ref: React.Ref<HTMLDivElement>,    
 ) {
     return (
-        <div ref={ref} className="bg-white">
+        <div ref={ref} className={`${className || ''} bg-white`}>
             {children}
         </div>
     );

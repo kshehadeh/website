@@ -78,7 +78,7 @@ export function ResumeContent({
                     </button>
                 </div>
             )}
-            <PrintableContent ref={targetRef}>
+            <PrintableContent ref={targetRef} className={"m-4"}>
                 <H1>Karim Shehadeh</H1>
                 <PersonalReferencesList references={references} />
                 <section>

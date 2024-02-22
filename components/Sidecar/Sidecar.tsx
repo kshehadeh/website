@@ -14,7 +14,7 @@ export function ActiveLink({
     return (
         <Link
             href={href}
-            className={`${className ?? ''} text-blue-600 hover:text-purple-60 after:content-['_←']` }
+            className={`${className ?? ''} text-blue-600 hover:text-purple-60 after:content-['_←']`}
         >
             {children}
         </Link>
@@ -50,12 +50,20 @@ export async function Sidecar({
             <h2 className="text-2xl font-bold mb-4">Other Things</h2>
             <ul className="list-none">
                 <li className="leading-8">
-                    {'resume' === currentPostSlug ? <ActiveLink href="/resume">My Resume</ActiveLink> : <Link href="/resume">My Resume</Link>}
+                    {'resume' === currentPostSlug ? (
+                        <ActiveLink href="/resume">My Resume</ActiveLink>
+                    ) : (
+                        <Link href="/resume">My Resume</Link>
+                    )}
                 </li>
                 <li className="leading-8">
-                    {'about' === currentPostSlug ? <ActiveLink href="/about">About Me</ActiveLink> : <Link href="/about">About Me</Link>}
+                    {'about' === currentPostSlug ? (
+                        <ActiveLink href="/about">About Me</ActiveLink>
+                    ) : (
+                        <Link href="/about">About Me</Link>
+                    )}
                 </li>
-            </ul>            
+            </ul>
         </aside>
     );
 }

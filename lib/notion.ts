@@ -75,6 +75,7 @@ type RelationProperty = Extract<
     PageObjectResponse['properties'][string],
     { type: 'relation' }
 >;
+
 type FileProperty = FilesProperty['files'][number];
 type InternalFileProperty = {
     file: {

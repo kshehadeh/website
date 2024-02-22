@@ -28,7 +28,7 @@ export default function RootLayout({
                 <div className="min-h-full">
                     <Navigation />
                     <div className="flex flex-row">
-                        <div className="md:w-3/4 w-full">
+                        <div className="md:w-3/4 w-full mt-10">
                             <Content>{children}</Content>
                         </div>
                         <div className="md:w-1/4 md:block border-l border-l-slate-100 mt-10 hidden">

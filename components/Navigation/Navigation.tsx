@@ -12,6 +12,7 @@ const user = {
 };
 const navigation = [
     { name: 'Blog', href: '/blog' },
+    { name: 'Bookmarks', href: '/bookmarks' },
     { name: 'About', href: '/about' },
     { name: 'Resume', href: '/resume' },
 ];

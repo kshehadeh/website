@@ -13,7 +13,7 @@ const getPageData = cache(async () => {
 export default async function Home() {
     const { posts } = await getPageData();
     return (
-        <>            
+        <>
             <ThreeUpPosts posts={posts} />
         </>
     );

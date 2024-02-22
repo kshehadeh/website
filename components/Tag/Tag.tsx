@@ -1,6 +1,6 @@
-import React from 'react'
+import React from 'react';
 
-export function Tag({ text, url}: { text: string, url: string }) {
+export function Tag({ text, url }: { text: string; url: string }) {
     return (
         <a
             href={url}
@@ -8,5 +8,5 @@ export function Tag({ text, url}: { text: string, url: string }) {
         >
             {text}
         </a>
-    )
+    );
 }

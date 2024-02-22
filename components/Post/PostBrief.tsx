@@ -37,8 +37,13 @@ export function PostBrief({
                 <div className="flex items-center gap-x-4 text-xs">
                     {!hideDate && <PostTime post={post} />}
                     {!hideTags &&
-                        post.tags.map(tag => <Tag key={`${post.id}-${tag}-tag`} text={tag} url={`/blog/tag/${tag}`}/>)
-                    }
+                        post.tags.map(tag => (
+                            <Tag
+                                key={`${post.id}-${tag}-tag`}
+                                text={tag}
+                                url={`/blog/tag/${tag}`}
+                            />
+                        ))}
                 </div>
 
                 {!hideAbstract && (

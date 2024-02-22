@@ -10,6 +10,8 @@
     },
     "dependencies": {
         "@aws-sdk/client-s3": "^3.511.0",
+        "@docsearch/css": "^3.5.2",
+        "@docsearch/react": "^3.5.2",
         "@headlessui/react": "^1.7.18",
         "@headlessui/tailwindcss": "^0.2.0",
         "@heroicons/react": "^2.1.1",

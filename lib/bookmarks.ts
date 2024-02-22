@@ -1,4 +1,7 @@
-import { BlockObjectResponse, PageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
+import {
+    BlockObjectResponse,
+    PageObjectResponse,
+} from '@notionhq/client/build/src/api-endpoints';
 import { getAbstractFromBlocks } from './blog';
 import {
     fetchPageBlocks,
@@ -40,7 +43,9 @@ export async function getRecentBookmarks(limit = 10): Promise<Bookmark[]> {
     });
 
     if (results) {
-        return Promise.all(results.results.filter(isPageObjectResponse).map(mapPageToBookmark));
+        return Promise.all(
+            results.results.filter(isPageObjectResponse).map(mapPageToBookmark),
+        );
     } else {
         return [];
     }
@@ -75,7 +80,9 @@ export async function getBookmarksByTag(tag: string): Promise<Bookmark[]> {
     });
 
     if (results) {
-        return Promise.all(results.results.filter(isPageObjectResponse).map(mapPageToBookmark));
+        return Promise.all(
+            results.results.filter(isPageObjectResponse).map(mapPageToBookmark),
+        );
     } else {
         return [];
     }
@@ -94,8 +101,8 @@ async function mapPageToBookmark(page: PageObjectResponse): Promise<Bookmark> {
             : '',
         tags: isMultiSelectProperty(page.properties.Tags)
             ? page.properties.Tags.multi_select
-                    .filter(tag => tag.name !== 'site')
-                    .map(tag => tag.name)
+                  .filter(tag => tag.name !== 'site')
+                  .map(tag => tag.name)
             : [],
         abstract,
     };

@@ -3,6 +3,8 @@ import React from 'react';
 import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import NavigationItem from './NavigationItem';
+import { DocSearch } from '@docsearch/react';
+import '@docsearch/css';
 
 const user = {
     name: 'Karim Shehadeh',
@@ -43,25 +45,45 @@ export default function Navigation() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="-mr-2 flex md:hidden">
-                                {/* Mobile menu button */}
-                                <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                                    <span className="absolute -inset-0.5" />
-                                    <span className="sr-only">
-                                        Open main menu
-                                    </span>
-                                    {open ? (
-                                        <XMarkIcon
-                                            className="block h-6 w-6"
-                                            aria-hidden="true"
-                                        />
-                                    ) : (
-                                        <Bars3Icon
-                                            className="block h-6 w-6"
-                                            aria-hidden="true"
-                                        />
-                                    )}
-                                </Disclosure.Button>
+
+                            <div className="flex flex-row">
+                                <DocSearch
+                                    appId={
+                                        process.env
+                                            .NEXT_PUBLIC_ALGOLIA_APP_ID || ''
+                                    }
+                                    indexName={
+                                        process.env
+                                            .NEXT_PUBLIC_ALGOLIA_INDEX_NAME ||
+                                        ''
+                                    }
+                                    apiKey={
+                                        process.env
+                                            .NEXT_PUBLIC_ALGOLIA_SEARCH_API_KEY ||
+                                        ''
+                                    }
+                                />
+
+                                <div className="-mr-2 flex md:hidden">
+                                    {/* Mobile menu button */}
+                                    <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                                        <span className="absolute -inset-0.5" />
+                                        <span className="sr-only">
+                                            Open main menu
+                                        </span>
+                                        {open ? (
+                                            <XMarkIcon
+                                                className="block h-6 w-6"
+                                                aria-hidden="true"
+                                            />
+                                        ) : (
+                                            <Bars3Icon
+                                                className="block h-6 w-6"
+                                                aria-hidden="true"
+                                            />
+                                        )}
+                                    </Disclosure.Button>
+                                </div>
                             </div>
                         </div>
                     </div>

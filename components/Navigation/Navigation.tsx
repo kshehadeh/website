@@ -62,6 +62,8 @@ export default function Navigation() {
                                             .NEXT_PUBLIC_ALGOLIA_SEARCH_API_KEY ||
                                         ''
                                     }
+
+                                    placeholder='Search...'
                                 />
 
                                 <div className="-mr-2 flex md:hidden">

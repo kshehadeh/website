@@ -272,7 +272,7 @@ export async function getBlogPosts({
     });
 
     if (results) {
-        return results.results;
+        return results.results.filter(isPageObjectResponse);
     } else {
         return [];
     }

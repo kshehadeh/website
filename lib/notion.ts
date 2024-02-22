@@ -235,7 +235,7 @@ export const fetchDatabaseRows = React.cache((dbId: string, limit: number) => {
     });
 });
 
-export const fetchPageBlocks = React.cache((pageId: string) => {
+export const fetchPageBlocks = React.cache(async (pageId: string) => {
     return notion.blocks.children
         .list({ block_id: pageId })
         .then(res => res.results as BlockObjectResponse[]);

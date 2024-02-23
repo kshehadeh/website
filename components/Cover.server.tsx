@@ -1,8 +1,8 @@
 import React from 'react';
 import { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
-import { Img } from './primitives';
 import { getCoverUrlFromPage } from '@/lib/blog';
 import { isRichTextProperty } from '@/lib/notion';
+import Image from 'next/image';
 
 export async function Cover({ page }: { page: PageObjectResponse }) {
     const coverUrl = await getCoverUrlFromPage(page);
@@ -12,10 +12,12 @@ export async function Cover({ page }: { page: PageObjectResponse }) {
     return (
         <>
             {coverUrl && (
-                <Img
-                    additionalClasses={['float-end', 'hidden', 'md:block']}
+                <Image
+                    className={['float-end', 'hidden', 'md:block', 'md:ml-10', 'border-2'].join(' ')}
                     src={coverUrl}
                     alt={`Cover: ${title}`}
+                    width={300}
+                    height={300}
                 />
             )}
         </>

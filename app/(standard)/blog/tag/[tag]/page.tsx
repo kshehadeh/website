@@ -13,6 +13,21 @@ const getPageData = cache(async (tag: string) => {
     return { posts };
 });
 
+
+export async function generateMetadata({
+    params: { tag },
+}: {
+    params: { tag: string };
+}) {
+    return {
+        title: `Karim Shehadeh - Posts by Tag "${tag}"`,
+        description: `Karim Shehadeh's blog posts that match tags by the name "${tag}"`,
+        alternates: {
+            canonical: `/blog/posts/tag/${tag}`,
+        },
+    };
+}
+
 export default async function PostsByTagPage({
     params: { tag },
 }: {

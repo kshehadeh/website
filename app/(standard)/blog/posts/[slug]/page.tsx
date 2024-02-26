@@ -8,10 +8,26 @@ import { Sidecar } from '@/components/Sidecar/Sidecar';
 
 export const revalidate = timeouts.blog;
 
+
 const getPageData = cache(async (slug: string) => {
     const post = await getBlogPostBySlug(decodeURIComponent(slug));
     return { post };
 });
+
+
+export async function generateMetadata({
+    params,
+}: Readonly<{ params: { slug: string } }>) {
+    const { post } = await getPageData(params.slug);
+    return {
+        title: `Karim Shehadeh - ${post?.title}`,
+        description: `${post?.abstract}`,
+        alternates: {
+            canonical: `/blog`,
+        },
+    };
+}
+
 
 export default async function Page({
     params,

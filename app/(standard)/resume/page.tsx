@@ -6,6 +6,16 @@ import React from 'react';
 
 export const revalidate = timeouts.resume;
 
+export async function generateMetadata() {
+    return {
+        title: 'Karim Shehadeh - Resume',
+        description: "Karim Shehadeh's resume - a software engineer with a passion for web development, cloud computing, and open source.",
+        alternates: {
+            canonical: '/resume',
+        },
+    };
+}
+
 export default async function Page() {
     return (
         <ContentLayout

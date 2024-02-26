@@ -7,6 +7,16 @@ import { Sidecar } from '@/components/Sidecar/Sidecar';
 
 export const revalidate = timeouts.blog;
 
+export async function generateMetadata() {
+    return {
+        title: `Karim Shehadeh - Blog`,
+        description: `Karim Shehadeh's blog posts about web development, engineering management and more.`,
+        alternates: {
+            canonical: `/blog`,
+        },
+    };
+}
+
 const getPageData = cache(async () => {
     const posts = await getRecentBlogPosts(12, true);
     return { posts };

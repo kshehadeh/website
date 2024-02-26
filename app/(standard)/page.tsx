@@ -7,6 +7,14 @@ import { Sidecar } from '@/components/Sidecar/Sidecar';
 
 export const revalidate = timeouts.home;
 
+export async function generateMetadata() {
+    return {
+        alternates: {
+            canonical: '/',
+        },
+    };
+}
+
 const getPageData = cache(async () => {
     const posts = await getRecentBlogPosts(3, true);
     return { posts };

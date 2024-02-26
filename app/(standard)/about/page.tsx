@@ -17,6 +17,17 @@ const getPageData = cache(async () => {
     return { page };
 });
 
+
+export async function generateMetadata() {
+    return {
+        title: `Karim Shehadeh - About Me`,
+        description: `A little bit about Karim Shehadeh and his journey.`,
+        alternates: {
+            canonical: `/about`,
+        },
+    };
+}
+
 export default async function AboutMePage() {
     const { page } = await getPageData();
     const references = page ? await getPersonalReferences(page) : [];

@@ -8,6 +8,18 @@ import ContentLayout from '@/components/ContentLayout/ContentLayout';
 
 export const revalidate = timeouts.bookmarks;
 
+
+export async function generateMetadata() {
+    return {
+        title: `Karim Shehadeh - Handy Links to Tools, Articles, and More`,
+        description: `Karim Shehadeh's bookmarks which have been collected over time and might be useful to others.`,
+        alternates: {
+            canonical: `/bookmarks`,
+        },
+    };
+}
+
+
 export default async function BookmarksPage() {
     const bookmarks = await getRecentBookmarks(12);
     return (

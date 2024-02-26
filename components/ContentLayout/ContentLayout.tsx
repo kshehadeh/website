@@ -21,9 +21,7 @@ export default function ContentLayout({
                 <div className="md:w-3/4 w-full mt-5">
                     <Content>{children}</Content>
                 </div>
-                <div className="md:w-1/4 md:block mt-5 hidden">
-                    {sidecar()}
-                </div>
+                <div className="md:w-1/4 md:block mt-5 hidden">{sidecar()}</div>
             </div>
         </>
     );

@@ -15,14 +15,14 @@ export default function RootLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
-}>) {    
+}>) {
     return (
         <html
             className={`h-full ${GeistSans.variable} ${GeistMono.variable}`}
             lang="en"
         >
             <body className="h-full">
-                <div className="min-h-full">                    
+                <div className="min-h-full">
                     {children}
                     <SpeedInsights />
                     <Analytics />

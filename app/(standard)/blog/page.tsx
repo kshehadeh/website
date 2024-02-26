@@ -17,7 +17,10 @@ export default async function MainBlogPage() {
     const { posts } = await getPageData();
 
     return (
-        <ContentLayout pageType={'blog'} sidecar={() => <Sidecar pageType="blog"/>}>
+        <ContentLayout
+            pageType={'blog'}
+            sidecar={() => <Sidecar pageType="blog" />}
+        >
             <H1>All Posts</H1>
             <PostList posts={posts} />
         </ContentLayout>

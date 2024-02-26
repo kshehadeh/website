@@ -11,7 +11,10 @@ export const revalidate = timeouts.bookmarks;
 export default async function BookmarksPage() {
     const bookmarks = await getRecentBookmarks(12);
     return (
-        <ContentLayout pageType={'bookmarks'} sidecar={() => <Sidecar pageType="bookmarks"/>}>
+        <ContentLayout
+            pageType={'bookmarks'}
+            sidecar={() => <Sidecar pageType="bookmarks" />}
+        >
             <H1>Bookmarks</H1>
             <BookmarksList bookmarks={bookmarks} />
         </ContentLayout>

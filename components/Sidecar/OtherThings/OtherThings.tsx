@@ -3,7 +3,7 @@ import React from 'react';
 import { ActiveLink } from '../Sidecar';
 import { PageType } from '@/lib/page';
 
-export function OtherThings({pageType}: {pageType: PageType}) {
+export function OtherThings({ pageType }: { pageType: PageType }) {
     return (
         <aside>
             <h2>Other Things</h2>

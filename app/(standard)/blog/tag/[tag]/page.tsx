@@ -20,7 +20,10 @@ export default async function PostsByTagPage({
 }) {
     const { posts } = await getPageData(tag);
     return (
-        <ContentLayout pageType={'tags'} sidecar={() => <Sidecar pageType="tags"/>}>
+        <ContentLayout
+            pageType={'tags'}
+            sidecar={() => <Sidecar pageType="tags" />}
+        >
             <H1>{tag}</H1>
             <PostList
                 posts={posts}

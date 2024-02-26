@@ -17,10 +17,10 @@ const navigation = [
     { name: 'Blog', href: '/blog', type: 'blog' },
     { name: 'Bookmarks', href: '/bookmarks', type: 'bookmarks' },
     { name: 'About', href: '/about', type: 'about' },
-    { name: 'Resume', href: '/resume', type: 'resume'},
+    { name: 'Resume', href: '/resume', type: 'resume' },
 ];
 
-export default function Navigation({ current }: { current: PageType} ) {
+export default function Navigation({ current }: { current: PageType }) {
     return (
         <Disclosure as="nav" className="bg-gray-800">
             {({ open }) => (

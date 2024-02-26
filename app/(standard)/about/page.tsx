@@ -27,7 +27,10 @@ export default async function AboutMePage() {
         : 'About Me';
 
     return (
-        <ContentLayout pageType={'about'} sidecar={() => <Sidecar pageType="about"/>}>
+        <ContentLayout
+            pageType={'about'}
+            sidecar={() => <Sidecar pageType="about" />}
+        >
             <H1>{title}</H1>
             <div className="">
                 <Cover page={page} />

@@ -288,16 +288,17 @@ export async function getBlogPosts({
     }
 }
 
-export function getBlogPostHeadings(post: BlogPostFull): Heading[] {        
-    const headings: Heading[] = [];    
+export function getBlogPostHeadings(post: BlogPostFull): Heading[] {
+    const headings: Heading[] = [];
     for (const block of post.blocks) {
         if (block.type.startsWith('heading')) {
             headings.push({
                 level: parseInt(block.type.split('_')[1]),
-                text: getPlainTextFromRichTextResponse(block[block.type].rich_text),
+                text: getPlainTextFromRichTextResponse(
+                    block[block.type].rich_text,
+                ),
                 children: [],
-                
-            })  
+            });
         }
     }
 
@@ -305,5 +306,5 @@ export function getBlogPostHeadings(post: BlogPostFull): Heading[] {
 }
 
 export function getAnchorIdFromHeading(str: string) {
-    return str.toLowerCase().replace(/\s/g, "-");
-}   
+    return str.toLowerCase().replace(/\s/g, '-');
+}

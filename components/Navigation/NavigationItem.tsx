@@ -6,7 +6,7 @@ import React from 'react';
 export default function NavigationItem({
     item,
     mobile,
-    current
+    current,
 }: Readonly<{
     item: { name: string; href: string };
     mobile: boolean;

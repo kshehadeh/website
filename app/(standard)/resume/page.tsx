@@ -8,7 +8,10 @@ export const revalidate = timeouts.resume;
 
 export default async function Page() {
     return (
-        <ContentLayout pageType={'resume'} sidecar={() => <Sidecar pageType="resume" />}>
+        <ContentLayout
+            pageType={'resume'}
+            sidecar={() => <Sidecar pageType="resume" />}
+        >
             <ResumePage printerFriendly={false} />;
         </ContentLayout>
     );

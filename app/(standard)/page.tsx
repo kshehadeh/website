@@ -15,7 +15,10 @@ const getPageData = cache(async () => {
 export default async function Home() {
     const { posts } = await getPageData();
     return (
-        <ContentLayout pageType={'home'} sidecar={() => <Sidecar pageType="home" />}>
+        <ContentLayout
+            pageType={'home'}
+            sidecar={() => <Sidecar pageType="home" />}
+        >
             <ThreeUpPosts posts={posts} />
         </ContentLayout>
     );

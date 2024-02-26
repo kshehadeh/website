@@ -4,7 +4,10 @@ import { Heading3BlockObjectResponse } from '@notionhq/client/build/src/api-endp
 
 import { createBlockRenderer } from '../utils/create-block-renderer';
 import { Details, H3, Summary } from '@/components/primitives';
-import { getAnchorIdFromHeading, getPlainTextFromRichTextResponse } from '@/lib/blog';
+import {
+    getAnchorIdFromHeading,
+    getPlainTextFromRichTextResponse,
+} from '@/lib/blog';
 
 export default createBlockRenderer<Heading3BlockObjectResponse>(
     'heading_3',

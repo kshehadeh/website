@@ -1,5 +1,5 @@
 import React from 'react';
-import {  BlogPostFull, getBlogPostHeadings } from '@/lib/blog';
+import { BlogPostFull, getBlogPostHeadings } from '@/lib/blog';
 import Link from 'next/link';
 import { TableOfContents } from '../Post/TableOfContents';
 import styles from './Sidecar.module.css';
@@ -28,7 +28,7 @@ export function ActiveLink({
 
 export async function Sidecar({
     post,
-    pageType
+    pageType,
 }: {
     pageType: PageType;
     post?: BlogPostFull;
@@ -37,15 +37,14 @@ export async function Sidecar({
 
     if (pageType === 'post' && post) {
         const headings = getBlogPostHeadings(post);
-        contextComponents.push(<TableOfContents headings={headings} />)
+        contextComponents.push(<TableOfContents headings={headings} />);
     }
 
     return (
         <div className={styles.sidecar}>
-            {contextComponents}            
+            {contextComponents}
             <RecentPosts currentPost={post} />
             <OtherThings pageType={pageType} />
-
         </div>
     );
 }

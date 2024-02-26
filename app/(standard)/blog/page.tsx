@@ -1,7 +1,6 @@
 import React, { cache } from 'react';
 import { getRecentBlogPosts } from '@/lib/blog';
 import { PostList } from '@/components/Post/PostList';
-import { H1 } from '@/components/primitives';
 import timeouts from '@/lib/timeouts';
 import ContentLayout from '@/components/ContentLayout/ContentLayout';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
@@ -21,7 +20,6 @@ export default async function MainBlogPage() {
             pageType={'blog'}
             sidecar={() => <Sidecar pageType="blog" />}
         >
-            <H1>All Posts</H1>
             <PostList posts={posts} />
         </ContentLayout>
     );

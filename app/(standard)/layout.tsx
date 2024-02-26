@@ -7,8 +7,9 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/react';
 
 export const metadata: Metadata = {
-    title: 'Karim Shehadeh\'s Personal Site',
-    description: "Karim Shehadeh's personal website that includes a blog, links I have come across, resume and some helpful tooling.",
+    title: "Karim Shehadeh's Personal Site",
+    description:
+        "Karim Shehadeh's personal website that includes a blog, links I have come across, resume and some helpful tooling.",
 };
 
 export default function RootLayout({

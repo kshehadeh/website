@@ -1,6 +1,11 @@
 import React from 'react';
-import { getRecentBlogPosts } from '@/lib/blog';
+import {  BlogPostFull, getBlogPostHeadings } from '@/lib/blog';
 import Link from 'next/link';
+import { TableOfContents } from '../Post/TableOfContents';
+import styles from './Sidecar.module.css';
+import { OtherThings } from './OtherThings/OtherThings';
+import { RecentPosts } from './RecentPosts/RecentPosts';
+import { PageType } from '@/lib/page';
 
 export function ActiveLink({
     children,
@@ -14,7 +19,7 @@ export function ActiveLink({
     return (
         <Link
             href={href}
-            className={`${className ?? ''} text-blue-600 hover:text-purple-60 after:content-['_←']`}
+            className={`${className ?? ''}  before:content-['→_']`}
         >
             {children}
         </Link>
@@ -22,48 +27,25 @@ export function ActiveLink({
 }
 
 export async function Sidecar({
-    currentPostSlug,
+    post,
+    pageType
 }: {
-    currentPostSlug: string;
+    pageType: PageType;
+    post?: BlogPostFull;
 }) {
-    const recentPosts = await getRecentBlogPosts(10, false);
+    const contextComponents: React.ReactNode[] = [];
+
+    if (pageType === 'post' && post) {
+        const headings = getBlogPostHeadings(post);
+        contextComponents.push(<TableOfContents headings={headings} />)
+    }
 
     return (
-        <aside className="ml-3">
-            <h2 className="text-2xl font-bold mb-4">Recent Posts</h2>
-            <ul className="list-none">
-                {recentPosts.map(post => (
-                    <li key={post.id} className="leading-8">
-                        {post.slug === currentPostSlug ? (
-                            <ActiveLink href={`/blog/posts/${post.slug}`}>
-                                {post.title}
-                            </ActiveLink>
-                        ) : (
-                            <Link href={`/blog/posts/${post.slug}`}>
-                                {post.title}
-                            </Link>
-                        )}
-                    </li>
-                ))}
-            </ul>
+        <div className={styles.sidecar}>
+            {contextComponents}            
+            <RecentPosts currentPost={post} />
+            <OtherThings pageType={pageType} />
 
-            <h2 className="text-2xl font-bold mb-4">Other Things</h2>
-            <ul className="list-none">
-                <li className="leading-8">
-                    {'resume' === currentPostSlug ? (
-                        <ActiveLink href="/resume">My Resume</ActiveLink>
-                    ) : (
-                        <Link href="/resume">My Resume</Link>
-                    )}
-                </li>
-                <li className="leading-8">
-                    {'about' === currentPostSlug ? (
-                        <ActiveLink href="/about">About Me</ActiveLink>
-                    ) : (
-                        <Link href="/about">About Me</Link>
-                    )}
-                </li>
-            </ul>
-        </aside>
+        </div>
     );
 }

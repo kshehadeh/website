@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation';
 import { getBlogPostBySlug } from '@/lib/blog';
 import { Post } from '@/components/Post/Post';
 import timeouts from '@/lib/timeouts';
+import ContentLayout from '@/components/ContentLayout/ContentLayout';
+import { Sidecar } from '@/components/Sidecar/Sidecar';
 
 export const revalidate = timeouts.blog;
 
@@ -18,7 +20,14 @@ export default async function Page({
     if (!post) {
         notFound();
     } else {
-        return <Post post={post} />;
+        return (
+            <ContentLayout
+                pageType={'post'}
+                sidecar={() => <Sidecar post={post} pageType={'post'} />}
+            >
+                <Post post={post} />
+            </ContentLayout>
+        );
     }
 }
 

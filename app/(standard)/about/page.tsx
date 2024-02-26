@@ -7,6 +7,8 @@ import { NotionRenderer } from '@/lib/notion-renderer';
 import PersonalReferencesList from '@/components/About/References';
 import timeouts from '@/lib/timeouts';
 import { Cover } from '@/components/Cover.server';
+import ContentLayout from '@/components/ContentLayout/ContentLayout';
+import { Sidecar } from '@/components/Sidecar/Sidecar';
 
 export const revalidate = timeouts.about;
 
@@ -25,7 +27,7 @@ export default async function AboutMePage() {
         : 'About Me';
 
     return (
-        <>
+        <ContentLayout pageType={'about'} sidecar={() => <Sidecar pageType="about"/>}>
             <H1>{title}</H1>
             <div className="">
                 <Cover page={page} />
@@ -36,6 +38,6 @@ export default async function AboutMePage() {
             <PersonalReferencesList
                 references={references}
             ></PersonalReferencesList>
-        </>
+        </ContentLayout>
     );
 }

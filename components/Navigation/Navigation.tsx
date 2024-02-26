@@ -5,6 +5,7 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import NavigationItem from './NavigationItem';
 import { DocSearch } from '@docsearch/react';
 import '@docsearch/css';
+import { PageType } from '@/lib/page';
 
 const user = {
     name: 'Karim Shehadeh',
@@ -13,13 +14,13 @@ const user = {
         'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
 };
 const navigation = [
-    { name: 'Blog', href: '/blog' },
-    { name: 'Bookmarks', href: '/bookmarks' },
-    { name: 'About', href: '/about' },
-    { name: 'Resume', href: '/resume' },
+    { name: 'Blog', href: '/blog', type: 'blog' },
+    { name: 'Bookmarks', href: '/bookmarks', type: 'bookmarks' },
+    { name: 'About', href: '/about', type: 'about' },
+    { name: 'Resume', href: '/resume', type: 'resume'},
 ];
 
-export default function Navigation() {
+export default function Navigation({ current }: { current: PageType} ) {
     return (
         <Disclosure as="nav" className="bg-gray-800">
             {({ open }) => (
@@ -40,13 +41,14 @@ export default function Navigation() {
                                                 key={item.href}
                                                 item={item}
                                                 mobile={false}
+                                                current={current === item.type}
                                             />
                                         ))}
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="flex flex-row">
+                            <div className="flex flex-row gap-3">
                                 <DocSearch
                                     appId={
                                         process.env
@@ -96,6 +98,7 @@ export default function Navigation() {
                                     item={item}
                                     mobile={true}
                                     key={item.href}
+                                    current={current === item.type}
                                 />
                             ))}
                         </div>

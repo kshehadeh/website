@@ -1,19 +1,17 @@
 'use client';
 import { cls } from '@/lib/util';
 import { Disclosure } from '@headlessui/react';
-import { usePathname } from 'next/navigation';
 import React from 'react';
 
 export default function NavigationItem({
     item,
     mobile,
+    current
 }: Readonly<{
     item: { name: string; href: string };
     mobile: boolean;
+    current: boolean;
 }>) {
-    const path = usePathname();
-    const current = path.endsWith(item.href);
-
     return mobile ? (
         <Disclosure.Button
             key={item.name}

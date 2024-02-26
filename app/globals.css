@@ -22,8 +22,6 @@ ul {
     @apply list-disc;
     @apply ps-4;
     display: block;
-    margin-block-start: 1em;
-    margin-block-end: 1em;
 }
 
 ol {

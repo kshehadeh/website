@@ -4,12 +4,21 @@ import { Heading2BlockObjectResponse } from '@notionhq/client/build/src/api-endp
 
 import { createBlockRenderer } from '../utils/create-block-renderer';
 import { Details, H2, Summary } from '@/components/primitives';
+import { getAnchorIdFromHeading, getPlainTextFromRichTextResponse } from '@/lib/blog';
 
 export default createBlockRenderer<Heading2BlockObjectResponse>(
     'heading_2',
     async (data, renderer) => {
         let result = (
             <H2 key={`h2-${data.id}`}>
+                <a
+                    id={getAnchorIdFromHeading(
+                        getPlainTextFromRichTextResponse(
+                            data.heading_2.rich_text,
+                        ),
+                    )}
+                ></a>
+
                 {await renderer.render(...data.heading_2.rich_text)}
             </H2>
         );

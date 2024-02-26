@@ -3,6 +3,8 @@ import { getBlogPostsByTag } from '@/lib/blog';
 import { PostList } from '@/components/Post/PostList';
 import { H1 } from '@/components/primitives';
 import timeouts from '@/lib/timeouts';
+import { Sidecar } from '@/components/Sidecar/Sidecar';
+import ContentLayout from '@/components/ContentLayout/ContentLayout';
 
 export const revalidate = timeouts.blog;
 
@@ -18,7 +20,7 @@ export default async function PostsByTagPage({
 }) {
     const { posts } = await getPageData(tag);
     return (
-        <>
+        <ContentLayout pageType={'tags'} sidecar={() => <Sidecar pageType="tags"/>}>
             <H1>{tag}</H1>
             <PostList
                 posts={posts}
@@ -26,7 +28,7 @@ export default async function PostsByTagPage({
                 hideAuthor={true}
                 hideTags={true}
             />
-        </>
+        </ContentLayout>
     );
 }
 

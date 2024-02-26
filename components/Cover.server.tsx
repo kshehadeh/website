@@ -13,7 +13,13 @@ export async function Cover({ page }: { page: PageObjectResponse }) {
         <>
             {coverUrl && (
                 <Image
-                    className={['float-end', 'hidden', 'md:block', 'md:ml-10', 'border-2'].join(' ')}
+                    className={[
+                        'float-end',
+                        'hidden',
+                        'md:block',
+                        'md:ml-10',
+                        'border-2',
+                    ].join(' ')}
                     src={coverUrl}
                     alt={`Cover: ${title}`}
                     width={300}

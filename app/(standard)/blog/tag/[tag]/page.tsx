@@ -13,7 +13,6 @@ const getPageData = cache(async (tag: string) => {
     return { posts };
 });
 
-
 export async function generateMetadata({
     params: { tag },
 }: {

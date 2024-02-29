@@ -1,9 +1,9 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 
 import { TextRichTextItemResponse } from '@notionhq/client/build/src/api-endpoints';
 
 import { createBlockRenderer } from '../utils/create-block-renderer';
-import { A, Code, Span } from '@/components/primitives';
+import { A, Code } from '@/components/primitives';
 import { tailWindClassesFromTextAnnotations } from '@/lib/class-builder';
 
 export default createBlockRenderer<TextRichTextItemResponse>(
@@ -32,24 +32,14 @@ export default createBlockRenderer<TextRichTextItemResponse>(
                 </Code>
             );
         } else {
+            // Determine where to insert newlines by checking if it starts with a newline
+            const renderedText = text.trimEnd().replaceAll('\n', `<br />`);
             result = (
-                <>
-                    {text.split('\n').map((t, i) => (
-                        <Fragment key={`${i}`}>
-                            <Span
-                                key={`s-${data.plain_text.slice(0, 5)}-${i}`}
-                                additionalClasses={additionalClasses}
-                            >
-                                {t}
-                            </Span>
-                            {i > 0 ? (
-                                <br
-                                    key={`br-${data.plain_text.slice(0, 5)}-${i}`}
-                                />
-                            ) : null}
-                        </Fragment>
-                    ))}
-                </>
+                <span
+                    key={`text-${data.plain_text.slice(0, 5)}`}
+                    className={additionalClasses.join(' ')}
+                    dangerouslySetInnerHTML={{ __html: renderedText }}
+                ></span>
             );
         }
 

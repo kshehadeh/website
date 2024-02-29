@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     description:
         "Karim Shehadeh's personal website that includes a blog, links I have come across, resume and some helpful tooling.",
 
-    metadataBase: new URL("https://www.karim.cloud")
+    metadataBase: new URL('https://www.karim.cloud'),
 };
 
 export default function RootLayout({

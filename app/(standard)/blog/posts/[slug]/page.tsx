@@ -8,12 +8,10 @@ import { Sidecar } from '@/components/Sidecar/Sidecar';
 
 export const revalidate = timeouts.blog;
 
-
 const getPageData = cache(async (slug: string) => {
     const post = await getBlogPostBySlug(decodeURIComponent(slug));
     return { post };
 });
-
 
 export async function generateMetadata({
     params,
@@ -27,7 +25,6 @@ export async function generateMetadata({
         },
     };
 }
-
 
 export default async function Page({
     params,

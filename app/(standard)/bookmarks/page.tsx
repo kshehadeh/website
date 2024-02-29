@@ -8,7 +8,6 @@ import ContentLayout from '@/components/ContentLayout/ContentLayout';
 
 export const revalidate = timeouts.bookmarks;
 
-
 export async function generateMetadata() {
     return {
         title: `Karim Shehadeh - Handy Links to Tools, Articles, and More`,
@@ -18,7 +17,6 @@ export async function generateMetadata() {
         },
     };
 }
-
 
 export default async function BookmarksPage() {
     const bookmarks = await getRecentBookmarks(12);

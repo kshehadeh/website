@@ -17,7 +17,6 @@ const getPageData = cache(async () => {
     return { page };
 });
 
-
 export async function generateMetadata() {
     return {
         title: `Karim Shehadeh - About Me`,

@@ -2,7 +2,7 @@ import { BlogPostBrief } from '@/lib/blog';
 import React from 'react';
 import PostTime from './PostTime';
 import { Author } from './Author';
-import { Tag } from '../Tag/Tag';
+import { TagList } from '../TagList/TagList';
 
 export interface PostBriefViewOptions {
     hideAbstract?: boolean;
@@ -39,14 +39,7 @@ export function PostBrief({
 
                 <div className="flex items-center gap-x-4 text-xs">
                     {!hideDate && <PostTime post={post} />}
-                    {!hideTags &&
-                        post.tags.map(tag => (
-                            <Tag
-                                key={`${post.id}-${tag}-tag`}
-                                text={tag}
-                                url={`/blog/tag/${tag}`}
-                            />
-                        ))}
+                    {!hideTags && <TagList tags={post.tags} type={'blog'} />}
                 </div>
 
                 {!hideAbstract && (

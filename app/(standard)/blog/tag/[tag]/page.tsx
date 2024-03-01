@@ -9,7 +9,7 @@ import ContentLayout from '@/components/ContentLayout/ContentLayout';
 export const revalidate = timeouts.blog;
 
 const getPageData = cache(async (tag: string) => {
-    const posts = await getBlogPostsByTag(tag);
+    const posts = await getBlogPostsByTag([tag]);
     return { posts };
 });
 

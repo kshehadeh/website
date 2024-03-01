@@ -3,8 +3,8 @@ import React from 'react';
 import { A } from '../primitives';
 
 const IndentationMap: { [key: number]: string } = {
-    1: 'ml-0 font-bold text-md',
-    2: 'ml-2 font-bold text-sm',
+    1: 'ml-0 font-bold text-sm',
+    2: 'ml-2 text-sm',
     3: 'ml-4 text-xs',
 };
 

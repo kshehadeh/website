@@ -161,8 +161,9 @@ export async function getBlogBrief({
 export async function getRecentBlogPosts(
     limit: number,
     includeAbstract: boolean,
+    tags?: string[]
 ): Promise<BlogPostBrief[]> {
-    const result = await getBlogPosts({ limit });
+    const result = await getBlogPosts({ limit, tags });
     const entries = [];
     for (const post of result || []) {
         if (isPageObjectResponse(post)) {
@@ -192,19 +193,16 @@ export async function getBlogPostBySlug(
     }
 }
 
-export async function getBlogPostsByTag(tag: string): Promise<BlogPostBrief[]> {
+export async function getBlogPostsByTag(tags: string[]): Promise<BlogPostBrief[]> {
     const result = await getBlogPosts({
         limit: 100,
-        tag,
+        tags,
     });
 
     const entries = [];
     for (const post of result) {
-        if (isPageObjectResponse(post)) {
-            const tags = getTagsFromPage(post);
-            if (tags.includes(tag)) {
-                entries.push(await getBlogBrief({ post }));
-            }
+        if (isPageObjectResponse(post)) {            
+            entries.push(await getBlogBrief({ post }));
         }
     }
 
@@ -213,7 +211,7 @@ export async function getBlogPostsByTag(tag: string): Promise<BlogPostBrief[]> {
 
 export async function getBlogPosts({
     limit,
-    tag,
+    tags,
     authorId,
     slug,
     status = 'Published',
@@ -223,7 +221,7 @@ export async function getBlogPosts({
     },
 }: {
     limit?: number;
-    tag?: string;
+    tags?: string[];
     authorId?: string;
     slug?: string;
     status?: 'Published' | 'Draft' | 'Any';
@@ -232,7 +230,7 @@ export async function getBlogPosts({
         direction: 'ascending' | 'descending';
     };
 }): Promise<QueryDatabaseResponse['results']> {
-    const and = [];
+    const and = [];    
     if (status && status !== 'Any') {
         and.push({
             property: 'Status',
@@ -242,12 +240,14 @@ export async function getBlogPosts({
         });
     }
 
-    if (tag) {
+    if (tags) {
         and.push({
-            property: 'Tags',
-            multi_select: {
-                contains: tag,
-            },
+            or: tags?.map(tag => ({
+                property: 'Tags',
+                multi_select: {
+                    contains: tag,
+                }})
+            ),
         });
     }
 

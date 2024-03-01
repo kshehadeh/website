@@ -1,7 +1,7 @@
 import { Bookmark } from '@/lib/bookmarks';
 import Link from 'next/link';
 import React from 'react';
-import { Tag } from '../Tag/Tag';
+import { TagList } from '../TagList/TagList';
 
 export function BookmarksList({ bookmarks }: { bookmarks: Bookmark[] }) {
     return (
@@ -18,13 +18,7 @@ export function BookmarksList({ bookmarks }: { bookmarks: Bookmark[] }) {
                     </Link>
                     <p className={`text-sm`}>{bookmark.abstract}</p>
                     <div className="mt-2">
-                        {bookmark.tags.map(tag => (
-                            <Tag
-                                key={`${bookmark.id}-${tag}-tag`}
-                                text={tag}
-                                url={`/bookmarks/tag/${tag}`}
-                            />
-                        ))}
+                        <TagList tags={bookmark.tags} type='bookmarks'/>
                     </div>
                 </li>
             ))}

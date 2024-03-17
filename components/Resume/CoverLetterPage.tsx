@@ -1,6 +1,5 @@
 import React from "react";
 import { getCoverLetterPageData } from "@/lib/resume";
-import { H1 } from "../primitives";
 import { NotionRenderer } from "@/lib/notion-renderer";
 import { isRichTextProperty, notion } from "@/lib/notion";
 
@@ -14,7 +13,7 @@ export async function CoverLetterPage ({id}: {id: string}) {
 
     return (
         <div>
-            <H1>{title}</H1>
+            <h1>{title}</h1>
             {postElements}
         </div>
     )

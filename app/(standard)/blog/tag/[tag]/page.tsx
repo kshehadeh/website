@@ -1,7 +1,6 @@
 import React, { cache } from 'react';
 import { getBlogPostsByTag } from '@/lib/blog';
 import { PostList } from '@/components/Post/PostList';
-import { H1 } from '@/components/primitives';
 import timeouts from '@/lib/timeouts';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
 import ContentLayout from '@/components/ContentLayout/ContentLayout';
@@ -38,7 +37,7 @@ export default async function PostsByTagPage({
             pageType={'tags'}
             sidecar={() => <Sidecar pageType="tags" />}
         >
-            <H1>{tag}</H1>
+            <h1>{tag}</h1>
             <PostList
                 posts={posts}
                 hideAbstract={true}

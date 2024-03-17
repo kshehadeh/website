@@ -1,6 +1,5 @@
 import React from 'react';
 import { getRecentBookmarks } from '@/lib/bookmarks';
-import { H1 } from '@/components/primitives';
 import { BookmarksList } from '@/components/BookmarksList/BookmarksList';
 import timeouts from '@/lib/timeouts';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
@@ -25,7 +24,7 @@ export default async function BookmarksPage() {
             pageType={'bookmarks'}
             sidecar={() => <Sidecar pageType="bookmarks" />}
         >
-            <H1>Bookmarks</H1>
+            <h1>Bookmarks</h1>
             <BookmarksList bookmarks={bookmarks} />
         </ContentLayout>
     );

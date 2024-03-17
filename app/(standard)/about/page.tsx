@@ -1,5 +1,5 @@
 import React, { cache } from 'react';
-import { H1, H2, HR } from '@/components/primitives';
+import { HR } from '@/components/primitives';
 import { getPersonalReferences } from '@/lib/about';
 import { isRichTextProperty, notion } from '@/lib/notion';
 import { getAboutPage } from '@/lib/about';
@@ -41,13 +41,13 @@ export default async function AboutMePage() {
             pageType={'about'}
             sidecar={() => <Sidecar pageType="about" />}
         >
-            <H1>{title}</H1>
+            <h1>{title}</h1>
             <div className="">
                 <Cover page={page} />
                 {postElements}
             </div>
             <HR />
-            <H2 additionalClasses={['mb-4']}>Find Me Here...</H2>
+            <h2>Find Me Here...</h2>
             <PersonalReferencesList
                 references={references}
             ></PersonalReferencesList>

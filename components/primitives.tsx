@@ -9,46 +9,6 @@ function buildAdditionalClasses(additionalClasses?: string[]) {
     return additionalClasses?.join(' ') || '';
 }
 
-export function H1({ children, additionalClasses }: PrimitiveProps) {
-    return (
-        <h1
-            className={`text-2xl mt-5 mb-3 font-bold leading-tight text-gray-900  ${buildAdditionalClasses(additionalClasses)}`}
-        >
-            {children}
-        </h1>
-    );
-}
-
-export function H2({ children, additionalClasses }: PrimitiveProps) {
-    return (
-        <h2
-            className={`text-xl mt-5 font-semibold leading-snug text-gray-800  ${buildAdditionalClasses(additionalClasses)}`}
-        >
-            {children}
-        </h2>
-    );
-}
-
-export function H3({ children, additionalClasses }: PrimitiveProps) {
-    return (
-        <h3
-            className={`text-lg mt-5 font-medium leading-relaxed text-gray-700  ${buildAdditionalClasses(additionalClasses)}`}
-        >
-            {children}
-        </h3>
-    );
-}
-
-export function P({ children, additionalClasses }: PrimitiveProps) {
-    return (
-        <p
-            className={`mt-5 mb-5 leading-normal text-gray-600  ${buildAdditionalClasses(additionalClasses)}`}
-        >
-            {children}
-        </p>
-    );
-}
-
 export function UL({ children, additionalClasses }: PrimitiveProps) {
     return (
         <ul

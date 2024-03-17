@@ -3,7 +3,7 @@ import React from 'react';
 import { Heading2BlockObjectResponse } from '@notionhq/client/build/src/api-endpoints';
 
 import { createBlockRenderer } from '../utils/create-block-renderer';
-import { Details, H2, Summary } from '@/components/primitives';
+import { Details, Summary } from '@/components/primitives';
 import {
     getAnchorIdFromHeading,
     getPlainTextFromRichTextResponse,
@@ -13,7 +13,7 @@ export default createBlockRenderer<Heading2BlockObjectResponse>(
     'heading_2',
     async (data, renderer) => {
         let result = (
-            <H2 key={`h2-${data.id}`}>
+            <h2 key={`h2-${data.id}`}>
                 <a
                     id={getAnchorIdFromHeading(
                         getPlainTextFromRichTextResponse(
@@ -23,7 +23,7 @@ export default createBlockRenderer<Heading2BlockObjectResponse>(
                 ></a>
 
                 {await renderer.render(...data.heading_2.rich_text)}
-            </H2>
+            </h2>
         );
 
         if (

@@ -161,7 +161,7 @@ export async function getBlogBrief({
 export async function getRecentBlogPosts(
     limit: number,
     includeAbstract: boolean,
-    tags?: string[]
+    tags?: string[],
 ): Promise<BlogPostBrief[]> {
     const result = await getBlogPosts({ limit, tags });
     const entries = [];
@@ -193,7 +193,9 @@ export async function getBlogPostBySlug(
     }
 }
 
-export async function getBlogPostsByTag(tags: string[]): Promise<BlogPostBrief[]> {
+export async function getBlogPostsByTag(
+    tags: string[],
+): Promise<BlogPostBrief[]> {
     const result = await getBlogPosts({
         limit: 100,
         tags,
@@ -201,7 +203,7 @@ export async function getBlogPostsByTag(tags: string[]): Promise<BlogPostBrief[]
 
     const entries = [];
     for (const post of result) {
-        if (isPageObjectResponse(post)) {            
+        if (isPageObjectResponse(post)) {
             entries.push(await getBlogBrief({ post }));
         }
     }
@@ -230,7 +232,7 @@ export async function getBlogPosts({
         direction: 'ascending' | 'descending';
     };
 }): Promise<QueryDatabaseResponse['results']> {
-    const and = [];    
+    const and = [];
     if (status && status !== 'Any') {
         and.push({
             property: 'Status',
@@ -246,8 +248,8 @@ export async function getBlogPosts({
                 property: 'Tags',
                 multi_select: {
                     contains: tag,
-                }})
-            ),
+                },
+            })),
         });
     }
 

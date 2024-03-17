@@ -3,7 +3,6 @@
 import React, { useCallback, useRef } from 'react';
 import PersonalReferencesList from '../About/References';
 import PrintableContent from '../PrintableContent';
-import { H1, H2 } from '../primitives';
 import { EducationItem } from './EducationItem';
 import { ExperienceItem } from './ExperienceItem';
 import { Education, Experience } from '@/lib/resume';
@@ -58,13 +57,13 @@ export function ResumeContent({
                 <div className="absolute top-1 right-5 flex-row gap-2 hidden md:flex">
                     <a
                         href="/print/resume"
-                        className="flex flex-row gap-2  text-sm content-center  bg-slate-800 text-white px-3 py-1 rounded-sm"
+                        className="flex flex-row gap-2  content-center  bg-slate-800 text-white px-3 py-1 rounded-sm"
                     >
                         <FiPrinter className="self-center" />
                         <div>Print</div>
                     </a>
                     <button
-                        className={`flex flex-row gap-1 text-sm bg-slate-800 ${downloading ? 'text-slate-200' : 'text-white'} px-3 py-1 rounded-sm`}
+                        className={`flex flex-row gap-1 bg-slate-800 ${downloading ? 'text-slate-200' : 'text-white'} px-3 py-1 rounded-sm`}
                         onClick={onDownloadPdf}
                         disabled={downloading}
                     >
@@ -79,11 +78,11 @@ export function ResumeContent({
                 </div>
             )}
             <PrintableContent ref={targetRef} className={'m-4'}>
-                <H1>Karim Shehadeh</H1>
+                <h1>Karim Shehadeh</h1>
                 <PersonalReferencesList references={references} />
                 <section>
-                    <H2>Experience</H2>
-                    <ul>
+                    <h2>Experience</h2>
+                    <ul className="ml-0 pl-0">
                         {experienceList.map((experience, i) => (
                             <ExperienceItem
                                 experience={experience}
@@ -94,7 +93,7 @@ export function ResumeContent({
                     </ul>
                 </section>
                 <section>
-                    <H2>Education</H2>
+                    <h2>Education</h2>
                     <ul>
                         {education.map((education, i) => (
                             <EducationItem
@@ -106,7 +105,7 @@ export function ResumeContent({
                     </ul>
                 </section>
                 <section>
-                    <H2>References</H2>
+                    <h2>References</h2>
                     <PersonalReferencesList references={references} />
                 </section>
             </PrintableContent>

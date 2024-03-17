@@ -23,27 +23,27 @@ export function PostBrief({
     return (
         <article
             key={post.id}
-            className="flex flex-col justify-between border-solid border p-3 rounded-md"
+            className="flex flex-col justify-between"
         >
             <div
                 className="h-32 grow bg-cover hidden md:block"
                 style={{ backgroundImage: `url(${post.coverUrl})` }}
             />
             <div className="group relative">
-                <h3 className="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
+                <h3 className="mt-3 font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
                     <a href={post.href}>
                         <span className="absolute inset-0" />
                         {post.title}
                     </a>
                 </h3>
 
-                <div className="flex items-center gap-x-4 text-xs">
+                <div className="flex items-center gap-x-4">
                     {!hideDate && <PostTime post={post} />}
                     {!hideTags && <TagList tags={post.tags} type={'blog'} />}
                 </div>
 
                 {!hideAbstract && (
-                    <p className="mt-5 line-clampœ-3 text-sm leading-6 text-gray-600 md:h-48 overflow-hidden text-ellipsis">
+                    <p className="mt-5 line-clampœ-3 leading-6 text-gray-600 md:h-48 overflow-hidden text-ellipsis">
                         {post.abstract}
                     </p>
                 )}

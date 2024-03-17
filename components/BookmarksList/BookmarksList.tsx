@@ -18,7 +18,7 @@ export function BookmarksList({ bookmarks }: { bookmarks: Bookmark[] }) {
                     </Link>
                     <p className={`text-sm`}>{bookmark.abstract}</p>
                     <div className="mt-2">
-                        <TagList tags={bookmark.tags} type='bookmarks'/>
+                        <TagList tags={bookmark.tags} type="bookmarks" />
                     </div>
                 </li>
             ))}

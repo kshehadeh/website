@@ -7,7 +7,7 @@ export function ExperienceItem({ experience }: { experience: Experience }) {
         <div className="mt-5 mb-5">
             <h3
                 className={
-                    'mb-1 text-lg font-bold flex flex-row justify-between'
+                    'mb-1 flex flex-row justify-between'
                 }
             >
                 <div>{experience?.name}</div>
@@ -23,13 +23,13 @@ export function ExperienceItem({ experience }: { experience: Experience }) {
                     <img
                         src={experience?.company?.icon}
                         alt={'Icon for experience?.company.title'}
-                        className={'w-5 h-5'}
+                        className={'w-5 h-5 not-prose'}
                     />
                 </div>
                 <div>{experience?.company.title}</div>
             </div>
             <p className={'m-1'}>{experience?.overview}</p>
-            <ul className={'ml-10'}>
+            <ul className={'md:ml-5'}>
                 {experience?.bullets.map(b => (
                     <li className={'list-square pb-2'} key={b.id}>
                         {b.text}

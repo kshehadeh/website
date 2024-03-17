@@ -7,7 +7,7 @@ export function EducationItem({ education }: { education: Education }) {
         <div className="mt-5 mb-5">
             <h3
                 className={
-                    'mb-1 text-lg font-bold flex flex-row justify-between'
+                    'flex flex-row justify-between'
                 }
             >
                 <div>{education?.degree}</div>

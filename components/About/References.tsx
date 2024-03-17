@@ -18,7 +18,7 @@ function PersonalReferenceItem({
                     <img
                         src={reference.icon}
                         title={reference.title}
-                        className="w-5 h-5"
+                        className="w-5 h-5 not-prose"
                     />
                 )}
                 {reference.title}

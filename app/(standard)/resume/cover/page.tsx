@@ -1,4 +1,4 @@
-import { A, H1, LI, UL } from '@/components/primitives';
+import { A, LI, UL } from '@/components/primitives';
 import { getCoverLetters } from '@/lib/resume';
 import timeouts from '@/lib/timeouts';
 import React from 'react';
@@ -9,7 +9,7 @@ export default async function Page() {
     const covers = await getCoverLetters();
     return (
         <>
-            <H1>Cover Letters</H1>
+            <h1>Cover Letters</h1>
             <UL>
                 {covers.map(cover => (
                     <LI key={cover.id}>

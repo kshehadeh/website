@@ -17,8 +17,16 @@ export async function generateMetadata() {
 
 const getPageData = cache(async () => {
     const recent = await getRecentBlogPosts(3, true);
-    const engineering = await getRecentBlogPosts(3, true, ['Engineering', 'Tools', 'Libraries']);
-    const thinking = await getRecentBlogPosts(3, true, ['Organization', 'People', 'Planning']);
+    const engineering = await getRecentBlogPosts(3, true, [
+        'Engineering',
+        'Tools',
+        'Libraries',
+    ]);
+    const thinking = await getRecentBlogPosts(3, true, [
+        'Organization',
+        'People',
+        'Planning',
+    ]);
     return { recent, engineering, thinking };
 });
 
@@ -29,12 +37,22 @@ export default async function Home() {
             pageType={'home'}
             sidecar={() => <Sidecar pageType="home" />}
         >
-            <ThreeUpPosts posts={recent} title="Recent"/>
+            <h1>Karim&apos;s Blog and Other Ramblings</h1>
+            <div className="mb-5">
+                <ThreeUpPosts posts={recent} title="Recent" />
+            </div>
 
-            <ThreeUpPosts posts={engineering} title="Engineering, Tooling and Libraries"/>
+            <div className="mb-5">
+                <ThreeUpPosts
+                    posts={engineering}
+                    title="Engineering, Tooling and Libraries"
+                />
+            </div>
 
-            <ThreeUpPosts posts={thinking} title="Organization, People and Planning"/>
-
+            <ThreeUpPosts
+                posts={thinking}
+                title="Organization, People and Planning"
+            />
         </ContentLayout>
     );
 }

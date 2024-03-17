@@ -30,6 +30,7 @@ export default async function MainBlogPage() {
             pageType={'blog'}
             sidecar={() => <Sidecar pageType="blog" />}
         >
+            <h1>Blog</h1>
             <PostList posts={posts} />
         </ContentLayout>
     );

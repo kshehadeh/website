@@ -1,6 +1,5 @@
 import React from 'react';
 import { BookmarksList } from '@/components/BookmarksList/BookmarksList';
-import { H1 } from '@/components/primitives';
 import { getBookmarksByTag } from '@/lib/bookmarks';
 import ContentLayout from '@/components/ContentLayout/ContentLayout';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
@@ -30,7 +29,7 @@ export default async function TaggedBookmarkPage({
             pageType={'resume'}
             sidecar={() => <Sidecar pageType="bookmarks" />}
         >
-            <H1>Bookmarks tagged with &quot;{tag}&quot;</H1>
+            <h1>Bookmarks tagged with &quot;{tag}&quot;</h1>
             <BookmarksList bookmarks={bookmarks} />
         </ContentLayout>
     );

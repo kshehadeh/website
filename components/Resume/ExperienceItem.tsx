@@ -5,11 +5,7 @@ import { DateTime } from 'luxon';
 export function ExperienceItem({ experience }: { experience: Experience }) {
     return (
         <div className="mt-5 mb-5">
-            <h3
-                className={
-                    'mb-1 flex flex-row justify-between'
-                }
-            >
+            <h3 className={'mb-1 flex flex-row justify-between'}>
                 <div>{experience?.name}</div>
                 <div className={'text-sm font-normal'}>
                     {DateTime.fromISO(experience?.start).toFormat('y')}-

@@ -11,7 +11,15 @@ export default function ThreeUpPosts({
 }) {
     return (
         <div className="flex flex-row">
-            <h2 className="p-6 bg-slate-100 m-0" style={{"writingMode": "vertical-rl", transform:"rotate(180deg)"}}>{title}</h2>
+            <h2
+                className="p-6 bg-slate-100 m-0 text-right"
+                style={{
+                    writingMode: 'vertical-rl',
+                    transform: 'rotate(180deg)',
+                }}
+            >
+                {title}
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 divide-y divide-gray-400 md:divide-y-0 gap-4 p-4 border-solid border">
                 {posts.map(post => (
                     <div

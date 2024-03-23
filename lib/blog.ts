@@ -60,7 +60,7 @@ export function getAbstractFromBlocks(blocks: BlockObjectResponse[]): string {
             .filter(isParagraphBlockObject)
             .map(p => p.paragraph.rich_text[0]?.plain_text)
             .join(' ')
-            .slice(0, 200) + '...'
+            .slice(0, 500) + '...'
     );
 }
 

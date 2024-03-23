@@ -21,7 +21,10 @@ export function PostBrief({
     post: BlogPostBrief;
 } & PostBriefViewOptions) {
     return (
-        <article key={post.id} className="flex flex-col justify-between m-0 p-0">
+        <article
+            key={post.id}
+            className="flex flex-col justify-between m-0 p-0"
+        >
             <div
                 className="h-64 grow bg-cover hidden md:block"
                 style={{ backgroundImage: `url(${post.coverUrl})` }}

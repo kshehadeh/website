@@ -1,6 +1,6 @@
 import React from 'react';
 import { PersonalReference } from '@/lib/about';
-import { A } from '../primitives';
+import Image from 'next/image';
 
 function PersonalReferenceItem({
     reference,
@@ -9,20 +9,23 @@ function PersonalReferenceItem({
 }) {
     return (
         <li>
-            <A
+            <a
                 href={reference.url}
                 target="_blank"
-                additionalClasses={['flex', 'flex-row', 'gap-1']}
+                className={'flex flex-row gap-1'}
+                rel="noreferrer noopener"
             >
                 {reference.icon && (
-                    <img
+                    <Image
                         src={reference.icon}
                         title={reference.title}
+                        alt={reference.title}
                         className="w-5 h-5 not-prose"
+                        width={20}
+                        height={20}
                     />
                 )}
-                {reference.title}
-            </A>
+            </a>
         </li>
     );
 }

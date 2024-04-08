@@ -4,13 +4,17 @@ import { getRecentBlogPosts } from '@/lib/blog';
 import timeouts from '@/lib/timeouts';
 import ContentLayout from '@/components/ContentLayout/ContentLayout';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
+import { Metadata } from 'next';
 
 export const revalidate = timeouts.home;
 
-export async function generateMetadata() {
+export async function generateMetadata(): Promise<Metadata> {
     return {
         alternates: {
             canonical: '/',
+            types: {
+                'application/rss+xml': 'https://www.karim.cloud/api/rss.xml',
+            },
         },
     };
 }

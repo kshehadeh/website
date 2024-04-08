@@ -22,6 +22,9 @@ export async function generateMetadata({
         description: `${post?.abstract}`,
         alternates: {
             canonical: `/blog`,
+            types: {
+                'application/rss+xml': 'https://www.karim.cloud/api/rss.xml',
+            },
         },
     };
 }

@@ -6,7 +6,6 @@ import { Img } from '../primitives';
 
 export async function Post({ post }: { post: BlogPostFull }) {
     const renderer = new NotionRenderer({ client: notion });
-    console.log(JSON.stringify(post, null, 2));
     const postElements = await renderer.render(...(post?.blocks || []));
     return (
         <>

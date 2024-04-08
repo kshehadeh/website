@@ -13,6 +13,9 @@ export async function generateMetadata() {
         description: `Karim Shehadeh's blog posts about web development, engineering management and more.`,
         alternates: {
             canonical: `/blog`,
+            types: {
+                'application/rss+xml': 'https://www.karim.cloud/api/rss.xml',
+            },
         },
     };
 }

@@ -22,6 +22,9 @@ export async function generateMetadata({
         description: `Karim Shehadeh's blog posts that match tags by the name "${tag}"`,
         alternates: {
             canonical: `/blog/posts/tag/${tag}`,
+            types: {
+                'application/rss+xml': 'https://www.karim.cloud/api/rss.xml',
+            },
         },
     };
 }

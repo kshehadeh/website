@@ -5,13 +5,20 @@
         "name": "Next.js: debug server-side",
         "type": "node-terminal",
         "request": "launch",
-        "command": "npm run dev --turbo"
+        "command": "npm run dev --turbo",
+        "sourceMaps": true,
+        "sourceMapPathOverrides": {
+          "/turbopack/[project]/*": "${webRoot}/*"
+        }        
       },
       {
         "name": "Next.js: debug client-side",
         "type": "chrome",
         "request": "launch",
-        "url": "http://localhost:3000"
+        "url": "http://localhost:3000",
+        "sourceMapPathOverrides": {
+          "/turbopack/[project]/*": "${webRoot}/*"
+        }
       },
       {
         "name": "Next.js: debug full stack",

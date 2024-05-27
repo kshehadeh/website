@@ -65,7 +65,7 @@ export class NotionRenderer {
                 if (!renderer)
                     console.warn(
                         `There is no renderer for block ${block.type}`,
-                    );                
+                    );
                 return { block, renderer };
             })
             .filter(({ renderer }) => Boolean(renderer))

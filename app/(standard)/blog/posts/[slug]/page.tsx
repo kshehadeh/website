@@ -5,6 +5,7 @@ import { Post } from '@/components/Post/Post';
 import timeouts from '@/lib/timeouts';
 import ContentLayout from '@/components/ContentLayout/ContentLayout';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
+import { Metadata } from 'next';
 
 export const revalidate = timeouts.blog;
 
@@ -15,13 +16,18 @@ const getPageData = cache(async (slug: string) => {
 
 export async function generateMetadata({
     params,
-}: Readonly<{ params: { slug: string } }>) {
+}: Readonly<{ params: { slug: string } }>): Promise<Metadata> {
     const { post } = await getPageData(params.slug);
     return {
         title: `Karim Shehadeh - ${post?.title}`,
         description: `${post?.abstract}`,
+        openGraph: {
+            title: `Karim Shehadeh - ${post?.title}`,
+            description: `${post?.abstract}`,
+            images: post?.coverUrl,
+        },
         alternates: {
-            canonical: `/blog`,
+            canonical: `/blog/posts/${params.slug}`,
             types: {
                 'application/rss+xml': 'https://www.karim.cloud/api/rss.xml',
             },

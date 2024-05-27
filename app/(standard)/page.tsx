@@ -41,7 +41,6 @@ export default async function Home() {
             pageType={'home'}
             sidecar={() => <Sidecar pageType="home" />}
         >
-            <h1>Karim&apos;s Blog and Other Ramblings</h1>
             <div className="mb-5">
                 <ThreeUpPosts posts={recent} title="Recent" />
             </div>
@@ -49,13 +48,13 @@ export default async function Home() {
             <div className="mb-5">
                 <ThreeUpPosts
                     posts={engineering}
-                    title="Engineering, Tooling and Libraries"
+                    title="Tooling and Libraries"
                 />
             </div>
 
             <ThreeUpPosts
                 posts={thinking}
-                title="Organization, People and Planning"
+                title="People and Planning"
             />
         </ContentLayout>
     );

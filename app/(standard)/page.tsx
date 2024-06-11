@@ -20,7 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const getPageData = cache(async () => {
-    const recent = await getRecentBlogPosts(10, true);
+    const recent = await getRecentBlogPosts(12, true);
     return { recent };
 });
 

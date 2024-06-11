@@ -22,6 +22,8 @@ export default createBlockRenderer<ImageBlockObjectResponse>(
                     src={src}
                     alt={data.image.caption?.[0]?.plain_text || 'src'}
                     className="md:w-[33%]"
+                    width={500}
+                    height={500}
                 />
                 {data.image.caption.length > 0 ? (
                     <Legend additionalClasses={['text-sm mt-3']}>

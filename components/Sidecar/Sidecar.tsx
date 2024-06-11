@@ -6,6 +6,7 @@ import styles from './Sidecar.module.css';
 import { OtherThings } from './OtherThings/OtherThings';
 import { RecentPosts } from './RecentPosts/RecentPosts';
 import { PageType } from '@/lib/page';
+import { RecentBookmarks } from './RecentBookmarks/RecentBookmarks';
 
 export function ActiveLink({
     children,
@@ -29,11 +30,17 @@ export function ActiveLink({
 export async function Sidecar({
     post,
     pageType,
+    includeRecent,
+    includeBookarks,
 }: {
     pageType: PageType;
     post?: BlogPostFull;
+    includeRecent?: boolean;
+    includeBookarks?: boolean;
 }) {
     const contextComponents: React.ReactNode[] = [];
+    includeRecent = includeRecent ?? true;
+    includeBookarks = includeBookarks ?? true;
 
     if (pageType === 'post' && post) {
         const headings = getBlogPostHeadings(post);
@@ -46,7 +53,8 @@ export async function Sidecar({
     return (
         <div className={styles.sidecar}>
             {contextComponents}
-            <RecentPosts currentPost={post} />
+            {includeRecent && <RecentPosts currentPost={post} />}
+            {includeBookarks && <RecentBookmarks />}
             <OtherThings pageType={pageType} />
         </div>
     );

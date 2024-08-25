@@ -3,6 +3,8 @@ import { getCoverLetters } from '@/lib/resume';
 import timeouts from '@/lib/timeouts';
 import React from 'react';
 
+export const maxDuration = 60;
+
 export const revalidate = timeouts.resume;
 
 export default async function Page() {

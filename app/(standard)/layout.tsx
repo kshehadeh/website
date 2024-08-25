@@ -6,6 +6,8 @@ import { GeistMono } from 'geist/font/mono';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/react';
 
+export const maxDuration = 60;
+
 export const metadata: Metadata = {
     title: "Karim Shehadeh's Personal Site",
     description:

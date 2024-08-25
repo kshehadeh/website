@@ -4,6 +4,7 @@ import { Sidecar } from '@/components/Sidecar/Sidecar';
 import timeouts from '@/lib/timeouts';
 import React from 'react';
 
+export const maxDuration = 60;
 export const revalidate = timeouts.resume;
 
 export async function generateMetadata() {

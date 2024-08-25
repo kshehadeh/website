@@ -4,6 +4,8 @@ import { getBookmarksByTag } from '@/lib/bookmarks';
 import ContentLayout from '@/components/ContentLayout/ContentLayout';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
 
+export const maxDuration = 60;
+
 export async function generateMetadata({
     params: { tag },
 }: {

@@ -6,6 +6,7 @@ import { Sidecar } from '@/components/Sidecar/Sidecar';
 import { Metadata } from 'next';
 import { PostList } from '@/components/Post/PostList';
 
+export const maxDuration = 60;
 export const revalidate = timeouts.home;
 
 export async function generateMetadata(): Promise<Metadata> {

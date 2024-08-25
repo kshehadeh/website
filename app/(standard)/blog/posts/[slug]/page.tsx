@@ -8,6 +8,7 @@ import { Sidecar } from '@/components/Sidecar/Sidecar';
 import { Metadata } from 'next';
 
 export const revalidate = timeouts.blog;
+export const maxDuration = 60;
 
 const getPageData = cache(async (slug: string) => {
     const post = await getBlogPostBySlug(decodeURIComponent(slug));

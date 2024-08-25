@@ -5,6 +5,7 @@ import timeouts from '@/lib/timeouts';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
 import ContentLayout from '@/components/ContentLayout/ContentLayout';
 
+export const maxDuration = 60;
 export const revalidate = timeouts.bookmarks;
 
 export async function generateMetadata() {

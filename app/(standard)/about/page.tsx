@@ -10,6 +10,7 @@ import { Cover } from '@/components/Cover.server';
 import ContentLayout from '@/components/ContentLayout/ContentLayout';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
 
+export const maxDuration = 60;
 export const revalidate = timeouts.about;
 
 const getPageData = cache(async () => {

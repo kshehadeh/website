@@ -352,7 +352,7 @@ async function buildEducationList(
     if (!output?.result.success) {
         console.log(
             output?.result.message ||
-            `Error compiling template (error code ${output?.stat})`,
+                `Error compiling template (error code ${output?.stat})`,
         );
     }
 

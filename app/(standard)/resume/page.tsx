@@ -1,11 +1,8 @@
 import ContentLayout from '@/components/ContentLayout/ContentLayout';
-import { ResumePage } from '@/components/Resume/ResumePage';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
-import timeouts from '@/lib/timeouts';
 import React from 'react';
 
 export const maxDuration = 60;
-export const revalidate = timeouts.resume;
 
 export async function generateMetadata() {
     return {
@@ -21,10 +18,14 @@ export async function generateMetadata() {
 export default async function Page() {
     return (
         <ContentLayout
+            fullHeight={true}
             pageType={'resume'}
             sidecar={() => <Sidecar pageType="resume" />}
         >
-            <ResumePage printerFriendly={false} />;
+            <embed
+                src="https://static.karim.cloud/resume/karim-shehadeh-resume.pdf"
+                className="w-full h-full"
+            />
         </ContentLayout>
     );
 }

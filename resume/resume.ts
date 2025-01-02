@@ -19,6 +19,7 @@ config();
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
 const spinner = ora('Building resume...').start();
 
+// Converts a Duration object to a human-readable string
 function toHuman(dt: Duration | undefined | null, andCounting: boolean) {
     if (!dt) {
         return '';
@@ -46,6 +47,7 @@ function toHuman(dt: Duration | undefined | null, andCounting: boolean) {
     return str;
 }
 
+// Rounds the months in a Duration object
 function roundMonths(dt: Duration) {
     if (dt.months > 0) {
         const rounded = Math.round(dt.months);
@@ -58,6 +60,7 @@ function roundMonths(dt: Duration) {
     return dt;
 }
 
+// Sorts properties by their end dates
 const sortPropertiesByEndDates = (
     a: PageObjectResponse,
     b: PageObjectResponse,
@@ -80,6 +83,7 @@ const sortPropertiesByEndDates = (
     return 0;
 };
 
+// Fetches blocks from a Notion page
 async function getBlocks(id: string) {
     try {
         const response = await notion.blocks.children.list({
@@ -92,6 +96,7 @@ async function getBlocks(id: string) {
     }
 }
 
+// Fetches rows from a Notion database
 async function getRows(databaseId: string) {
     try {
         const response = await notion.databases.query({
@@ -104,6 +109,7 @@ async function getRows(databaseId: string) {
     }
 }
 
+// Retrieves the text from a property
 function getPropertyText(property: PageObjectResponse['properties'][number]) {
     if (property.type === 'title') {
         return property.title[0].plain_text;
@@ -113,6 +119,7 @@ function getPropertyText(property: PageObjectResponse['properties'][number]) {
     return null;
 }
 
+// Retrieves the number from a property
 function getProperyNumber(property: PageObjectResponse['properties'][number]) {
     if (property.type === 'number') {
         return property.number;
@@ -120,6 +127,7 @@ function getProperyNumber(property: PageObjectResponse['properties'][number]) {
     return null;
 }
 
+// Retrieves the multi-select options from a property
 function getPropertyMultiSelect(
     property: PageObjectResponse['properties'][number],
 ) {
@@ -129,6 +137,7 @@ function getPropertyMultiSelect(
     return null;
 }
 
+// Retrieves a value from the "About" section by key
 function getAboutValueWithKey(rows: PageObjectResponse[], key: string) {
     const row = rows.find(row => getPropertyText(row.properties.Name) === key);
     if (!row) {
@@ -137,6 +146,7 @@ function getAboutValueWithKey(rows: PageObjectResponse[], key: string) {
     return getPropertyText(row.properties.Text);
 }
 
+// Builds the "About" information
 async function buildAboutInfo(
     data: Record<string, ChildDatabaseBlockObjectResponse>,
 ) {
@@ -155,6 +165,7 @@ async function buildAboutInfo(
     };
 }
 
+// Retrieves the date from a property
 function getPropertyDate(property: PageObjectResponse['properties'][number]) {
     if (property.type === 'date') {
         if (property.date?.start && property.date?.end) {
@@ -188,6 +199,7 @@ function getPropertyDate(property: PageObjectResponse['properties'][number]) {
     return { start: null, end: null, duration: null };
 }
 
+// Builds the experience list
 async function buildExperienceList(
     data: Record<string, ChildDatabaseBlockObjectResponse>,
 ) {
@@ -255,6 +267,7 @@ async function buildExperienceList(
     return experienceList;
 }
 
+// Builds the education list
 async function buildEducationList(
     data: Record<string, ChildDatabaseBlockObjectResponse>,
 ) {
@@ -339,7 +352,7 @@ async function buildEducationList(
     if (!output?.result.success) {
         console.log(
             output?.result.message ||
-                `Error compiling template (error code ${output?.stat})`,
+            `Error compiling template (error code ${output?.stat})`,
         );
     }
 

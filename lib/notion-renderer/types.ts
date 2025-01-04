@@ -11,7 +11,7 @@ export type Block<T extends string = string, D = any> = {
 export type BlockRendererFunc<T extends Block = Block> = (
     data: T,
     renderer: NotionRenderer,
-) => Promise<ReactElement>;
+) => Promise<ReactElement<any>>;
 
 export type BlockRenderer<T extends Block = any> = BlockRendererFunc<T> & {
     type: string;

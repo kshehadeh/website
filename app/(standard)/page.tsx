@@ -1,13 +1,12 @@
 import React, { cache } from 'react';
 import { getRecentBlogPosts } from '@/lib/blog';
-import timeouts from '@/lib/timeouts';
 import ContentLayout from '@/components/ContentLayout/ContentLayout';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
 import { Metadata } from 'next';
 import { PostList } from '@/components/Post/PostList';
 
 export const maxDuration = 60;
-export const revalidate = timeouts.home;
+export const revalidate = 3600;
 
 export async function generateMetadata(): Promise<Metadata> {
     return {

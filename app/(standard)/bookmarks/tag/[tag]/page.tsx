@@ -6,11 +6,17 @@ import { Sidecar } from '@/components/Sidecar/Sidecar';
 
 export const maxDuration = 60;
 
-export async function generateMetadata({
-    params: { tag },
-}: {
-    params: { tag: string };
-}) {
+export async function generateMetadata(
+    props: {
+        params: Promise<{ tag: string }>;
+    }
+) {
+    const params = await props.params;
+
+    const {
+        tag
+    } = params;
+
     return {
         title: `Karim Shehadeh - Bookmarks by Tag "${tag}"`,
         description: `Karim Shehadeh's bookmarks that match tags by the name "${tag}"`,
@@ -20,11 +26,17 @@ export async function generateMetadata({
     };
 }
 
-export default async function TaggedBookmarkPage({
-    params: { tag },
-}: {
-    params: { tag: string };
-}) {
+export default async function TaggedBookmarkPage(
+    props: {
+        params: Promise<{ tag: string }>;
+    }
+) {
+    const params = await props.params;
+
+    const {
+        tag
+    } = params;
+
     const bookmarks = await getBookmarksByTag(tag);
     return (
         <ContentLayout

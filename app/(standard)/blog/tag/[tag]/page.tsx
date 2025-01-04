@@ -1,22 +1,27 @@
 import React, { cache } from 'react';
 import { getBlogPostsByTag } from '@/lib/blog';
 import { PostList } from '@/components/Post/PostList';
-import timeouts from '@/lib/timeouts';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
 import ContentLayout from '@/components/ContentLayout/ContentLayout';
 
-export const revalidate = timeouts.blog;
+export const revalidate = 3600;
 
 const getPageData = cache(async (tag: string) => {
     const posts = await getBlogPostsByTag([tag]);
     return { posts };
 });
 
-export async function generateMetadata({
-    params: { tag },
-}: {
-    params: { tag: string };
-}) {
+export async function generateMetadata(
+    props: {
+        params: Promise<{ tag: string }>;
+    }
+) {
+    const params = await props.params;
+
+    const {
+        tag
+    } = params;
+
     return {
         title: `Karim Shehadeh - Posts by Tag "${tag}"`,
         description: `Karim Shehadeh's blog posts that match tags by the name "${tag}"`,
@@ -29,11 +34,17 @@ export async function generateMetadata({
     };
 }
 
-export default async function PostsByTagPage({
-    params: { tag },
-}: {
-    params: { tag: string };
-}) {
+export default async function PostsByTagPage(
+    props: {
+        params: Promise<{ tag: string }>;
+    }
+) {
+    const params = await props.params;
+
+    const {
+        tag
+    } = params;
+
     const { posts } = await getPageData(tag);
     return (
         <ContentLayout

@@ -14,7 +14,9 @@ const getPageData = cache(async (slug: string) => {
     return { post };
 });
 
-export async function generateMetadata(props: Readonly<{ params: Promise<{ slug: string }> }>): Promise<Metadata> {
+export async function generateMetadata(
+    props: Readonly<{ params: Promise<{ slug: string }> }>,
+): Promise<Metadata> {
     const params = await props.params;
     const { post } = await getPageData(params.slug);
     return {
@@ -34,7 +36,9 @@ export async function generateMetadata(props: Readonly<{ params: Promise<{ slug:
     };
 }
 
-export default async function Page(props: Readonly<{ params: Promise<{ slug: string }> }>) {
+export default async function Page(
+    props: Readonly<{ params: Promise<{ slug: string }> }>,
+) {
     const params = await props.params;
     const { post } = await getPageData(params.slug);
     if (!post) {

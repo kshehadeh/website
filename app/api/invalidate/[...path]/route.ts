@@ -1,11 +1,12 @@
 import { revalidatePath } from 'next/cache';
 
-export async function GET(req: Request, props: { params: Promise<{ path: string[] }> }) {
+export async function GET(
+    req: Request,
+    props: { params: Promise<{ path: string[] }> },
+) {
     const params = await props.params;
 
-    const {
-        path
-    } = params;
+    const { path } = params;
 
     const query = new URLSearchParams(req.url.split('?')[1] || '');
     if (query.get('secret') !== process.env.REVALIDATION_SECRET) {

@@ -11,16 +11,12 @@ const getPageData = cache(async (tag: string) => {
     return { posts };
 });
 
-export async function generateMetadata(
-    props: {
-        params: Promise<{ tag: string }>;
-    }
-) {
+export async function generateMetadata(props: {
+    params: Promise<{ tag: string }>;
+}) {
     const params = await props.params;
 
-    const {
-        tag
-    } = params;
+    const { tag } = params;
 
     return {
         title: `Karim Shehadeh - Posts by Tag "${tag}"`,
@@ -34,16 +30,12 @@ export async function generateMetadata(
     };
 }
 
-export default async function PostsByTagPage(
-    props: {
-        params: Promise<{ tag: string }>;
-    }
-) {
+export default async function PostsByTagPage(props: {
+    params: Promise<{ tag: string }>;
+}) {
     const params = await props.params;
 
-    const {
-        tag
-    } = params;
+    const { tag } = params;
 
     const { posts } = await getPageData(tag);
     return (

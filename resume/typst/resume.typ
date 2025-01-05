@@ -145,9 +145,10 @@
       context text(
         weight: COMPANY_NAME_WEIGHT,
         size: COMPANY_NAME_SIZE,
-        font: __get("heading-font"),
+        font: __get("heading-font"),        
         name
       ),
+
 
       // third column, dots
       if start != none {
@@ -178,7 +179,7 @@
 // Alias to school heading
 #let school-heading = company-heading
 
-#let job-heading(title, location: none, start: none, end: none, comment: none, body) = {
+#let job-heading(title, location: none, start: none, end: none, domain: none, comment: none, body) = {
   block(
     above: JOB_BLOCK_ABOVE,
     below: JOB_BLOCK_BELOW,
@@ -186,7 +187,7 @@
 
     // heading
     grid(
-      columns: (auto, auto, auto, 1fr, auto),
+      columns: (auto, auto, auto, auto, 1fr, auto),
       gutter: 1em,
       align: (left + horizon, right + horizon),
 
@@ -200,10 +201,28 @@
         title
       ),
 
-      // second column, job comment ellipsisd
+
+      // domain
+      if domain != none {
+        context box(
+          fill: black,
+          outset: 0.2em,
+          inset: 0.2em,
+          radius: 0.2em,
+          text(
+            weight: "light",
+            size: 0.7em,
+            fill: white,
+            font: __get("heading-font"),
+            domain
+          )
+        )
+      },
+
+      // job comment ellipsisd
       if comment != none { [ ... ] },
 
-      // third column, job comment ellipsis
+      // job comment ellipsis
       if comment != none { [ #comment ] },
 
       // fourth column, hfill
@@ -225,7 +244,7 @@
         }
       ),
 
-      grid.cell(colspan: 5, body)
+      grid.cell(colspan: 6, body)
     )
   )
 }

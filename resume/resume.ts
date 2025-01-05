@@ -137,6 +137,35 @@ function getPropertyMultiSelect(
     return null;
 }
 
+function getPropertyRelation(
+    property: PageObjectResponse['properties'][number],
+    lookupRows: PageObjectResponse[]
+) {
+    if (property.type === 'relation') {        
+        return property.relation.map(option => {
+            const row = lookupRows.find(row => row.id === option.id);
+            if (row) {
+                const ob: Record<string, unknown> = {};
+                for (const key in row.properties) {
+                    if (row.properties[key].type === 'title') {
+                        ob[key] = getPropertyText(row.properties[key]);
+                    } else if (row.properties[key].type === 'rich_text') {
+                        ob[key] = getPropertyText(row.properties[key]);
+                    } else if (row.properties[key].type === 'number') {
+                        ob[key] = row.properties[key].number;
+                    } else if (row.properties[key].type === 'select') {
+                        ob[key] = row.properties[key].select?.name;
+                    } else if (row.properties[key].type === 'multi_select') {
+                        ob[key] = row.properties[key].multi_select.map(option => option.name);
+                    }
+                }
+                return ob
+            }            
+        });
+    }
+    return null;
+}
+
 // Retrieves a value from the "About" section by key
 function getAboutValueWithKey(rows: PageObjectResponse[], key: string) {
     const row = rows.find(row => getPropertyText(row.properties.Name) === key);
@@ -199,9 +228,16 @@ function getPropertyDate(property: PageObjectResponse['properties'][number]) {
     return { start: null, end: null, duration: null };
 }
 
+async function getSkillsList(databases: Record<string, ChildDatabaseBlockObjectResponse>) {
+    return (await getRows(
+        databases['Skills'].id,
+    )) as PageObjectResponse[];
+}
+
 // Builds the experience list
 async function buildExperienceList(
     data: Record<string, ChildDatabaseBlockObjectResponse>,
+    skills: PageObjectResponse[]
 ) {
     spinner.text = 'Reading company data';
     const companies = (await getRows(
@@ -251,11 +287,13 @@ async function buildExperienceList(
                     start: start?.toFormat('MMMM yyyy'),
                     end: end?.toFormat('MMMM yyyy') ?? 'Present',
                     duration: toHuman(duration, !end),
+                    domain: getPropertyRelation(exp.properties.Domain, skills),
                     bullets: bulletsForExperience.map(bullet => {
                         return {
                             text: getPropertyText(bullet.properties.Name),
-                            skills: getPropertyMultiSelect(
-                                bullet.properties.Skills,
+                            skills: getPropertyRelation(
+                                bullet.properties.Skill,
+                                skills
                             ),
                         };
                     }),
@@ -323,7 +361,8 @@ async function buildEducationList(
             {},
         );
 
-    const experiences = await buildExperienceList(databases);
+    const skills = await getSkillsList(databases);
+    const experiences = await buildExperienceList(databases, skills);
     const education = await buildEducationList(databases);
     const about = await buildAboutInfo(databases);
 
@@ -341,10 +380,10 @@ async function buildEducationList(
         education,
     };
 
-    const outputPath = path.join(rootDir, '/resume.json');
+    const outputPath = path.join(rootDir, '/typst/resume.json');
     fs.writeFileSync(outputPath, JSON.stringify(data, null, 2));
 
-    const pathToTemplate = path.join(rootDir, 'main.typ');
+    const pathToTemplate = path.join(rootDir, '/typst/main.typ');
     const output = q()
         .add(`typst compile ${pathToTemplate} ${outputFile}`)
         .run()

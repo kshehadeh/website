@@ -139,9 +139,9 @@ function getPropertyMultiSelect(
 
 function getPropertyRelation(
     property: PageObjectResponse['properties'][number],
-    lookupRows: PageObjectResponse[]
+    lookupRows: PageObjectResponse[],
 ) {
-    if (property.type === 'relation') {        
+    if (property.type === 'relation') {
         return property.relation.map(option => {
             const row = lookupRows.find(row => row.id === option.id);
             if (row) {
@@ -156,11 +156,13 @@ function getPropertyRelation(
                     } else if (row.properties[key].type === 'select') {
                         ob[key] = row.properties[key].select?.name;
                     } else if (row.properties[key].type === 'multi_select') {
-                        ob[key] = row.properties[key].multi_select.map(option => option.name);
+                        ob[key] = row.properties[key].multi_select.map(
+                            option => option.name,
+                        );
                     }
                 }
-                return ob
-            }            
+                return ob;
+            }
         });
     }
     return null;
@@ -228,16 +230,16 @@ function getPropertyDate(property: PageObjectResponse['properties'][number]) {
     return { start: null, end: null, duration: null };
 }
 
-async function getSkillsList(databases: Record<string, ChildDatabaseBlockObjectResponse>) {
-    return (await getRows(
-        databases['Skills'].id,
-    )) as PageObjectResponse[];
+async function getSkillsList(
+    databases: Record<string, ChildDatabaseBlockObjectResponse>,
+) {
+    return (await getRows(databases['Skills'].id)) as PageObjectResponse[];
 }
 
 // Builds the experience list
 async function buildExperienceList(
     data: Record<string, ChildDatabaseBlockObjectResponse>,
-    skills: PageObjectResponse[]
+    skills: PageObjectResponse[],
 ) {
     spinner.text = 'Reading company data';
     const companies = (await getRows(
@@ -293,7 +295,7 @@ async function buildExperienceList(
                             text: getPropertyText(bullet.properties.Name),
                             skills: getPropertyRelation(
                                 bullet.properties.Skill,
-                                skills
+                                skills,
                             ),
                         };
                     }),

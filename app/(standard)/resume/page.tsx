@@ -1,8 +1,7 @@
 import ContentLayout from '@/components/ContentLayout/ContentLayout';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
 import React from 'react';
-
-export const maxDuration = 60;
+import ResumePage from '@/components/ResumePage';
 
 export async function generateMetadata() {
     return {
@@ -15,17 +14,14 @@ export async function generateMetadata() {
     };
 }
 
-export default async function Page() {
+export default async function ResumePageServer() {
     return (
         <ContentLayout
             fullHeight={true}
             pageType={'resume'}
             sidecar={() => <Sidecar pageType="resume" />}
         >
-            <embed
-                src="https://static.karim.cloud/resume/karim-shehadeh-resume.pdf"
-                className="w-full h-full"
-            />
+            <ResumePage />
         </ContentLayout>
     );
 }

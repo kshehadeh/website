@@ -1,4 +1,4 @@
-import { fetchPageBlocks, notion } from './notion';
+import { fetchPageBlocks, getFinalFileUrls, notion } from './notion';
 import {
     BlockObjectResponse,
     PageObjectResponse,
@@ -8,7 +8,6 @@ import {
     isPageObjectResponse,
     isUrlProperty,
     isFilesProperty,
-    getFilesFromProperty,
     isTitleProperty,
 } from './notion';
 
@@ -35,18 +34,24 @@ export async function getPersonalReferences(
     if (!referencesDb) throw new Error('Unable to find references database');
 
     const rows = await fetchDatabaseRows(referencesDb.id, 10);
-    return rows.results.filter(isPageObjectResponse).map(row => ({
-        id: row.id,
-        title: isTitleProperty(row.properties.Name)
-            ? row.properties.Name.title[0].plain_text || 'Reference'
-            : '',
-        url: isUrlProperty(row.properties.URL)
-            ? row.properties.URL.url || ''
-            : '',
-        icon: isFilesProperty(row.properties.Icon)
-            ? getFilesFromProperty(row.properties.Icon)[0]
-            : '',
-    }));
+    const results = await Promise.all(
+        rows.results.filter(isPageObjectResponse).map(async row => ({
+            id: row.id,
+            title: isTitleProperty(row.properties.Name)
+                ? row.properties.Name.title[0].plain_text || 'Reference'
+                : '',
+            url: isUrlProperty(row.properties.URL)
+                ? row.properties.URL.url || ''
+                : '',
+            icon: isFilesProperty(row.properties.Icon)
+                ? (await getFinalFileUrls(row.properties.Icon, 'about')).at(
+                      0,
+                  ) || null
+                : null,
+        })),
+    );
+
+    return results;
 }
 
 export async function getAboutPage(): Promise<AboutPageInterface> {

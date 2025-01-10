@@ -37,6 +37,7 @@ const numberedListExtension: ExtensionFunc = async blocks => {
             });
         } else if (start) {
             pushList();
+            next.push(block);
         } else {
             next.push(block);
         }

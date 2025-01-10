@@ -33,7 +33,7 @@ export default createBlockRenderer<TextRichTextItemResponse>(
             );
         } else {
             // Determine where to insert newlines by checking if it starts with a newline
-            const renderedText = text.trimEnd().replaceAll('\n', `<br />`);
+            const renderedText = text.replaceAll('\n', `<br />`);
             result = (
                 <span
                     key={`text-${data.plain_text.slice(0, 5)}`}

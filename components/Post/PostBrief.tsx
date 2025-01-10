@@ -23,14 +23,14 @@ export function PostBrief({
     return (
         <article
             key={post.id}
-            className="flex flex-col justify-between"
+            className="flex flex-col justify-between m-0 p-0"
         >
             <div
-                className="h-32 grow bg-cover hidden md:block"
+                className="h-64 grow bg-cover hidden md:block"
                 style={{ backgroundImage: `url(${post.coverUrl})` }}
             />
             <div className="group relative">
-                <h3 className="mt-3 font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
+                <h3 className="md:mt-3 mt-1 font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
                     <a href={post.href}>
                         <span className="absolute inset-0" />
                         {post.title}
@@ -43,7 +43,7 @@ export function PostBrief({
                 </div>
 
                 {!hideAbstract && (
-                    <p className="mt-5 line-clampœ-3 leading-6 text-gray-600 md:h-48 overflow-hidden text-ellipsis">
+                    <p className="mt-5 line-clampœ-3 leading-6 text-gray-600 h-20 overflow-hidden text-ellipsis after:absolute after:bottom-0 after:left-0 after:right-0 after:h-16 after:bg-gradient-to-b after:to-white after:from-transparent">
                         {post.abstract}
                     </p>
                 )}

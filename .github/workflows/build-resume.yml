@@ -1,0 +1,47 @@
+name: Build Resume
+
+on:
+    workflow_dispatch:
+    schedule:
+        - cron: '0 0 * * *' # Runs every night at midnight
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+        - name: Checkout repository
+          uses: actions/checkout@v2
+
+        - name: Set up Node.js
+          uses: actions/setup-node@v2
+          with:
+            node-version: '20'
+
+        - name: Set up Bun
+          uses: oven-sh/setup-bun@v2
+
+        - name: Install dependencies
+          run: cd resume && bun install
+        
+        - name: Install Typst
+          uses: ./.github/actions/install-typst
+          with:
+            token: ${{ secrets.GITHUB_TOKEN }}
+
+        - name: Create resume dir
+          run: mkdir -p resume_output
+
+        - name: Run build script
+          run: bun run resume -- ./resume_output/karim-shehadeh-resume.pdf
+          env:
+            NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+
+        - uses: shallwefootball/s3-upload-action@master
+          with:
+            aws_key_id: ${{ secrets.R2_AWS_ACCESS_KEY_ID }}
+            aws_secret_access_key: ${{ secrets.R2_AWS_SECRET_ACCESS_KEY}}
+            endpoint: ${{ vars.R2_ENDPOINT }}
+            aws_bucket: 'personal-website'
+            source_dir: './resume_output'
+            destination_dir: 'resume'

@@ -1,10 +1,7 @@
 import ContentLayout from '@/components/ContentLayout/ContentLayout';
-import { ResumePage } from '@/components/Resume/ResumePage';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
-import timeouts from '@/lib/timeouts';
 import React from 'react';
-
-export const revalidate = timeouts.resume;
+import ResumePage from '@/components/ResumePage';
 
 export async function generateMetadata() {
     return {
@@ -17,13 +14,14 @@ export async function generateMetadata() {
     };
 }
 
-export default async function Page() {
+export default async function ResumePageServer() {
     return (
         <ContentLayout
+            fullHeight={true}
             pageType={'resume'}
             sidecar={() => <Sidecar pageType="resume" />}
         >
-            <ResumePage printerFriendly={false} />;
+            <ResumePage />
         </ContentLayout>
     );
 }

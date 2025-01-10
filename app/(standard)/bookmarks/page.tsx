@@ -1,11 +1,11 @@
 import React from 'react';
 import { getRecentBookmarks } from '@/lib/bookmarks';
 import { BookmarksList } from '@/components/BookmarksList/BookmarksList';
-import timeouts from '@/lib/timeouts';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
 import ContentLayout from '@/components/ContentLayout/ContentLayout';
 
-export const revalidate = timeouts.bookmarks;
+export const maxDuration = 60;
+export const revalidate = 3600;
 
 export async function generateMetadata() {
     return {

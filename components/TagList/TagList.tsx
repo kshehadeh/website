@@ -9,7 +9,10 @@ export function TagList({
     type: 'blog' | 'bookmarks';
 }) {
     return (
-        <div className="flex flex-wrap gap-2">
+        <div
+            className="flex gap-2 overflow-x-auto"
+            style={{ scrollbarWidth: 'none' }}
+        >
             {tags.map(tag => (
                 <Tag key={tag} text={tag} url={`/${type}/tag/${tag}`} />
             ))}

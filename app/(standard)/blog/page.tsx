@@ -1,11 +1,11 @@
 import React, { cache } from 'react';
 import { getRecentBlogPosts } from '@/lib/blog';
 import { PostList } from '@/components/Post/PostList';
-import timeouts from '@/lib/timeouts';
 import ContentLayout from '@/components/ContentLayout/ContentLayout';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
 
-export const revalidate = timeouts.blog;
+export const revalidate = 3600;
+export const maxDuration = 60;
 
 export async function generateMetadata() {
     return {
@@ -13,6 +13,9 @@ export async function generateMetadata() {
         description: `Karim Shehadeh's blog posts about web development, engineering management and more.`,
         alternates: {
             canonical: `/blog`,
+            types: {
+                'application/rss+xml': 'https://www.karim.cloud/api/rss.xml',
+            },
         },
     };
 }

@@ -3,8 +3,6 @@ import React from 'react';
 import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import NavigationItem from './NavigationItem';
-import { DocSearch } from '@docsearch/react';
-import '@docsearch/css';
 import { PageType } from '@/lib/page';
 
 const user = {
@@ -49,24 +47,6 @@ export default function Navigation({ current }: { current: PageType }) {
                             </div>
 
                             <div className="flex flex-row gap-3">
-                                <DocSearch
-                                    appId={
-                                        process.env
-                                            .NEXT_PUBLIC_ALGOLIA_APP_ID || ''
-                                    }
-                                    indexName={
-                                        process.env
-                                            .NEXT_PUBLIC_ALGOLIA_INDEX_NAME ||
-                                        ''
-                                    }
-                                    apiKey={
-                                        process.env
-                                            .NEXT_PUBLIC_ALGOLIA_SEARCH_API_KEY ||
-                                        ''
-                                    }
-                                    placeholder="Search..."
-                                />
-
                                 <div className="-mr-2 flex md:hidden">
                                     {/* Mobile menu button */}
                                     <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">

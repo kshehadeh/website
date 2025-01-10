@@ -56,3 +56,11 @@ ol ol ol {
 ol ol ol ol {
     list-style-type: lower-roman;
 }
+
+a.button {
+    @apply bg-slate-900 p-2 rounded-md text-white no-underline;
+}
+
+a.button:hover {
+    @apply bg-slate-500;
+}

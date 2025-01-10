@@ -9,6 +9,7 @@ import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 
 import type { PDFDocumentProxy } from 'pdfjs-dist';
+import Link from 'next/link';
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
     'pdfjs-dist/build/pdf.worker.min.mjs',
@@ -21,8 +22,6 @@ const options = {
 };
 
 const maxWidth = 1400;
-
-export const maxDuration = 60;
 
 const resizeObserverOptions = {};
 
@@ -49,24 +48,31 @@ export default function ResumePage() {
     useResizeObserver(containerRef, resizeObserverOptions, onResize);
 
     return (
-        <div ref={setContainerRef} className="w-full h-full">
-            <Document
-                file={file}
-                onLoadSuccess={onDocumentLoadSuccess}
-                options={options}
-            >
-                {Array.from(new Array(numPages), (_el, index) => (
-                    <Page
-                        key={`page_${index + 1}`}
-                        pageNumber={index + 1}
-                        width={
-                            containerWidth
-                                ? Math.min(containerWidth, maxWidth)
-                                : maxWidth
-                        }
-                    />
-                ))}
-            </Document>
+        <div className="relative">
+            <div className="absolute right-0 top-0 z-10">
+                <Link download className="button" href="/api/resume">
+                    Download Resume
+                </Link>
+            </div>
+            <div ref={setContainerRef} className="w-full h-full">
+                <Document
+                    file={file}
+                    onLoadSuccess={onDocumentLoadSuccess}
+                    options={options}
+                >
+                    {Array.from(new Array(numPages), (_el, index) => (
+                        <Page
+                            key={`page_${index + 1}`}
+                            pageNumber={index + 1}
+                            width={
+                                containerWidth
+                                    ? Math.min(containerWidth, maxWidth)
+                                    : maxWidth
+                            }
+                        />
+                    ))}
+                </Document>
+            </div>
         </div>
     );
 }

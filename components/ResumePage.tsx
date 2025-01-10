@@ -26,7 +26,7 @@ const maxWidth = 1400;
 const resizeObserverOptions = {};
 
 export default function ResumePage() {
-    const file = 'https://static.karim.cloud/resume/karim-shehadeh-resume.pdf';
+    const file = '/api/resume';
     const [numPages, setNumPages] = useState<number>();
     const [containerRef, setContainerRef] = useState<HTMLElement | null>(null);
     const [containerWidth, setContainerWidth] = useState<number>();

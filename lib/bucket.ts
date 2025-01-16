@@ -72,6 +72,10 @@ export async function uploadToR2(fileUrl: string, key: string) {
             );
         if (!response.body) throw new Error('Response body is undefined');
 
+        if (response.bodyUsed || response.body.locked) {
+            return
+        }
+
         const params = new PutObjectCommand({
             Bucket: bucket,
             Key: key,

@@ -1,10 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    experimental: {
-        turbo: {
-            resolveAlias: {
-                canvas: './empty-module.ts',
-            },
+    turbopack: {
+        resolveAlias: {
+            canvas: './empty-module.ts',
         },
     },
     images: {

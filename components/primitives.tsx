@@ -1,4 +1,5 @@
 import React, { PropsWithChildren } from 'react';
+import Image from 'next/image';
 
 export type PrimitiveProps<T = unknown> = T &
     PropsWithChildren & {
@@ -147,7 +148,7 @@ export function Img({
     additionalClasses,
 }: PrimitiveProps<{ src: string; alt: string }>) {
     return (
-        <img
+        <Image
             src={src}
             alt={alt}
             className={`rounded ${buildAdditionalClasses(additionalClasses)}`}

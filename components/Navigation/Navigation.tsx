@@ -4,6 +4,7 @@ import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import NavigationItem from './NavigationItem';
 import { PageType } from '@/lib/page';
+import Link from 'next/link';
 
 const user = {
     name: 'Karim Shehadeh',
@@ -26,12 +27,12 @@ export default function Navigation({ current }: { current: PageType }) {
                     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                         <div className="flex h-16 items-center justify-between">
                             <div className="flex items-center">
-                                <a
+                                <Link
                                     className="flex-shrink-0 text-gray-800 weight-100 bg-white p-2 rounded-sm"
                                     href="/"
                                 >
                                     {user.name}
-                                </a>
+                                </Link>
                                 <div className="hidden md:block">
                                     <div className="ml-10 flex items-baseline space-x-4">
                                         {navigation.map(item => (

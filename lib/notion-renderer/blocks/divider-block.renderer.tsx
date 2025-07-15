@@ -6,6 +6,5 @@ import { HR } from '@/components/primitives';
 
 export default createBlockRenderer<DividerBlockObjectResponse>(
     'divider',
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async data => <HR key={`hr-${data.id}`} />,
 );

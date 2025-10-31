@@ -5,6 +5,7 @@ import {
 import { getAbstractFromBlocks } from './blog';
 import {
     fetchPageBlocks,
+    getDataSourceIdFromDatabaseId,
     isMultiSelectProperty,
     isPageObjectResponse,
     isTitleProperty,
@@ -25,8 +26,11 @@ export function getSummaryFromBlocks(blocks: BlockObjectResponse[]): string {
 }
 
 export async function getRecentBookmarks(limit = 10): Promise<Bookmark[]> {
-    const results = await notion.databases.query({
-        database_id: process.env.NOTION_BOOKMARKS_DATABASE_ID!,
+    const dataSourceId = await getDataSourceIdFromDatabaseId(
+        process.env.NOTION_BOOKMARKS_DATABASE_ID!,
+    );
+    const results = await notion.dataSources.query({
+        data_source_id: dataSourceId,
         sorts: [
             {
                 property: 'Created',
@@ -52,8 +56,11 @@ export async function getRecentBookmarks(limit = 10): Promise<Bookmark[]> {
 }
 
 export async function getBookmarksByTag(tag: string): Promise<Bookmark[]> {
-    const results = await notion.databases.query({
-        database_id: process.env.NOTION_BOOKMARKS_DATABASE_ID!,
+    const dataSourceId = await getDataSourceIdFromDatabaseId(
+        process.env.NOTION_BOOKMARKS_DATABASE_ID!,
+    );
+    const results = await notion.dataSources.query({
+        data_source_id: dataSourceId,
         sorts: [
             {
                 property: 'Created',

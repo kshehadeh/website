@@ -4,6 +4,7 @@ import { Client } from '@notionhq/client';
 import React from 'react';
 import {
     BlockObjectResponse,
+    DatabaseObjectResponse,
     ImageBlockObjectResponse,
     PageObjectResponse,
     ParagraphBlockObjectResponse,
@@ -229,12 +230,35 @@ export async function getFinalFileUrls(
     return urls;
 }
 
-export const fetchDatabaseRows = React.cache((dbId: string, limit: number) => {
-    return notion.databases.query({
-        database_id: dbId!,
-        page_size: limit,
-    });
-});
+/**
+ * Gets the data source ID from a database ID.
+ * In the new Notion API (2025-09-03), databases can contain multiple data sources.
+ * This helper retrieves the database and returns the first data source ID.
+ * Results are cached per request using React.cache.
+ */
+export const getDataSourceIdFromDatabaseId = React.cache(
+    async (databaseId: string): Promise<string> => {
+        const database = await notion.databases.retrieve({
+            database_id: databaseId,
+        });
+        if ('data_sources' in database && database.data_sources.length > 0) {
+            return database.data_sources[0].id;
+        }
+        // Fallback: if the database doesn't have data_sources (partial response),
+        // try using the database ID as the data source ID (for backward compatibility)
+        return databaseId;
+    },
+);
+
+export const fetchDatabaseRows = React.cache(
+    async (dbId: string, limit: number) => {
+        const dataSourceId = await getDataSourceIdFromDatabaseId(dbId);
+        return notion.dataSources.query({
+            data_source_id: dataSourceId,
+            page_size: limit,
+        });
+    },
+);
 
 export const fetchPageBlocks = React.cache(async (pageId: string) => {
     return notion.blocks.children

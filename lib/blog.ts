@@ -1,11 +1,12 @@
 import {
     BlockObjectResponse,
     PageObjectResponse,
-    QueryDatabaseResponse,
+    QueryDataSourceResponse,
     RichTextItemResponse,
 } from '@notionhq/client/build/src/api-endpoints';
 import {
     fetchPageBlocks,
+    getDataSourceIdFromDatabaseId,
     getFinalFileUrl,
     isAuthorProperty,
     isDateProperty,
@@ -231,7 +232,7 @@ export async function getBlogPosts({
         property: string;
         direction: 'ascending' | 'descending';
     };
-}): Promise<QueryDatabaseResponse['results']> {
+}): Promise<QueryDataSourceResponse['results']> {
     const and = [];
     if (status && status !== 'Any') {
         and.push({
@@ -271,8 +272,11 @@ export async function getBlogPosts({
         });
     }
 
-    const results = await notion.databases.query({
-        database_id: process.env.NOTION_BLOG_POSTS_DATABASE_ID!,
+    const dataSourceId = await getDataSourceIdFromDatabaseId(
+        process.env.NOTION_BLOG_POSTS_DATABASE_ID!,
+    );
+    const results = await notion.dataSources.query({
+        data_source_id: dataSourceId,
         sorts: [
             {
                 property: sortBy.property,

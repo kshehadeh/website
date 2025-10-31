@@ -148,11 +148,16 @@ export function Img({
     height,
     width,
     additionalClasses,
-}: PrimitiveProps<{ src: string; alt: string; height?: number; width?: number }>) {
+}: PrimitiveProps<{
+    src: string;
+    alt: string;
+    height?: number;
+    width?: number;
+}>) {
     // Use provided dimensions or defaults (CSS will handle responsive sizing)
     const imageWidth = width || 800;
     const imageHeight = height || 600;
-    
+
     return (
         <Image
             src={src}

@@ -46,7 +46,9 @@ export async function Sidecar({
         const headings = getBlogPostHeadings(post);
         if (headings.length > 0) {
             headings.unshift({ level: 1, text: post.title, children: [] });
-            contextComponents.push(<TableOfContents key="table-of-contents" headings={headings} />);
+            contextComponents.push(
+                <TableOfContents key="table-of-contents" headings={headings} />,
+            );
         }
     }
 

@@ -20,7 +20,7 @@ export default function ContentLayout({
     return (
         <>
             <Navigation current={pageType} />
-            <div className="flex flex-row pb-10">
+            <div className="flex flex-row pb-24 md:pb-10">
                 <div className="md:w-3/4 w-full mt-5">
                     <Content fullHeight={fullHeight}>{children}</Content>
                 </div>

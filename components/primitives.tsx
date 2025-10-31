@@ -145,13 +145,22 @@ export function Br() {
 export function Img({
     src,
     alt,
+    height,
+    width,
     additionalClasses,
-}: PrimitiveProps<{ src: string; alt: string }>) {
+}: PrimitiveProps<{ src: string; alt: string; height?: number; width?: number }>) {
+    // Use provided dimensions or defaults (CSS will handle responsive sizing)
+    const imageWidth = width || 800;
+    const imageHeight = height || 600;
+    
     return (
         <Image
             src={src}
             alt={alt}
+            width={imageWidth}
+            height={imageHeight}
             className={`rounded ${buildAdditionalClasses(additionalClasses)}`}
+            unoptimized
         />
     );
 }

@@ -1,7 +1,8 @@
 import ContentLayout from '@/components/ContentLayout/ContentLayout';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
-import React from 'react';
-import ResumePage from '@/components/ResumePage';
+import ResumePageWrapper from '@/components/ResumePageWrapper';
+
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata() {
     return {
@@ -21,7 +22,7 @@ export default async function ResumePageServer() {
             pageType={'resume'}
             sidecar={() => <Sidecar pageType="resume" />}
         >
-            <ResumePage />
+            <ResumePageWrapper />
         </ContentLayout>
     );
 }

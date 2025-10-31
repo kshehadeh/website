@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { TextRichTextItemResponse } from '@notionhq/client/build/src/api-endpoints';
+import { RichTextItemResponse } from '@notionhq/client/build/src/api-endpoints';
 
 import { createBlockRenderer } from '../utils/create-block-renderer';
 import { A, Code } from '@/components/primitives';
 import { tailWindClassesFromTextAnnotations } from '@/lib/class-builder';
 
-export default createBlockRenderer<TextRichTextItemResponse>(
+export default createBlockRenderer<RichTextItemResponse>(
     'text',
     async data => {
         const text = data.plain_text;

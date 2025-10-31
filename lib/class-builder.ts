@@ -1,4 +1,4 @@
-import { TextRichTextItemResponse } from '@notionhq/client/build/src/api-endpoints';
+import { RichTextItemResponse } from '@notionhq/client/build/src/api-endpoints';
 
 export function tailWindClassFromTextColor(color: string) {
     switch (color) {
@@ -71,7 +71,7 @@ export function tailWindClassFromBgColor(color: string) {
 }
 
 export function tailWindClassesFromTextAnnotations(
-    annotations: TextRichTextItemResponse['annotations'],
+    annotations: RichTextItemResponse['annotations'],
 ): string[] {
     const classes = [];
     if (annotations.bold) {

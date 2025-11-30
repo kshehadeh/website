@@ -241,3 +241,36 @@ a.button:hover {
 .animate-progress {
     animation: progress 2s ease-in-out infinite;
 }
+
+/* Heading with rotated background */
+.heading-with-rotated-bg {
+    z-index: 1;
+    /* Light mode: white text on black background (default) */
+    color: #ffffff !important;
+}
+
+.heading-with-rotated-bg__background {
+    position: absolute;
+    top: -0.15rem;
+    left: -0.25rem;
+    right: -0.25rem;
+    bottom: -0.15rem;
+    border-radius: 0.125rem;
+    z-index: -10;
+    transition: transform 0.5s ease-out;
+    /* Light mode: black background (default) */
+    background-color: #000000;
+}
+
+.heading-with-rotated-bg--tilted .heading-with-rotated-bg__background {
+    transform: rotate(-2deg);
+}
+
+/* Dark mode: black text on white background */
+.dark .heading-with-rotated-bg {
+    color: #000000 !important;
+}
+
+.dark .heading-with-rotated-bg__background {
+    background-color: #ffffff;
+}

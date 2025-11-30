@@ -1,7 +1,4 @@
-'use client';
-
-import React, { useState } from 'react';
-import { useTheme } from 'next-themes';
+import React from 'react';
 import { cn } from '@/lib/util';
 
 interface HeadingWithRotatedBgProps
@@ -18,84 +15,16 @@ export function HeadingWithRotatedBg({
     tilted = true,
     ...props
 }: HeadingWithRotatedBgProps) {
-    // Start with minimal rotation to avoid flash on prerendered pages
-    const [rotation, setRotation] = useState(-2);
-    const { resolvedTheme } = useTheme();
-
-    const nodeRef = React.useRef<HTMLHeadingElement | null>(null);
-
-    const calculateRotation = React.useCallback(() => {
-        if (nodeRef.current && tilted) {
-            const text = nodeRef.current.textContent || '';
-            const length = text.length;
-            // Maximum rotation is 20 degrees, decreases proportionally with length
-            // Formula: rotation = 20 * (1 - min(length / 100, 0.9))
-            // This gives: 20deg for very short, decreasing to ~2deg for very long
-            const maxLength = 100; // At 100 chars, rotation is minimal
-            const ratio = Math.min(length / maxLength, 0.9);
-            const calculatedRotation = -20 * (1 - ratio);
-            setRotation(Math.max(calculatedRotation, -2)); // Minimum of 2 degrees
-        } else {
-            setRotation(0); // No rotation when untilted
-        }
-    }, [tilted]);
-
-    const headingRef = React.useCallback(
-        (node: HTMLHeadingElement | null) => {
-            nodeRef.current = node;
-            if (node) {
-                calculateRotation();
-            }
-        },
-        [calculateRotation],
-    );
-
-    // Recalculate when children change
-    React.useEffect(() => {
-        calculateRotation();
-    }, [children, calculateRotation]);
-
-    // Determine background and text colors based on theme
-    // Dark mode: black text on white background
-    // Light mode: white text on black background
-    const bgColor =
-        resolvedTheme === 'dark'
-            ? '#ffffff' // White background in dark mode
-            : resolvedTheme === 'light'
-              ? '#000000' // Black background in light mode
-              : '#ffffff'; // Default to dark mode (white background)
-
-    const textColor =
-        resolvedTheme === 'dark'
-            ? '#000000' // Black text in dark mode
-            : resolvedTheme === 'light'
-              ? '#ffffff' // White text in light mode
-              : '#000000'; // Default to dark mode (black text)
-
     return (
         <Component
-            ref={headingRef}
-            className={cn('relative inline-block', className)}
-            style={
-                {
-                    '--rotation': `${rotation}deg`,
-                    zIndex: 1,
-                    color: textColor,
-                } as React.CSSProperties
-            }
+            className={cn(
+                'heading-with-rotated-bg relative inline-block',
+                tilted && 'heading-with-rotated-bg--tilted',
+                className,
+            )}
             {...props}
         >
-            <span
-                className="absolute -z-10 rounded-sm transition-transform duration-500 ease-out"
-                style={{
-                    top: '-0.15rem',
-                    left: '-0.25rem',
-                    right: '-0.25rem',
-                    bottom: '-0.15rem',
-                    transform: tilted ? `rotate(var(--rotation))` : 'none',
-                    backgroundColor: bgColor,
-                }}
-            />
+            <span className="heading-with-rotated-bg__background" />
             {children}
         </Component>
     );

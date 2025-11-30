@@ -15,7 +15,6 @@ export async function generateMetadata(props: {
     cacheLife({ stale: 3600, revalidate: 3600 });
     cacheTag(`bookmarks-tag-metadata-${params.tag}`);
 
-
     const { tag } = params;
 
     return {

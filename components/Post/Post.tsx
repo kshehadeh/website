@@ -11,7 +11,7 @@ export async function Post({ post }: { post: BlogPostFull }) {
     return (
         <>
             <div className="mb-10">
-                <HeadingWithRotatedBg 
+                <HeadingWithRotatedBg
                     tilted={true}
                     className="text-4xl font-bold text-foreground tracking-tight mb-4 font-mono"
                 >

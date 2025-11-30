@@ -23,17 +23,12 @@ export async function generateMetadata() {
     };
 }
 
-const getPageData = cache(async () => {
-    const posts = await getRecentBlogPosts(12, true);
-    return { posts };
-});
-
 export default async function MainBlogPage() {
     'use cache';
     cacheLife({ stale: 3600, revalidate: 3600 });
     cacheTag('blog-page');
 
-    const { posts } = await getPageData();
+    const posts = await getRecentBlogPosts(12, true);
 
     return (
         <ContentLayout

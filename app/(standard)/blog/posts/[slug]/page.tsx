@@ -7,11 +7,6 @@ import { Sidecar } from '@/components/Sidecar/Sidecar';
 import { Metadata } from 'next';
 import { cacheLife, cacheTag } from 'next/cache';
 
-const getPageData = cache(async (slug: string) => {
-    const post = await getBlogPostBySlug(decodeURIComponent(slug));
-    return { post };
-});
-
 export async function generateMetadata(
     props: Readonly<{ params: Promise<{ slug: string }> }>,
 ): Promise<Metadata> {
@@ -20,7 +15,7 @@ export async function generateMetadata(
     cacheLife({ stale: 3600, revalidate: 3600 });
     cacheTag(`blog-post-metdata-${params.slug}`);
 
-    const { post } = await getPageData(params.slug);
+    const post = await getBlogPostBySlug(decodeURIComponent(params.slug));
     return {
         title: `Karim Shehadeh - ${post?.title}`,
         description: `${post?.abstract}`,
@@ -46,7 +41,7 @@ export default async function Page(
     cacheLife({ stale: 3600, revalidate: 3600 });
     cacheTag(`blog-post-page-${params.slug}`);
 
-    const { post } = await getPageData(params.slug);
+    const post = await getBlogPostBySlug(decodeURIComponent(params.slug));
     if (!post) {
         notFound();
     } else {

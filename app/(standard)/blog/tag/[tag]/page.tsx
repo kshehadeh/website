@@ -1,14 +1,9 @@
-import React, { cache } from 'react';
+import React from 'react';
 import { getBlogPostsByTag } from '@/lib/blog';
 import { PostList } from '@/components/Post/PostList';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
 import ContentLayout from '@/components/ContentLayout/ContentLayout';
 import { cacheLife, cacheTag } from 'next/cache';
-
-const getPageData = cache(async (tag: string) => {
-    const posts = await getBlogPostsByTag([tag]);
-    return { posts };
-});
 
 export async function generateMetadata(props: {
     params: Promise<{ tag: string }>;
@@ -42,7 +37,7 @@ export default async function PostsByTagPage(props: {
 
     const { tag } = params;
 
-    const { posts } = await getPageData(tag);
+    const posts = await getBlogPostsByTag([tag]);
     return (
         <ContentLayout
             pageType={'tags'}

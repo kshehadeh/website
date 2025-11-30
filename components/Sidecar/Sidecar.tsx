@@ -20,7 +20,7 @@ export function ActiveLink({
     return (
         <Link
             href={href}
-            className={`${className ?? ''}  before:content-['→_']`}
+            className={`${className ?? ''}`}
         >
             {children}
         </Link>

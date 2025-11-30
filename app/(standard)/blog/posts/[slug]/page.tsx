@@ -18,8 +18,8 @@ export async function generateMetadata(
     'use cache';
     const params = await props.params;
     cacheLife({ stale: 3600, revalidate: 3600 });
-    cacheTag(`blog-post-page-${params.slug}`);
-    
+    cacheTag(`blog-post-metdata-${params.slug}`);
+
     const { post } = await getPageData(params.slug);
     return {
         title: `Karim Shehadeh - ${post?.title}`,
@@ -41,7 +41,11 @@ export async function generateMetadata(
 export default async function Page(
     props: Readonly<{ params: Promise<{ slug: string }> }>,
 ) {
+    'use cache';
     const params = await props.params;
+    cacheLife({ stale: 3600, revalidate: 3600 });
+    cacheTag(`blog-post-page-${params.slug}`);
+
     const { post } = await getPageData(params.slug);
     if (!post) {
         notFound();

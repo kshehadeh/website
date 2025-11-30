@@ -10,7 +10,11 @@ export const maxDuration = 60;
 export async function generateMetadata(props: {
     params: Promise<{ tag: string }>;
 }) {
+    'use cache';
     const params = await props.params;
+    cacheLife({ stale: 3600, revalidate: 3600 });
+    cacheTag(`bookmarks-tag-metadata-${params.tag}`);
+
 
     const { tag } = params;
 

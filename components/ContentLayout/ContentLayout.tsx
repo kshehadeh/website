@@ -21,22 +21,26 @@ export default function ContentLayout({
     const sidecarContent = sidecar();
     const hasSidecar = sidecarContent !== null;
     const isHomePage = pageType === 'home';
-    
+
     return (
         <div className="min-h-screen bg-background">
             <Navigation current={pageType} />
             <div className="flex flex-row pb-24 md:pb-10">
-                <div className={cn(
-                    hasSidecar ? 'md:w-3/4' : 'w-full',
-                    'w-full',
-                    !isHomePage && 'mt-5'
-                )}>
+                <div
+                    className={cn(
+                        hasSidecar ? 'md:w-3/4' : 'w-full',
+                        'w-full',
+                        !isHomePage && 'mt-5',
+                    )}
+                >
                     <Content fullHeight={fullHeight} noPadding={isHomePage}>
                         {children}
                     </Content>
                 </div>
                 {hasSidecar && (
-                    <div className="md:w-1/4 md:block mt-5 hidden">{sidecarContent}</div>
+                    <div className="md:w-1/4 md:block mt-5 hidden">
+                        {sidecarContent}
+                    </div>
                 )}
             </div>
             <Footer />

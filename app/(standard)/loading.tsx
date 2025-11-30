@@ -33,14 +33,24 @@ export default function Loading() {
 
                 {/* Floating geometric shapes */}
                 <div className="absolute top-1/3 right-1/3 w-20 h-20 border-2 border-accent/30 rotate-45 animate-float"></div>
-                <div className="absolute bottom-1/3 left-1/3 w-16 h-16 border-2 border-accent/25 rotate-12 animate-float" style={{ animationDelay: '1s', animationDuration: '4s' }}></div>
-                <div className="absolute top-1/2 right-1/2 w-12 h-12 border-2 border-primary/20 rotate-45 animate-float" style={{ animationDelay: '2s', animationDuration: '5s' }}></div>
+                <div
+                    className="absolute bottom-1/3 left-1/3 w-16 h-16 border-2 border-accent/25 rotate-12 animate-float"
+                    style={{ animationDelay: '1s', animationDuration: '4s' }}
+                ></div>
+                <div
+                    className="absolute top-1/2 right-1/2 w-12 h-12 border-2 border-primary/20 rotate-45 animate-float"
+                    style={{ animationDelay: '2s', animationDuration: '5s' }}
+                ></div>
 
                 {/* Hexagon pattern */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40">
-                    <div className="w-full h-full border-2 border-muted-foreground/20 rotate-12 animate-pulse" style={{
-                        clipPath: 'polygon(30% 0%, 70% 0%, 100% 50%, 70% 100%, 30% 100%, 0% 50%)'
-                    }}></div>
+                    <div
+                        className="w-full h-full border-2 border-muted-foreground/20 rotate-12 animate-pulse"
+                        style={{
+                            clipPath:
+                                'polygon(30% 0%, 70% 0%, 100% 50%, 70% 100%, 30% 100%, 0% 50%)',
+                        }}
+                    ></div>
                 </div>
             </div>
 
@@ -59,9 +69,18 @@ export default function Loading() {
                         Loading
                     </span>
                     <div className="flex gap-1">
-                        <span className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0s' }}></span>
-                        <span className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></span>
-                        <span className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></span>
+                        <span
+                            className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce"
+                            style={{ animationDelay: '0s' }}
+                        ></span>
+                        <span
+                            className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce"
+                            style={{ animationDelay: '0.2s' }}
+                        ></span>
+                        <span
+                            className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce"
+                            style={{ animationDelay: '0.4s' }}
+                        ></span>
                     </div>
                 </div>
 
@@ -73,4 +92,3 @@ export default function Loading() {
         </div>
     );
 }
-

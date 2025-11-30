@@ -13,7 +13,10 @@ const getPageData = cache(async (tag: string) => {
 export async function generateMetadata(props: {
     params: Promise<{ tag: string }>;
 }) {
+    'use cache';
     const params = await props.params;
+    cacheLife({ stale: 3600, revalidate: 3600 });
+    cacheTag(`blog-tag-metadata-${params.tag}`);
 
     const { tag } = params;
 

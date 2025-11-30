@@ -10,16 +10,28 @@ export async function RecentBookmarks() {
     return (
         <Card className="mb-4">
             <CardHeader>
-                <HeadingWithRotatedBg as="h2" className="text-base font-semibold font-mono">
+                <HeadingWithRotatedBg
+                    as="h2"
+                    className="text-base font-semibold font-mono"
+                >
                     Around The Web
                 </HeadingWithRotatedBg>
             </CardHeader>
             <CardContent>
                 <ul className="list-none">
                     {recentBookmarks.map(p => (
-                        <li key={p.id} className="leading-8 flex items-start gap-2">
-                            <span className="text-muted-foreground mt-1">→</span>
-                            <Link href={`${p.url}`} target="_blank" className="hover:text-primary transition-colors">
+                        <li
+                            key={p.id}
+                            className="leading-8 flex items-start gap-2"
+                        >
+                            <span className="text-muted-foreground mt-1">
+                                →
+                            </span>
+                            <Link
+                                href={`${p.url}`}
+                                target="_blank"
+                                className="hover:text-primary transition-colors"
+                            >
                                 {p.title}
                             </Link>
                         </li>

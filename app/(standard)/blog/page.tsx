@@ -7,6 +7,10 @@ import { HeadingWithRotatedBg } from '@/components/HeadingWithRotatedBg';
 import { cacheLife, cacheTag } from 'next/cache';
 
 export async function generateMetadata() {
+    'use cache';
+    cacheLife({ stale: 3600, revalidate: 3600 });
+    cacheTag('blog-page-metadata');
+
     return {
         title: `Karim Shehadeh - Blog`,
         description: `Karim Shehadeh's blog posts about web development, engineering management and more.`,
@@ -28,7 +32,7 @@ export default async function MainBlogPage() {
     'use cache';
     cacheLife({ stale: 3600, revalidate: 3600 });
     cacheTag('blog-page');
-    
+
     const { posts } = await getPageData();
 
     return (

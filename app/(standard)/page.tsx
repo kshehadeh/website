@@ -7,6 +7,10 @@ import { PostHero } from '@/components/Post/PostHero';
 import { cacheLife, cacheTag } from 'next/cache';
 
 export async function generateMetadata(): Promise<Metadata> {
+    'use cache';
+    cacheLife({ stale: 3600, revalidate: 3600 });
+    cacheTag('home-page-metadata');
+
     return {
         alternates: {
             canonical: '/',
@@ -28,12 +32,9 @@ export default async function Home() {
     cacheTag('home-page');
     const { recent } = await getPageData();
     const [heroPost, ...gridPosts] = recent;
-    
+
     return (
-        <ContentLayout
-            pageType={'home'}
-            sidecar={() => null}
-        >
+        <ContentLayout pageType={'home'} sidecar={() => null}>
             {heroPost && <PostHero post={heroPost} />}
             {gridPosts.length > 0 && <PostList posts={gridPosts} />}
         </ContentLayout>

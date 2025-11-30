@@ -15,21 +15,32 @@ export async function RecentPosts({
     return (
         <Card className="mb-4">
             <CardHeader>
-                <HeadingWithRotatedBg as="h2" className="text-base font-semibold font-mono">
+                <HeadingWithRotatedBg
+                    as="h2"
+                    className="text-base font-semibold font-mono"
+                >
                     Recent Posts
                 </HeadingWithRotatedBg>
             </CardHeader>
             <CardContent>
                 <ul className="list-none">
                     {recentPosts.map(p => (
-                        <li key={p.id} className="leading-8 flex items-start gap-2">
-                            <span className="text-muted-foreground mt-1">→</span>
+                        <li
+                            key={p.id}
+                            className="leading-8 flex items-start gap-2"
+                        >
+                            <span className="text-muted-foreground mt-1">
+                                →
+                            </span>
                             {currentPost && p.slug === currentPost?.slug ? (
                                 <ActiveLink href={`/blog/posts/${p.slug}`}>
                                     {p.title}
                                 </ActiveLink>
                             ) : (
-                                <Link href={`/blog/posts/${p.slug}`} className="hover:text-primary transition-colors">
+                                <Link
+                                    href={`/blog/posts/${p.slug}`}
+                                    className="hover:text-primary transition-colors"
+                                >
                                     {p.title}
                                 </Link>
                             )}

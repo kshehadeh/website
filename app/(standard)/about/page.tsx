@@ -11,6 +11,10 @@ import { HeadingWithRotatedBg } from '@/components/HeadingWithRotatedBg';
 import { cacheLife, cacheTag } from 'next/cache';
 
 export async function generateMetadata() {
+    'use cache';
+    cacheLife({ stale: 3600, revalidate: 3600 });
+    cacheTag('about-page-metadata');
+
     return {
         title: `Karim Shehadeh - About Me`,
         description: `A little bit about Karim Shehadeh and his journey.`,
@@ -24,7 +28,7 @@ export default async function AboutMePage() {
     'use cache';
     cacheLife({ stale: 3600, revalidate: 3600 });
     cacheTag('about-page');
-    
+
     const page = await getAboutPage();
     const references = page ? await getPersonalReferences(page) : [];
     const renderer = new NotionRenderer({ client: notion });

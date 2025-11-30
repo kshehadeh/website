@@ -9,7 +9,10 @@ export function OtherThings({ pageType }: { pageType: PageType }) {
     return (
         <Card className="mb-4">
             <CardHeader>
-                <HeadingWithRotatedBg as="h2" className="text-base font-semibold font-mono">
+                <HeadingWithRotatedBg
+                    as="h2"
+                    className="text-base font-semibold font-mono"
+                >
                     Other Things
                 </HeadingWithRotatedBg>
             </CardHeader>
@@ -20,7 +23,12 @@ export function OtherThings({ pageType }: { pageType: PageType }) {
                         {'blog' === pageType ? (
                             <ActiveLink href="/blog">My Blog</ActiveLink>
                         ) : (
-                            <Link href="/blog" className="hover:text-primary transition-colors">My Blog</Link>
+                            <Link
+                                href="/blog"
+                                className="hover:text-primary transition-colors"
+                            >
+                                My Blog
+                            </Link>
                         )}
                     </li>
                     <li className="leading-8 flex items-start gap-2">
@@ -28,7 +36,12 @@ export function OtherThings({ pageType }: { pageType: PageType }) {
                         {'resume' === pageType ? (
                             <ActiveLink href="/resume">My Resume</ActiveLink>
                         ) : (
-                            <Link href="/resume" className="hover:text-primary transition-colors">My Resume</Link>
+                            <Link
+                                href="/resume"
+                                className="hover:text-primary transition-colors"
+                            >
+                                My Resume
+                            </Link>
                         )}
                     </li>
                     <li className="leading-8 flex items-start gap-2">
@@ -36,7 +49,12 @@ export function OtherThings({ pageType }: { pageType: PageType }) {
                         {'about' === pageType ? (
                             <ActiveLink href="/about">About Me</ActiveLink>
                         ) : (
-                            <Link href="/about" className="hover:text-primary transition-colors">About Me</Link>
+                            <Link
+                                href="/about"
+                                className="hover:text-primary transition-colors"
+                            >
+                                About Me
+                            </Link>
                         )}
                     </li>
                 </ul>

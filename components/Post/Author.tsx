@@ -17,12 +17,17 @@ export function Author({ post }: { post: BlogPostBrief }) {
             />
             <div className="leading-6">
                 <p className="text-foreground font-medium">
-                    <Link href={post.author.href} className="hover:text-primary transition-colors">
+                    <Link
+                        href={post.author.href}
+                        className="hover:text-primary transition-colors"
+                    >
                         <span className="absolute inset-0" />
                         {post.author.name}
                     </Link>
                 </p>
-                <p className="text-muted-foreground text-sm">{post.author.role}</p>
+                <p className="text-muted-foreground text-sm">
+                    {post.author.role}
+                </p>
             </div>
         </div>
     );

@@ -8,12 +8,14 @@ interface HeadingWithRotatedBgProps
     extends React.HTMLAttributes<HTMLHeadingElement> {
     as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
     children: React.ReactNode;
+    tilted?: boolean;
 }
 
 export function HeadingWithRotatedBg({
     as: Component = 'h1',
     children,
     className,
+    tilted = true,
     ...props
 }: HeadingWithRotatedBgProps) {
     // Start with minimal rotation to avoid flash on prerendered pages
@@ -23,7 +25,7 @@ export function HeadingWithRotatedBg({
     const nodeRef = React.useRef<HTMLHeadingElement | null>(null);
 
     const calculateRotation = React.useCallback(() => {
-        if (nodeRef.current) {
+        if (nodeRef.current && tilted) {
             const text = nodeRef.current.textContent || '';
             const length = text.length;
             // Maximum rotation is 20 degrees, decreases proportionally with length
@@ -33,15 +35,20 @@ export function HeadingWithRotatedBg({
             const ratio = Math.min(length / maxLength, 0.9);
             const calculatedRotation = -20 * (1 - ratio);
             setRotation(Math.max(calculatedRotation, -2)); // Minimum of 2 degrees
+        } else {
+            setRotation(0); // No rotation when untilted
         }
-    }, []);
+    }, [tilted]);
 
-    const headingRef = React.useCallback((node: HTMLHeadingElement | null) => {
-        nodeRef.current = node;
-        if (node) {
-            calculateRotation();
-        }
-    }, [calculateRotation]);
+    const headingRef = React.useCallback(
+        (node: HTMLHeadingElement | null) => {
+            nodeRef.current = node;
+            if (node) {
+                calculateRotation();
+            }
+        },
+        [calculateRotation],
+    );
 
     // Recalculate when children change
     React.useEffect(() => {
@@ -81,11 +88,11 @@ export function HeadingWithRotatedBg({
             <span
                 className="absolute -z-10 rounded-sm transition-transform duration-500 ease-out"
                 style={{
-                    top: '-0.25rem',
-                    left: '-0.5rem',
-                    right: '-0.5rem',
-                    bottom: '-0.25rem',
-                    transform: `rotate(var(--rotation)) scale(1.3)`,
+                    top: '-0.15rem',
+                    left: '-0.25rem',
+                    right: '-0.25rem',
+                    bottom: '-0.15rem',
+                    transform: tilted ? `rotate(var(--rotation))` : 'none',
                     backgroundColor: bgColor,
                 }}
             />
@@ -93,4 +100,3 @@ export function HeadingWithRotatedBg({
         </Component>
     );
 }
-

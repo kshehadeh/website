@@ -26,7 +26,10 @@ export function TableOfContents({ headings }: { headings: Heading[] }) {
     return (
         <Card className="mb-4">
             <CardHeader>
-                <HeadingWithRotatedBg as="h2" className="text-base font-semibold font-mono">
+                <HeadingWithRotatedBg
+                    as="h2"
+                    className="text-base font-semibold font-mono"
+                >
                     Table of Contents
                 </HeadingWithRotatedBg>
             </CardHeader>

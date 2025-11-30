@@ -7,7 +7,7 @@ import { HeadingWithRotatedBg } from '../HeadingWithRotatedBg';
 
 export function PostHero({ post }: { post: BlogPostBrief }) {
     return (
-        <article className="mb-16 -mx-2 md:-mx-5">
+        <article className="mb-16">
             <div className="relative w-full h-[400px] md:h-[600px] overflow-hidden mb-6">
                 <Link
                     href={post.href}
@@ -34,13 +34,13 @@ export function PostHero({ post }: { post: BlogPostBrief }) {
                     </div>
                 </Link>
             </div>
-            <div className="space-y-4 px-6 md:px-8">
+            <div className="space-y-4 px-8">
                 <div className="flex items-center gap-x-4">
                     <PostTime post={post} />
                     <TagList tags={post.tags} type={'blog'} />
                 </div>
                 {post.abstract && (
-                    <p className="text-lg text-muted-foreground leading-relaxed max-w-3xl">
+                    <p className="text-lg text-muted-foreground leading-relaxed">
                         {post.abstract}
                     </p>
                 )}

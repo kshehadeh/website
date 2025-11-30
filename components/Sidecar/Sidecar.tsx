@@ -18,10 +18,7 @@ export function ActiveLink({
     className?: string;
 }) {
     return (
-        <Link
-            href={href}
-            className={`${className ?? ''}`}
-        >
+        <Link href={href} className={`${className ?? ''}`}>
             {children}
         </Link>
     );

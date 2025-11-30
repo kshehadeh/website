@@ -50,9 +50,9 @@ export default function ResumePage() {
 
     return (
         <div className="relative">
-            <div className="absolute right-0 top-0 z-10">
-                <Button asChild>
-                    <Link download href="/api/resume">
+            <div className="absolute right-0 top-0 z-10 m-2">
+                <Button asChild variant="secondary">
+                    <Link download href="/api/resume" className="no-underline">
                         Download Resume
                     </Link>
                 </Button>

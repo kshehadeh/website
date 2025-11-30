@@ -5,6 +5,7 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import NavigationItem from './NavigationItem';
 import { PageType } from '@/lib/page';
 import Link from 'next/link';
+import { ThemeToggle } from '@/components/theme-toggle';
 
 const user = {
     name: 'Karim Shehadeh',
@@ -21,14 +22,14 @@ const navigation = [
 
 export default function Navigation({ current }: { current: PageType }) {
     return (
-        <Disclosure as="nav" className="bg-gray-800">
+        <Disclosure as="nav" className="border-b border-border bg-background">
             {({ open }) => (
                 <>
                     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                         <div className="flex h-16 items-center justify-between">
                             <div className="flex items-center">
                                 <Link
-                                    className="flex-shrink-0 text-gray-800 weight-100 bg-white p-2 rounded-sm"
+                                    className="flex-shrink-0 font-semibold text-foreground bg-card border border-border p-2 rounded-sm hover:bg-accent transition-colors font-mono"
                                     href="/"
                                 >
                                     {user.name}
@@ -47,10 +48,11 @@ export default function Navigation({ current }: { current: PageType }) {
                                 </div>
                             </div>
 
-                            <div className="flex flex-row gap-3">
+                            <div className="flex flex-row gap-3 items-center">
+                                <ThemeToggle />
                                 <div className="-mr-2 flex md:hidden">
                                     {/* Mobile menu button */}
-                                    <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                                    <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-muted-foreground hover:bg-accent hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
                                         <span className="absolute -inset-0.5" />
                                         <span className="sr-only">
                                             Open main menu
@@ -72,7 +74,7 @@ export default function Navigation({ current }: { current: PageType }) {
                         </div>
                     </div>
 
-                    <Disclosure.Panel className="md:hidden">
+                    <Disclosure.Panel className="md:hidden border-t border-border">
                         <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
                             {navigation.map(item => (
                                 <NavigationItem

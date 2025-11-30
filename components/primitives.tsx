@@ -1,5 +1,7 @@
 import React, { PropsWithChildren } from 'react';
 import Image from 'next/image';
+import { cn } from '@/lib/util';
+import { Separator } from '@/components/ui/separator';
 
 export type PrimitiveProps<T = unknown> = T &
     PropsWithChildren & {
@@ -13,7 +15,10 @@ function buildAdditionalClasses(additionalClasses?: string[]) {
 export function UL({ children, additionalClasses }: PrimitiveProps) {
     return (
         <ul
-            className={`list-inside mt-2 mb-2 leading-normal text-gray-600  ${buildAdditionalClasses(additionalClasses)}`}
+            className={cn(
+                'list-inside mt-2 mb-2 leading-normal text-foreground',
+                buildAdditionalClasses(additionalClasses),
+            )}
         >
             {children}
         </ul>
@@ -23,7 +28,10 @@ export function UL({ children, additionalClasses }: PrimitiveProps) {
 export function OL({ children, additionalClasses }: PrimitiveProps) {
     return (
         <ol
-            className={`list-inside mt-2 mb-2 leading-normal text-gray-600  ${buildAdditionalClasses(additionalClasses)}`}
+            className={cn(
+                'list-inside mt-2 mb-2 leading-normal text-foreground',
+                buildAdditionalClasses(additionalClasses),
+            )}
         >
             {children}
         </ol>
@@ -33,7 +41,10 @@ export function OL({ children, additionalClasses }: PrimitiveProps) {
 export function LI({ children, additionalClasses }: PrimitiveProps) {
     return (
         <li
-            className={`mt-2 mb-2 leading-normal text-gray-600  ${buildAdditionalClasses(additionalClasses)}`}
+            className={cn(
+                'mt-2 mb-2 leading-normal text-foreground',
+                buildAdditionalClasses(additionalClasses),
+            )}
         >
             {children}
         </li>
@@ -48,7 +59,10 @@ export function A({
 }: PrimitiveProps<{ href: string; target?: string }>) {
     return (
         <a
-            className={`text-blue-600 hover:text-purple-60 ${buildAdditionalClasses(additionalClasses)}`}
+            className={cn(
+                'text-primary hover:text-primary/80 underline-offset-4 hover:underline',
+                buildAdditionalClasses(additionalClasses),
+            )}
             href={href}
             target={target}
         >
@@ -59,8 +73,8 @@ export function A({
 
 export function HR({ additionalClasses }: PrimitiveProps) {
     return (
-        <hr
-            className={`my-4 border-gray-200 ${buildAdditionalClasses(additionalClasses)}`}
+        <Separator
+            className={cn('my-4', buildAdditionalClasses(additionalClasses))}
         />
     );
 }
@@ -68,7 +82,10 @@ export function HR({ additionalClasses }: PrimitiveProps) {
 export function Blockquote({ children, additionalClasses }: PrimitiveProps) {
     return (
         <blockquote
-            className={`border-l-4 border-gray-200 pl-4 my-4 ${buildAdditionalClasses(additionalClasses)}`}
+            className={cn(
+                'border-l-4 border-muted-foreground/30 pl-4 my-4 text-muted-foreground italic',
+                buildAdditionalClasses(additionalClasses),
+            )}
         >
             {children}
         </blockquote>
@@ -82,7 +99,10 @@ export function Code({
 }: PrimitiveProps<{ language: string }>) {
     return (
         <code
-            className={`text-sm bg-gray-100 p-1 rounded ${buildAdditionalClasses(additionalClasses)}`}
+            className={cn(
+                'text-sm bg-muted text-foreground p-1 rounded font-mono',
+                buildAdditionalClasses(additionalClasses),
+            )}
             data-lang={language}
         >
             {children}
@@ -93,7 +113,10 @@ export function Code({
 export function Pre({ children, additionalClasses }: PrimitiveProps) {
     return (
         <pre
-            className={`bg-gray-100  p-1 rounded ${buildAdditionalClasses(additionalClasses)}`}
+            className={cn(
+                'bg-muted text-foreground p-4 rounded overflow-x-auto font-mono text-sm',
+                buildAdditionalClasses(additionalClasses),
+            )}
         >
             {children}
         </pre>
@@ -103,7 +126,10 @@ export function Pre({ children, additionalClasses }: PrimitiveProps) {
 export function InlineCode({ children, additionalClasses }: PrimitiveProps) {
     return (
         <code
-            className={`text-sm bg-gray-100  p-1 rounded ${buildAdditionalClasses(additionalClasses)}`}
+            className={cn(
+                'text-sm bg-muted text-foreground px-1.5 py-0.5 rounded font-mono',
+                buildAdditionalClasses(additionalClasses),
+            )}
         >
             {children}
         </code>
@@ -113,7 +139,10 @@ export function InlineCode({ children, additionalClasses }: PrimitiveProps) {
 export function Strong({ children, additionalClasses }: PrimitiveProps) {
     return (
         <strong
-            className={`font-semibold ${buildAdditionalClasses(additionalClasses)}`}
+            className={cn(
+                'font-semibold text-foreground',
+                buildAdditionalClasses(additionalClasses),
+            )}
         >
             {children}
         </strong>
@@ -207,7 +236,10 @@ export function TR({ children, additionalClasses }: PrimitiveProps) {
 export function TH({ children, additionalClasses }: PrimitiveProps) {
     return (
         <th
-            className={`border px-4 py-2 ${buildAdditionalClasses(additionalClasses)}`}
+            className={cn(
+                'border border-border px-4 py-2 bg-muted font-semibold text-foreground',
+                buildAdditionalClasses(additionalClasses),
+            )}
         >
             {children}
         </th>
@@ -217,7 +249,10 @@ export function TH({ children, additionalClasses }: PrimitiveProps) {
 export function TD({ children, additionalClasses }: PrimitiveProps) {
     return (
         <td
-            className={`border px-4 py-2 ${buildAdditionalClasses(additionalClasses)}`}
+            className={cn(
+                'border border-border px-4 py-2 text-foreground',
+                buildAdditionalClasses(additionalClasses),
+            )}
         >
             {children}
         </td>
@@ -259,7 +294,10 @@ export function Emoji({ emoji }: { emoji: string }) {
 export function Details({ children, additionalClasses }: PrimitiveProps) {
     return (
         <details
-            className={`bg-white text-gray-700 p-4 mt-4 mb-4 rounded shadow ${buildAdditionalClasses(additionalClasses)}`}
+            className={cn(
+                'bg-card text-card-foreground p-4 mt-4 mb-4 rounded border border-border shadow-sm',
+                buildAdditionalClasses(additionalClasses),
+            )}
         >
             {children}
         </details>
@@ -269,7 +307,10 @@ export function Details({ children, additionalClasses }: PrimitiveProps) {
 export function Summary({ children, additionalClasses }: PrimitiveProps) {
     return (
         <summary
-            className={`cursor-pointer text-lg font-bold mb-2 text-gray-700 ${buildAdditionalClasses(additionalClasses)}`}
+            className={cn(
+                'cursor-pointer text-lg font-semibold mb-2 text-foreground',
+                buildAdditionalClasses(additionalClasses),
+            )}
         >
             {children}
         </summary>
@@ -287,7 +328,10 @@ export function Figure({ children, additionalClasses }: PrimitiveProps) {
 export function Mention({ children, additionalClasses }: PrimitiveProps) {
     return (
         <span
-            className={`bg-gray-200 rounded px-1 ${buildAdditionalClasses(additionalClasses)}`}
+            className={cn(
+                'bg-muted text-muted-foreground rounded px-1.5 py-0.5',
+                buildAdditionalClasses(additionalClasses),
+            )}
         >
             {children}
         </span>

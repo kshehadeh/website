@@ -1,5 +1,5 @@
 'use client';
-import { cls } from '@/lib/util';
+import { cn } from '@/lib/util';
 import { Disclosure } from '@headlessui/react';
 import React from 'react';
 
@@ -17,11 +17,11 @@ export default function NavigationItem({
             key={item.name}
             as="a"
             href={item.href}
-            className={cls(
+            className={cn(
                 current
-                    ? 'bg-gray-900 text-white'
-                    : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                'block rounded-md px-3 py-2 text-base font-medium',
+                    ? 'bg-accent text-accent-foreground font-medium'
+                    : 'text-muted-foreground hover:bg-accent hover:text-foreground',
+                'block rounded-md px-3 py-2 text-base font-medium transition-colors font-mono text-left',
             )}
             aria-current={current ? 'page' : undefined}
         >
@@ -31,11 +31,11 @@ export default function NavigationItem({
         <a
             key={item.name}
             href={item.href}
-            className={cls(
+            className={cn(
                 current
-                    ? 'bg-gray-900 text-white'
-                    : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                'rounded-md px-3 py-2 text-sm font-medium',
+                    ? 'bg-accent text-accent-foreground font-medium'
+                    : 'text-muted-foreground hover:bg-accent hover:text-foreground',
+                'rounded-md px-3 py-2 text-sm font-medium transition-colors font-mono text-left',
             )}
             aria-current={current ? 'page' : undefined}
         >

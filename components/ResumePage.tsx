@@ -10,6 +10,7 @@ import 'react-pdf/dist/Page/TextLayer.css';
 
 import type { PDFDocumentProxy } from 'pdfjs-dist';
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
     'pdfjs-dist/build/pdf.worker.min.mjs',
@@ -50,9 +51,11 @@ export default function ResumePage() {
     return (
         <div className="relative">
             <div className="absolute right-0 top-0 z-10">
-                <Link download className="button" href="/api/resume">
-                    Download Resume
-                </Link>
+                <Button asChild>
+                    <Link download href="/api/resume">
+                        Download Resume
+                    </Link>
+                </Button>
             </div>
             <div ref={setContainerRef} className="w-full h-full">
                 <Document

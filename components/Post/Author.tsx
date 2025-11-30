@@ -11,16 +11,18 @@ export function Author({ post }: { post: BlogPostBrief }) {
             <Image
                 src={post.author.image}
                 alt={post.author.name}
-                className="h-10 w-10 rounded-full bg-gray-50"
+                width={40}
+                height={40}
+                className="h-10 w-10 rounded-full bg-muted border border-border"
             />
             <div className="leading-6">
-                <p className="text-gray-900">
-                    <Link href={post.author.href}>
+                <p className="text-foreground font-medium">
+                    <Link href={post.author.href} className="hover:text-primary transition-colors">
                         <span className="absolute inset-0" />
                         {post.author.name}
                     </Link>
                 </p>
-                <p className="text-gray-600">{post.author.role}</p>
+                <p className="text-muted-foreground text-sm">{post.author.role}</p>
             </div>
         </div>
     );

@@ -5,6 +5,7 @@ import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/react';
+import { ThemeProvider } from '@/components/theme-provider';
 
 export const maxDuration = 60;
 
@@ -23,13 +24,21 @@ export default function RootLayout({
         <html
             className={`h-full ${GeistSans.variable} ${GeistMono.variable}`}
             lang="en"
+            suppressHydrationWarning
         >
             <body className="h-full">
-                <div className="min-h-full">
-                    {children}
-                    <SpeedInsights />
-                    <Analytics />
-                </div>
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="dark"
+                    enableSystem
+                    disableTransitionOnChange
+                >
+                    <div className="min-h-full">
+                        {children}
+                        <SpeedInsights />
+                        <Analytics />
+                    </div>
+                </ThemeProvider>
             </body>
         </html>
     );

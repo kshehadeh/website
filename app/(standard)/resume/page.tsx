@@ -2,8 +2,6 @@ import ContentLayout from '@/components/ContentLayout/ContentLayout';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
 import ResumePageWrapper from '@/components/ResumePageWrapper';
 
-export const dynamic = 'force-dynamic';
-
 export async function generateMetadata() {
     return {
         title: 'Karim Shehadeh - Resume',

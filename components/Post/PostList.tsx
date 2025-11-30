@@ -18,7 +18,7 @@ export function PostList({
     ...rest
 }: React.PropsWithChildren<{ posts: BlogPostBrief[] } & PostBriefViewOptions>) {
     return (
-        <ul className="list-none grid grid-cols-1 md:grid-cols-3 gap-2 gap-y-10">
+        <ul className="list-none grid grid-cols-1 md:grid-cols-3 gap-2 gap-y-10 px-6 md:px-8">
             {posts.map(post => (
                 <PostListItem key={`post-${post.id}`} post={post} {...rest} />
             ))}

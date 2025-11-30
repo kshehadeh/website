@@ -3,9 +3,8 @@ import { getRecentBlogPosts } from '@/lib/blog';
 import { PostList } from '@/components/Post/PostList';
 import ContentLayout from '@/components/ContentLayout/ContentLayout';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
-
-export const revalidate = 3600;
-export const maxDuration = 60;
+import { HeadingWithRotatedBg } from '@/components/HeadingWithRotatedBg';
+import { cacheLife, cacheTag } from 'next/cache';
 
 export async function generateMetadata() {
     return {
@@ -26,6 +25,10 @@ const getPageData = cache(async () => {
 });
 
 export default async function MainBlogPage() {
+    'use cache';
+    cacheLife({ stale: 3600, revalidate: 3600 });
+    cacheTag('blog-page');
+    
     const { posts } = await getPageData();
 
     return (
@@ -33,7 +36,7 @@ export default async function MainBlogPage() {
             pageType={'blog'}
             sidecar={() => <Sidecar pageType="blog" />}
         >
-            <h1>Blog</h1>
+            <HeadingWithRotatedBg>Blog</HeadingWithRotatedBg>
             <PostList posts={posts} />
         </ContentLayout>
     );

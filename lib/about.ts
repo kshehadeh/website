@@ -10,6 +10,7 @@ import {
     isFilesProperty,
     isTitleProperty,
 } from './notion';
+import { cacheLife, cacheTag } from 'next/cache';
 
 export interface PersonalReference {
     id: string;
@@ -55,6 +56,10 @@ export async function getPersonalReferences(
 }
 
 export async function getAboutPage(): Promise<AboutPageInterface> {
+    'use cache';
+    cacheLife({ stale: 3600, revalidate: 3600 });
+    cacheTag('about-page');
+
     const response = await notion.pages.retrieve({
         page_id: process.env.NOTION_ABOUT_PAGE_ID!,
     });

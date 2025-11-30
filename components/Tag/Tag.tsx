@@ -1,12 +1,19 @@
 import React from 'react';
+import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/util';
 
 export function Tag({ text, url }: { text: string; url: string }) {
     return (
         <a
             href={url}
-            className="relative z-10 rounded-full bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 hover:bg-gray-100"
+            className={cn(
+                'relative z-10 transition-colors',
+                'hover:bg-accent hover:text-accent-foreground',
+            )}
         >
-            {text}
+            <Badge variant="secondary" className="text-xs font-medium">
+                {text}
+            </Badge>
         </a>
     );
 }

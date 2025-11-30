@@ -5,9 +5,7 @@ import { Post } from '@/components/Post/Post';
 import ContentLayout from '@/components/ContentLayout/ContentLayout';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
 import { Metadata } from 'next';
-
-export const revalidate = 3600;
-export const maxDuration = 60;
+import { cacheLife, cacheTag } from 'next/cache';
 
 const getPageData = cache(async (slug: string) => {
     const post = await getBlogPostBySlug(decodeURIComponent(slug));
@@ -17,7 +15,11 @@ const getPageData = cache(async (slug: string) => {
 export async function generateMetadata(
     props: Readonly<{ params: Promise<{ slug: string }> }>,
 ): Promise<Metadata> {
+    'use cache';
     const params = await props.params;
+    cacheLife({ stale: 3600, revalidate: 3600 });
+    cacheTag(`blog-post-page-${params.slug}`);
+    
     const { post } = await getPageData(params.slug);
     return {
         title: `Karim Shehadeh - ${post?.title}`,
@@ -54,7 +56,3 @@ export default async function Page(
         );
     }
 }
-
-export const generateStaticParams = async () => {
-    return [];
-};

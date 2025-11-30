@@ -3,9 +3,8 @@ import { getRecentBookmarks } from '@/lib/bookmarks';
 import { BookmarksList } from '@/components/BookmarksList/BookmarksList';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
 import ContentLayout from '@/components/ContentLayout/ContentLayout';
-
-export const maxDuration = 60;
-export const revalidate = 3600;
+import { HeadingWithRotatedBg } from '@/components/HeadingWithRotatedBg';
+import { cacheLife, cacheTag } from 'next/cache';
 
 export async function generateMetadata() {
     return {
@@ -18,13 +17,17 @@ export async function generateMetadata() {
 }
 
 export default async function BookmarksPage() {
+    'use cache';
+    cacheLife({ stale: 3600, revalidate: 3600 });
+    cacheTag('bookmarks-page');
+    
     const bookmarks = await getRecentBookmarks(12);
     return (
         <ContentLayout
             pageType={'bookmarks'}
             sidecar={() => <Sidecar pageType="bookmarks" />}
         >
-            <h1>Bookmarks</h1>
+            <HeadingWithRotatedBg>Bookmarks</HeadingWithRotatedBg>
             <BookmarksList bookmarks={bookmarks} />
         </ContentLayout>
     );

@@ -3,6 +3,7 @@ import { BookmarksList } from '@/components/BookmarksList/BookmarksList';
 import { getBookmarksByTag } from '@/lib/bookmarks';
 import ContentLayout from '@/components/ContentLayout/ContentLayout';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
+import { cacheLife, cacheTag } from 'next/cache';
 
 export const maxDuration = 60;
 
@@ -25,7 +26,10 @@ export async function generateMetadata(props: {
 export default async function TaggedBookmarkPage(props: {
     params: Promise<{ tag: string }>;
 }) {
+    'use cache';
     const params = await props.params;
+    cacheLife({ stale: 3600, revalidate: 3600 });
+    cacheTag(`bookmarks-tag-page-${params.tag}`);
 
     const { tag } = params;
 

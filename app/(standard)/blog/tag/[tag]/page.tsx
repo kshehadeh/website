@@ -3,8 +3,7 @@ import { getBlogPostsByTag } from '@/lib/blog';
 import { PostList } from '@/components/Post/PostList';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
 import ContentLayout from '@/components/ContentLayout/ContentLayout';
-
-export const revalidate = 3600;
+import { cacheLife, cacheTag } from 'next/cache';
 
 const getPageData = cache(async (tag: string) => {
     const posts = await getBlogPostsByTag([tag]);
@@ -33,7 +32,10 @@ export async function generateMetadata(props: {
 export default async function PostsByTagPage(props: {
     params: Promise<{ tag: string }>;
 }) {
+    'use cache';
     const params = await props.params;
+    cacheLife({ stale: 3600, revalidate: 3600 });
+    cacheTag(`blog-tag-page-${params.tag}`);
 
     const { tag } = params;
 
@@ -53,7 +55,3 @@ export default async function PostsByTagPage(props: {
         </ContentLayout>
     );
 }
-
-export const generateStaticParams = async () => {
-    return [];
-};

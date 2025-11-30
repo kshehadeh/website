@@ -3,6 +3,7 @@ import { BlogPostFull } from '@/lib/blog';
 import { notion } from '@/lib/notion';
 import { NotionRenderer } from '@/lib/notion-renderer';
 import { Img } from '../primitives';
+import { HeadingWithRotatedBg } from '../HeadingWithRotatedBg';
 
 export async function Post({ post }: { post: BlogPostFull }) {
     const renderer = new NotionRenderer({ client: notion });
@@ -10,7 +11,9 @@ export async function Post({ post }: { post: BlogPostFull }) {
     return (
         <>
             <div className="mb-10">
-                <h1>{post.title}</h1>
+                <HeadingWithRotatedBg className="text-4xl font-bold text-foreground tracking-tight mb-4 font-mono">
+                    {post.title}
+                </HeadingWithRotatedBg>
             </div>
             {post.coverUrl && (
                 <Img

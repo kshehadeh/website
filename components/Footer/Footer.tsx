@@ -7,8 +7,10 @@ export async function Footer() {
     const references = page ? await getPersonalReferences(page) : [];
 
     return (
-        <footer className="bg-gray-100 text-gray-800 text-center p-5 flex flex-row justify-between fixed bottom-0 w-[100%]">
-            <div>&copy; {new Date().getFullYear()} Karim Shehadeh</div>
+        <footer className="bg-card border-t border-border text-card-foreground text-center p-5 flex flex-row justify-between fixed bottom-0 w-[100%]">
+            <div className="text-muted-foreground">
+                &copy; {new Date().getFullYear()} Karim Shehadeh
+            </div>
             <PersonalReferencesList references={references} />
         </footer>
     );

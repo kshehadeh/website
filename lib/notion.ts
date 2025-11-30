@@ -4,7 +4,6 @@ import { Client } from '@notionhq/client';
 import React from 'react';
 import {
     BlockObjectResponse,
-    DatabaseObjectResponse,
     ImageBlockObjectResponse,
     PageObjectResponse,
     ParagraphBlockObjectResponse,

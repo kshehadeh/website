@@ -1,4 +1,3 @@
-import React, { cache } from 'react';
 import { HR } from '@/components/primitives';
 import { getPersonalReferences } from '@/lib/about';
 import { isRichTextProperty, notion } from '@/lib/notion';
@@ -8,14 +7,8 @@ import PersonalReferencesList from '@/components/About/References';
 import { Cover } from '@/components/Cover.server';
 import ContentLayout from '@/components/ContentLayout/ContentLayout';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
-
-export const maxDuration = 60;
-export const revalidate = 3600;
-
-const getPageData = cache(async () => {
-    const page = await getAboutPage();
-    return { page };
-});
+import { HeadingWithRotatedBg } from '@/components/HeadingWithRotatedBg';
+import { cacheLife, cacheTag } from 'next/cache';
 
 export async function generateMetadata() {
     return {
@@ -28,7 +21,11 @@ export async function generateMetadata() {
 }
 
 export default async function AboutMePage() {
-    const { page } = await getPageData();
+    'use cache';
+    cacheLife({ stale: 3600, revalidate: 3600 });
+    cacheTag('about-page');
+    
+    const page = await getAboutPage();
     const references = page ? await getPersonalReferences(page) : [];
     const renderer = new NotionRenderer({ client: notion });
     const postElements = await renderer.render(...(page.blocks || []));
@@ -41,13 +38,13 @@ export default async function AboutMePage() {
             pageType={'about'}
             sidecar={() => <Sidecar pageType="about" />}
         >
-            <h1>{title}</h1>
+            <HeadingWithRotatedBg>{title}</HeadingWithRotatedBg>
             <div className="">
                 <Cover page={page} />
                 {postElements}
             </div>
             <HR />
-            <h2>Find Me Here...</h2>
+            <HeadingWithRotatedBg as="h2">Find Me Here...</HeadingWithRotatedBg>
             <PersonalReferencesList
                 references={references}
             ></PersonalReferencesList>

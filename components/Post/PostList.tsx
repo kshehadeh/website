@@ -7,7 +7,7 @@ export function PostListItem({
     ...rest
 }: React.PropsWithChildren<{ post: BlogPostBrief } & PostBriefViewOptions>) {
     return (
-        <li className="basis-[24%]">
+        <li className="basis-full md:basis-[calc(33.333%-0.5rem)] min-w-[280px]">
             <PostBrief post={post} {...rest} hideAuthor={true} />
         </li>
     );
@@ -18,7 +18,7 @@ export function PostList({
     ...rest
 }: React.PropsWithChildren<{ posts: BlogPostBrief[] } & PostBriefViewOptions>) {
     return (
-        <ul className="list-none grid grid-cols-1 md:grid-cols-3 gap-2 gap-y-10 px-6 md:px-8">
+        <ul className="list-none flex flex-wrap gap-2 gap-y-10 px-6 md:px-8">
             {posts.map(post => (
                 <PostListItem key={`post-${post.id}`} post={post} {...rest} />
             ))}

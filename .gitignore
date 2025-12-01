@@ -11,3 +11,4 @@ node_modules
 .env
 *resume.pdf
 .secrets
+next-env.d.ts

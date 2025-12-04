@@ -4,7 +4,6 @@ import { isRichTextProperty, notion } from '@/lib/notion';
 import { getAboutPage } from '@/lib/about';
 import { NotionRenderer } from '@/lib/notion-renderer';
 import PersonalReferencesList from '@/components/About/References';
-import { Cover } from '@/components/Cover.server';
 import ContentLayout from '@/components/ContentLayout/ContentLayout';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
 import { HeadingWithRotatedBg } from '@/components/HeadingWithRotatedBg';
@@ -46,11 +45,11 @@ export default async function AboutMePage() {
                 sidecar={() => <Sidecar pageType="about" />}
             >
                 <HeadingWithRotatedBg>{title}</HeadingWithRotatedBg>
-                <div className="">
-                    {postElements}
-                </div>
+                <div className="">{postElements}</div>
                 <HR />
-                <HeadingWithRotatedBg as="h2">Find Me Here...</HeadingWithRotatedBg>
+                <HeadingWithRotatedBg as="h2">
+                    Find Me Here...
+                </HeadingWithRotatedBg>
                 <PersonalReferencesList
                     references={references}
                 ></PersonalReferencesList>

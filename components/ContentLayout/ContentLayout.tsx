@@ -24,10 +24,12 @@ export default function ContentLayout({
     const isAboutPage = pageType === 'about';
 
     return (
-        <div className={cn(
-            "min-h-screen relative z-10",
-            !isAboutPage && "bg-background"
-        )}>
+        <div
+            className={cn(
+                'min-h-screen relative z-10',
+                !isAboutPage && 'bg-background',
+            )}
+        >
             <Navigation current={pageType} />
             <div className="flex flex-row pb-24 md:pb-10">
                 <div

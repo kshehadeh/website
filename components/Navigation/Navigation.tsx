@@ -6,6 +6,7 @@ import NavigationItem from './NavigationItem';
 import { PageType } from '@/lib/page';
 import Link from 'next/link';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { MpathReference } from './MpathReference';
 
 const user = {
     name: 'Karim Shehadeh',
@@ -35,7 +36,7 @@ export default function Navigation({ current }: { current: PageType }) {
                                     {user.name}
                                 </Link>
                                 <div className="hidden md:block">
-                                    <div className="ml-10 flex items-baseline space-x-4">
+                                    <div className="ml-10 flex items-center space-x-4">
                                         {navigation.map(item => (
                                             <NavigationItem
                                                 key={item.href}
@@ -44,6 +45,7 @@ export default function Navigation({ current }: { current: PageType }) {
                                                 current={current === item.type}
                                             />
                                         ))}
+                                        <MpathReference />
                                     </div>
                                 </div>
                             </div>
@@ -84,6 +86,9 @@ export default function Navigation({ current }: { current: PageType }) {
                                     current={current === item.type}
                                 />
                             ))}
+                            <div className="px-3 py-2 flex items-center">
+                                <MpathReference />
+                            </div>
                         </div>
                     </Disclosure.Panel>
                 </>

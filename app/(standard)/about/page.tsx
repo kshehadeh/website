@@ -8,6 +8,7 @@ import { Cover } from '@/components/Cover.server';
 import ContentLayout from '@/components/ContentLayout/ContentLayout';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
 import { HeadingWithRotatedBg } from '@/components/HeadingWithRotatedBg';
+import { VideoBackground } from '@/components/About/VideoBackground';
 import { cacheLife, cacheTag } from 'next/cache';
 
 export async function generateMetadata() {
@@ -38,20 +39,22 @@ export default async function AboutMePage() {
         : 'About Me';
 
     return (
-        <ContentLayout
-            pageType={'about'}
-            sidecar={() => <Sidecar pageType="about" />}
-        >
-            <HeadingWithRotatedBg>{title}</HeadingWithRotatedBg>
-            <div className="">
-                <Cover page={page} />
-                {postElements}
-            </div>
-            <HR />
-            <HeadingWithRotatedBg as="h2">Find Me Here...</HeadingWithRotatedBg>
-            <PersonalReferencesList
-                references={references}
-            ></PersonalReferencesList>
-        </ContentLayout>
+        <>
+            <VideoBackground />
+            <ContentLayout
+                pageType={'about'}
+                sidecar={() => <Sidecar pageType="about" />}
+            >
+                <HeadingWithRotatedBg>{title}</HeadingWithRotatedBg>
+                <div className="">
+                    {postElements}
+                </div>
+                <HR />
+                <HeadingWithRotatedBg as="h2">Find Me Here...</HeadingWithRotatedBg>
+                <PersonalReferencesList
+                    references={references}
+                ></PersonalReferencesList>
+            </ContentLayout>
+        </>
     );
 }

@@ -21,9 +21,13 @@ export default function ContentLayout({
     const sidecarContent = sidecar();
     const hasSidecar = sidecarContent !== null;
     const isHomePage = pageType === 'home';
+    const isAboutPage = pageType === 'about';
 
     return (
-        <div className="min-h-screen bg-background">
+        <div className={cn(
+            "min-h-screen relative z-10",
+            !isAboutPage && "bg-background"
+        )}>
             <Navigation current={pageType} />
             <div className="flex flex-row pb-24 md:pb-10">
                 <div

@@ -1,4 +1,4 @@
-import React, { cache } from 'react';
+import React from 'react';
 import { getRecentBlogPosts } from '@/lib/blog';
 import { PostList } from '@/components/Post/PostList';
 import ContentLayout from '@/components/ContentLayout/ContentLayout';

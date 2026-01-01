@@ -15,8 +15,8 @@ export function MpathReference() {
 
     // Use resolvedTheme to handle system theme preference
     const isDark = mounted && (resolvedTheme === 'dark' || theme === 'dark');
-    const imageSrc = isDark 
-        ? '/mpath-header-dark.png' 
+    const imageSrc = isDark
+        ? '/mpath-header-dark.png'
         : '/mpath-header-light.png';
 
     if (!mounted) {
@@ -52,7 +52,7 @@ export function MpathReference() {
             {/* Bluish glow effect - multiple layers for depth */}
             <div className="absolute inset-0 blur-2xl opacity-40 group-hover:opacity-60 transition-opacity bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 rounded-lg -z-10 animate-pulse" />
             <div className="absolute inset-0 blur-lg opacity-50 group-hover:opacity-70 transition-opacity bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 rounded-lg -z-10" />
-            
+
             {/* Image */}
             <div className="relative z-10 flex items-center">
                 <Image
@@ -67,4 +67,3 @@ export function MpathReference() {
         </Link>
     );
 }
-

@@ -6,8 +6,27 @@ import ContentLayout from '@/components/ContentLayout/ContentLayout';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
 import { Metadata } from 'next';
 import { cacheLife, cacheTag } from 'next/cache';
-// import { isRichTextProperty } from '@/lib/notion';
-// import { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
+import { isRichTextProperty } from '@/lib/notion';
+import { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
+
+export async function generateStaticParams() {
+    const posts = await getBlogPosts({
+        status: 'Published',
+        sortBy: {
+            property: 'Posted',
+            direction: 'descending',
+        },
+    });
+
+    return posts
+        .filter((post): post is PageObjectResponse => !!post)
+        .map(post => {
+            const slug = isRichTextProperty(post.properties.Slug)
+                ? post.properties.Slug.rich_text[0].plain_text
+                : '';
+            return { slug };
+        });
+}
 
 export async function generateMetadata(
     props: Readonly<{ params: Promise<{ slug: string }> }>,

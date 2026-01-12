@@ -7,6 +7,7 @@ import { PageType } from '@/lib/page';
 import Link from 'next/link';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { MpathReference } from './MpathReference';
+import { CreateSpotReference } from './CreateSpotReference';
 
 const user = {
     name: 'Karim Shehadeh',
@@ -46,6 +47,7 @@ export default function Navigation({ current }: { current: PageType }) {
                                             />
                                         ))}
                                         <MpathReference />
+                                        <CreateSpotReference />
                                     </div>
                                 </div>
                             </div>
@@ -86,8 +88,9 @@ export default function Navigation({ current }: { current: PageType }) {
                                     current={current === item.type}
                                 />
                             ))}
-                            <div className="px-3 py-2 flex items-center">
+                            <div className="px-3 py-2 flex items-center gap-2">
                                 <MpathReference />
+                                <CreateSpotReference />
                             </div>
                         </div>
                     </Disclosure.Panel>

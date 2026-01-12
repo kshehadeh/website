@@ -47,14 +47,10 @@ export function MpathReference() {
             href="https://mpath.dev"
             target="_blank"
             rel="noopener noreferrer"
-            className="relative flex items-center transition-all hover:scale-105 group px-2 py-1"
+            className="relative flex items-center transition-all hover:scale-105"
         >
-            {/* Bluish glow effect - multiple layers for depth */}
-            <div className="absolute inset-0 blur-2xl opacity-40 group-hover:opacity-60 transition-opacity bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 rounded-lg -z-10 animate-pulse" />
-            <div className="absolute inset-0 blur-lg opacity-50 group-hover:opacity-70 transition-opacity bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 rounded-lg -z-10" />
-
             {/* Image */}
-            <div className="relative z-10 flex items-center">
+            <div className="relative flex items-center">
                 <Image
                     src={imageSrc}
                     alt="MPath Project"

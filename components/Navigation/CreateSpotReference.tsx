@@ -48,14 +48,10 @@ export function CreateSpotReference() {
             href="https://create.spot"
             target="_blank"
             rel="noopener noreferrer"
-            className="relative flex items-center transition-all hover:scale-105 group px-2 py-1"
+            className="relative flex items-center transition-all hover:scale-105"
         >
-            {/* Gradient glow effect - multiple layers for depth */}
-            <div className="absolute inset-0 blur-2xl opacity-40 group-hover:opacity-60 transition-opacity bg-gradient-to-r from-orange-400 via-red-500 to-red-600 rounded-lg -z-10 animate-pulse" />
-            <div className="absolute inset-0 blur-lg opacity-50 group-hover:opacity-70 transition-opacity bg-gradient-to-r from-orange-500 via-red-600 to-red-700 rounded-lg -z-10" />
-
             {/* Image or Text Fallback */}
-            <div className="relative z-10 flex items-center">
+            <div className="relative flex items-center">
                 {!imageError ? (
                     <Image
                         src={imageSrc}

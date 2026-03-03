@@ -6,7 +6,6 @@ import NavigationItem from './NavigationItem';
 import { PageType } from '@/lib/page';
 import Link from 'next/link';
 import { ThemeToggle } from '@/components/theme-toggle';
-import { MpathReference } from './MpathReference';
 import { CreateSpotReference } from './CreateSpotReference';
 
 const user = {
@@ -46,7 +45,6 @@ export default function Navigation({ current }: { current: PageType }) {
                                                 current={current === item.type}
                                             />
                                         ))}
-                                        <MpathReference />
                                         <CreateSpotReference />
                                     </div>
                                 </div>
@@ -89,7 +87,6 @@ export default function Navigation({ current }: { current: PageType }) {
                                 />
                             ))}
                             <div className="px-3 py-2 flex items-center gap-2">
-                                <MpathReference />
                                 <CreateSpotReference />
                             </div>
                         </div>

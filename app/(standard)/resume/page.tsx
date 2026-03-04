@@ -26,7 +26,7 @@ export default async function ResumePageServer() {
         <ContentLayout
             fullHeight={true}
             pageType={'resume'}
-            sidecar={() => <Sidecar pageType="resume" />}
+            sidecar={<Sidecar pageType="resume" />}
         >
             <ResumePageWrapper />
         </ContentLayout>

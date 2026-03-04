@@ -8,6 +8,7 @@ import { Metadata } from 'next';
 import { cacheLife, cacheTag } from 'next/cache';
 import { isRichTextProperty } from '@/lib/notion';
 import { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
+import type { BlogPostFull } from '@/lib/blog';
 
 export async function generateStaticParams() {
     const posts = await getBlogPosts({
@@ -54,25 +55,34 @@ export async function generateMetadata(
     };
 }
 
+async function getCachedBlogPost(slug: string): Promise<BlogPostFull | undefined> {
+    'use cache';
+    cacheLife({ stale: 3600, revalidate: 3600 });
+    cacheTag(`blog-post-page-${slug}`);
+    return getBlogPostBySlug(decodeURIComponent(slug));
+}
+
+async function CachedBlogPostContent({ post }: { post: BlogPostFull }) {
+    'use cache';
+    cacheLife({ stale: 3600, revalidate: 3600 });
+    cacheTag(`blog-post-page-${post.slug}`);
+    return (
+        <ContentLayout
+            pageType={'post'}
+            sidecar={<Sidecar post={post} pageType={'post'} />}
+        >
+            <Post post={post} />
+        </ContentLayout>
+    );
+}
+
 export default async function Page(
     props: Readonly<{ params: Promise<{ slug: string }> }>,
 ) {
-    'use cache';
     const params = await props.params;
-    cacheLife({ stale: 3600, revalidate: 3600 });
-    cacheTag(`blog-post-page-${params.slug}`);
-
-    const post = await getBlogPostBySlug(decodeURIComponent(params.slug));
+    const post = await getCachedBlogPost(params.slug);
     if (!post) {
         notFound();
-    } else {
-        return (
-            <ContentLayout
-                pageType={'post'}
-                sidecar={() => <Sidecar post={post} pageType={'post'} />}
-            >
-                <Post post={post} />
-            </ContentLayout>
-        );
     }
+    return <CachedBlogPostContent post={post} />;
 }

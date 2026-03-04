@@ -34,7 +34,7 @@ export default async function Home() {
     const [heroPost, ...gridPosts] = recent;
 
     return (
-        <ContentLayout pageType={'home'} sidecar={() => null}>
+        <ContentLayout pageType={'home'} sidecar={null}>
             {heroPost && <PostHero post={heroPost} />}
             {gridPosts.length > 0 && <PostList posts={gridPosts} />}
         </ContentLayout>

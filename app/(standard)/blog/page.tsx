@@ -33,7 +33,7 @@ export default async function MainBlogPage() {
     return (
         <ContentLayout
             pageType={'blog'}
-            sidecar={() => <Sidecar pageType="blog" />}
+            sidecar={<Sidecar pageType="blog" />}
         >
             <HeadingWithRotatedBg>Blog</HeadingWithRotatedBg>
             <PostList posts={posts} />

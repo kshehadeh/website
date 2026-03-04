@@ -40,7 +40,7 @@ export default async function TaggedBookmarkPage(props: {
     return (
         <ContentLayout
             pageType={'resume'}
-            sidecar={() => <Sidecar pageType="bookmarks" />}
+            sidecar={<Sidecar pageType="bookmarks" />}
         >
             <h1>Bookmarks tagged with &quot;{tag}&quot;</h1>
             <BookmarksList bookmarks={bookmarks} />

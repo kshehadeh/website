@@ -41,7 +41,7 @@ export default async function PostsByTagPage(props: {
     return (
         <ContentLayout
             pageType={'tags'}
-            sidecar={() => <Sidecar pageType="tags" />}
+            sidecar={<Sidecar pageType="tags" />}
         >
             <h1>{tag}</h1>
             <PostList

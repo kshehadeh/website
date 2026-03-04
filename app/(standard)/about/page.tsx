@@ -42,7 +42,7 @@ export default async function AboutMePage() {
             <VideoBackground />
             <ContentLayout
                 pageType={'about'}
-                sidecar={() => <Sidecar pageType="about" />}
+                sidecar={<Sidecar pageType="about" />}
             >
                 <HeadingWithRotatedBg>{title}</HeadingWithRotatedBg>
                 <div className="">{postElements}</div>

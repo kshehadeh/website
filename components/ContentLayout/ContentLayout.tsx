@@ -9,7 +9,7 @@ import { cn } from '@/lib/util';
 type Props = {
     fullHeight?: boolean;
     pageType: PageType;
-    sidecar: () => React.ReactNode;
+    sidecar: React.ReactNode;
 };
 
 export default function ContentLayout({
@@ -18,8 +18,7 @@ export default function ContentLayout({
     pageType,
     sidecar,
 }: PropsWithChildren<Props>) {
-    const sidecarContent = sidecar();
-    const hasSidecar = sidecarContent !== null;
+    const hasSidecar = sidecar !== null;
     const isHomePage = pageType === 'home';
     const isAboutPage = pageType === 'about';
 
@@ -45,7 +44,7 @@ export default function ContentLayout({
                 </div>
                 {hasSidecar && (
                     <div className="md:w-1/4 md:block mt-5 hidden">
-                        {sidecarContent}
+                        {sidecar}
                     </div>
                 )}
             </div>

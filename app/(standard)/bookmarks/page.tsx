@@ -29,7 +29,7 @@ export default async function BookmarksPage() {
     return (
         <ContentLayout
             pageType={'bookmarks'}
-            sidecar={() => <Sidecar pageType="bookmarks" />}
+            sidecar={<Sidecar pageType="bookmarks" />}
         >
             <HeadingWithRotatedBg>Bookmarks</HeadingWithRotatedBg>
             <BookmarksList bookmarks={bookmarks} />

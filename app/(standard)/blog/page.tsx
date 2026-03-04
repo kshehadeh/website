@@ -31,10 +31,7 @@ export default async function MainBlogPage() {
     const posts = await getRecentBlogPosts(12, true);
 
     return (
-        <ContentLayout
-            pageType={'blog'}
-            sidecar={<Sidecar pageType="blog" />}
-        >
+        <ContentLayout pageType={'blog'} sidecar={<Sidecar pageType="blog" />}>
             <HeadingWithRotatedBg>Blog</HeadingWithRotatedBg>
             <PostList posts={posts} />
         </ContentLayout>

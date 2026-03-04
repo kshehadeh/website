@@ -55,7 +55,9 @@ export async function generateMetadata(
     };
 }
 
-async function getCachedBlogPost(slug: string): Promise<BlogPostFull | undefined> {
+async function getCachedBlogPost(
+    slug: string,
+): Promise<BlogPostFull | undefined> {
     'use cache';
     cacheLife({ stale: 3600, revalidate: 3600 });
     cacheTag(`blog-post-page-${slug}`);

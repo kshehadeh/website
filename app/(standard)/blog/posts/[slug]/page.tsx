@@ -13,6 +13,7 @@ import type { BlogPostFull } from '@/lib/blog';
 export async function generateStaticParams() {
     const posts = await getBlogPosts({
         status: 'Published',
+        limit: 10,
         sortBy: {
             property: 'Posted',
             direction: 'descending',

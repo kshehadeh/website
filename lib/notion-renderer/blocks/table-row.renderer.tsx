@@ -8,18 +8,13 @@ import { TD, TR } from '@/components/primitives';
 export default createBlockRenderer<TableRowBlockObjectResponse>(
     'table_row',
     async (data, renderer) => {
-        return (
-            <TR key={`tr-${data.id}`}>
-                {(
-                    await Promise.all(
-                        data.table_row.cells.map(async (cell, idx) => (
-                            <TD key={`td-${idx}-${data.id}-${data.type}`}>
-                                {await renderer.render(...cell)}
-                            </TD>
-                        )),
-                    )
-                ).join('')}
-            </TR>
+        const cells = await Promise.all(
+            data.table_row.cells.map(async (cell, idx) => (
+                <TD key={`td-${idx}-${data.id}-${data.type}`}>
+                    {await renderer.render(...cell)}
+                </TD>
+            )),
         );
+        return <TR key={`tr-${data.id}`}>{cells}</TR>;
     },
 );

@@ -9,9 +9,7 @@ import { createBlockRenderer } from '../utils/create-block-renderer';
 import { Table, TBody, THead, TD, TH } from '@/components/primitives';
 import { Block } from '../types';
 
-function isTableRowBlock(
-    block: Block,
-): block is TableRowBlockObjectResponse {
+function isTableRowBlock(block: Block): block is TableRowBlockObjectResponse {
     return block.type === 'table_row';
 }
 
@@ -34,22 +32,21 @@ export default createBlockRenderer<TableBlockObjectResponse>(
         const hasColumnHeader = data.table?.has_column_header ?? false;
         const hasRowHeader = data.table?.has_row_header ?? false;
         const firstRow = hasColumnHeader && rows.length > 0 ? rows[0] : null;
-        const bodyRows = hasColumnHeader && rows.length > 0 ? rows.slice(1) : rows;
+        const bodyRows =
+            hasColumnHeader && rows.length > 0 ? rows.slice(1) : rows;
 
         const headerRow =
             firstRow && isTableRowBlock(firstRow) ? (
                 <THead key={`thead-${data.id}`}>
                     <tr key={`tr-${firstRow.id}`}>
                         {await Promise.all(
-                            firstRow.table_row.cells.map(
-                                async (cell, idx) => (
-                                    <TH
-                                        key={`th-${idx}-${firstRow.id}-${firstRow.type}`}
-                                    >
-                                        {await renderer.render(...cell)}
-                                    </TH>
-                                ),
-                            ),
+                            firstRow.table_row.cells.map(async (cell, idx) => (
+                                <TH
+                                    key={`th-${idx}-${firstRow.id}-${firstRow.type}`}
+                                >
+                                    {await renderer.render(...cell)}
+                                </TH>
+                            )),
                         )}
                     </tr>
                 </THead>
@@ -63,30 +60,21 @@ export default createBlockRenderer<TableBlockObjectResponse>(
                     .map(async row => (
                         <tr key={`tr-${row.id}`}>
                             {await Promise.all(
-                                row.table_row.cells.map(
-                                    async (cell, idx) =>
-                                        idx === 0 ? (
-                                            <TH
-                                                key={`th-${idx}-${row.id}`}
-                                            >
-                                                {await renderer.render(
-                                                    ...cell,
-                                                )}
-                                            </TH>
-                                        ) : (
-                                            <TD
-                                                key={`td-${idx}-${row.id}`}
-                                            >
-                                                {await renderer.render(
-                                                    ...cell,
-                                                )}
-                                            </TD>
-                                        ),
+                                row.table_row.cells.map(async (cell, idx) =>
+                                    idx === 0 ? (
+                                        <TH key={`th-${idx}-${row.id}`}>
+                                            {await renderer.render(...cell)}
+                                        </TH>
+                                    ) : (
+                                        <TD key={`td-${idx}-${row.id}`}>
+                                            {await renderer.render(...cell)}
+                                        </TD>
+                                    ),
                                 ),
                             )}
                         </tr>
-                    ),
-            ));
+                    )),
+            );
         } else {
             bodyRowsContent = await renderer.render(...bodyRows);
         }

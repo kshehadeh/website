@@ -43,9 +43,7 @@ export async function Post({ post }: { post: BlogPostFull }) {
                     </HeadingWithRotatedBg>
                 </div>
             )}
-            <div className="max-w-3xl mx-auto">
-                {postElements}
-            </div>
+            <div className="max-w-3xl mx-auto">{postElements}</div>
         </>
     );
 }

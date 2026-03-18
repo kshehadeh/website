@@ -10,6 +10,18 @@ import { isRichTextProperty } from '@/lib/notion';
 import { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
 import type { BlogPostFull } from '@/lib/blog';
 
+function normalizeSlug(slug: string): string {
+    return decodeURIComponent(slug);
+}
+
+function blogPostPageTag(slug: string): string {
+    return `blog-post-page-${normalizeSlug(slug)}`;
+}
+
+function blogPostMetadataTag(slug: string): string {
+    return `blog-post-metadata-${normalizeSlug(slug)}`;
+}
+
 export async function generateStaticParams() {
     const posts = await getBlogPosts({
         status: 'Published',
@@ -35,10 +47,11 @@ export async function generateMetadata(
 ): Promise<Metadata> {
     'use cache';
     const params = await props.params;
+    const normalizedSlug = normalizeSlug(params.slug);
     cacheLife({ stale: 3600, revalidate: 3600 });
-    cacheTag(`blog-post-metdata-${params.slug}`);
+    cacheTag(blogPostMetadataTag(normalizedSlug));
 
-    const post = await getBlogPostBySlug(decodeURIComponent(params.slug));
+    const post = await getBlogPostBySlug(normalizedSlug);
     return {
         title: `Karim Shehadeh - ${post?.title}`,
         description: `${post?.abstract}`,
@@ -61,14 +74,14 @@ async function getCachedBlogPost(
 ): Promise<BlogPostFull | undefined> {
     'use cache';
     cacheLife({ stale: 3600, revalidate: 3600 });
-    cacheTag(`blog-post-page-${slug}`);
-    return getBlogPostBySlug(decodeURIComponent(slug));
+    cacheTag(blogPostPageTag(slug));
+    return getBlogPostBySlug(normalizeSlug(slug));
 }
 
 async function CachedBlogPostContent({ post }: { post: BlogPostFull }) {
     'use cache';
     cacheLife({ stale: 3600, revalidate: 3600 });
-    cacheTag(`blog-post-page-${post.slug}`);
+    cacheTag(blogPostPageTag(post.slug));
     return (
         <ContentLayout
             pageType={'post'}
@@ -82,7 +95,10 @@ async function CachedBlogPostContent({ post }: { post: BlogPostFull }) {
 export default async function Page(
     props: Readonly<{ params: Promise<{ slug: string }> }>,
 ) {
+    'use cache';
     const params = await props.params;
+    cacheLife({ stale: 3600, revalidate: 3600 });
+    cacheTag(blogPostPageTag(params.slug));
     const post = await getCachedBlogPost(params.slug);
     if (!post) {
         notFound();

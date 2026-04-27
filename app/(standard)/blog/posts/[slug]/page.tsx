@@ -1,13 +1,11 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
-import { getBlogPostBySlug, getBlogPosts } from '@/lib/blog';
+import { getBlogPostBySlug } from '@/lib/blog';
 import { Post } from '@/components/Post/Post';
 import ContentLayout from '@/components/ContentLayout/ContentLayout';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
 import { Metadata } from 'next';
 import { cacheLife, cacheTag } from 'next/cache';
-import { isRichTextProperty } from '@/lib/notion';
-import { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
 import type { BlogPostFull } from '@/lib/blog';
 
 function normalizeSlug(slug: string): string {
@@ -20,26 +18,6 @@ function blogPostPageTag(slug: string): string {
 
 function blogPostMetadataTag(slug: string): string {
     return `blog-post-metadata-${normalizeSlug(slug)}`;
-}
-
-export async function generateStaticParams() {
-    const posts = await getBlogPosts({
-        status: 'Published',
-        limit: 10,
-        sortBy: {
-            property: 'Posted',
-            direction: 'descending',
-        },
-    });
-
-    return posts
-        .filter((post): post is PageObjectResponse => !!post)
-        .map(post => {
-            const slug = isRichTextProperty(post.properties.Slug)
-                ? post.properties.Slug.rich_text[0].plain_text
-                : '';
-            return { slug };
-        });
 }
 
 export async function generateMetadata(

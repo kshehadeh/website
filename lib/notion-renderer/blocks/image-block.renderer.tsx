@@ -21,7 +21,7 @@ export default createBlockRenderer<ImageBlockObjectResponse>(
                 <Image
                     src={src}
                     alt={data.image.caption?.[0]?.plain_text || 'src'}
-                    className="md:w-[33%]"
+                    className="w-full h-auto"
                     width={500}
                     height={500}
                 />

@@ -1,23 +1,19 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
-import { getBlogPostBySlug } from '@/lib/blog';
 import { Post } from '@/components/Post/Post';
 import ContentLayout from '@/components/ContentLayout/ContentLayout';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
 import { Metadata } from 'next';
 import { cacheLife, cacheTag } from 'next/cache';
 import type { BlogPostFull } from '@/lib/blog';
+import {
+    blogPostMetadataTag,
+    blogPostPageTag,
+    loadCachedBlogPostBySlug,
+} from './blog-post-data';
 
 function normalizeSlug(slug: string): string {
     return decodeURIComponent(slug);
-}
-
-function blogPostPageTag(slug: string): string {
-    return `blog-post-page-${normalizeSlug(slug)}`;
-}
-
-function blogPostMetadataTag(slug: string): string {
-    return `blog-post-metadata-${normalizeSlug(slug)}`;
 }
 
 export async function generateMetadata(
@@ -29,7 +25,7 @@ export async function generateMetadata(
     cacheLife({ stale: 3600, revalidate: 3600 });
     cacheTag(blogPostMetadataTag(normalizedSlug));
 
-    const post = await getBlogPostBySlug(normalizedSlug);
+    const post = await loadCachedBlogPostBySlug(params.slug);
     return {
         title: `Karim Shehadeh - ${post?.title}`,
         description: `${post?.abstract}`,
@@ -45,15 +41,6 @@ export async function generateMetadata(
             },
         },
     };
-}
-
-async function getCachedBlogPost(
-    slug: string,
-): Promise<BlogPostFull | undefined> {
-    'use cache';
-    cacheLife({ stale: 3600, revalidate: 3600 });
-    cacheTag(blogPostPageTag(slug));
-    return getBlogPostBySlug(normalizeSlug(slug));
 }
 
 async function CachedBlogPostContent({ post }: { post: BlogPostFull }) {
@@ -75,9 +62,11 @@ export default async function Page(
 ) {
     'use cache';
     const params = await props.params;
+    const normalizedSlug = normalizeSlug(params.slug);
     cacheLife({ stale: 3600, revalidate: 3600 });
-    cacheTag(blogPostPageTag(params.slug));
-    const post = await getCachedBlogPost(params.slug);
+    cacheTag(blogPostPageTag(normalizedSlug));
+
+    const post = await loadCachedBlogPostBySlug(params.slug);
     if (!post) {
         notFound();
     }

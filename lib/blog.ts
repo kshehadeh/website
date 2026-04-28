@@ -165,16 +165,14 @@ export async function getRecentBlogPosts(
     tags?: string[],
 ): Promise<BlogPostBrief[]> {
     const result = await getBlogPosts({ limit, tags });
-    const entries = [];
-    for (const post of result || []) {
-        if (isPageObjectResponse(post)) {
-            entries.push(
-                await getBlogBrief({ post, fetchAbstract: includeAbstract }),
-            );
-        }
-    }
+    const pages =
+        result?.filter(isPageObjectResponse) ?? ([] as PageObjectResponse[]);
 
-    return entries;
+    return Promise.all(
+        pages.map(post =>
+            getBlogBrief({ post, fetchAbstract: includeAbstract }),
+        ),
+    );
 }
 
 export async function getBlogPostBySlug(
@@ -202,14 +200,8 @@ export async function getBlogPostsByTag(
         tags,
     });
 
-    const entries = [];
-    for (const post of result) {
-        if (isPageObjectResponse(post)) {
-            entries.push(await getBlogBrief({ post }));
-        }
-    }
-
-    return entries;
+    const pages = result.filter(isPageObjectResponse);
+    return Promise.all(pages.map(post => getBlogBrief({ post })));
 }
 
 export async function getBlogPosts({

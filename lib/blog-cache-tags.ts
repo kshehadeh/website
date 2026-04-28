@@ -6,8 +6,14 @@
 export const BLOG_RSS_CACHE_TAG = 'blog-rss';
 export const BLOG_SITEMAP_CACHE_TAG = 'blog-sitemap';
 
-export const BLOG_INDEX_CACHE_TAGS = ['blog-page', 'blog-page-metadata'] as const;
-export const HOME_PAGE_CACHE_TAGS = ['home-page', 'home-page-metadata'] as const;
+export const BLOG_INDEX_CACHE_TAGS = [
+    'blog-page',
+    'blog-page-metadata',
+] as const;
+export const HOME_PAGE_CACHE_TAGS = [
+    'home-page',
+    'home-page-metadata',
+] as const;
 
 export function normalizeBlogSlugParam(slug: string): string {
     return decodeURIComponent(slug);

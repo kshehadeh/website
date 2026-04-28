@@ -21,9 +21,7 @@ async function getCachedRssBriefs() {
     );
 
     return Promise.all(
-        pageObjects.map(post =>
-            getBlogBrief({ post, fetchAbstract: true }),
-        ),
+        pageObjects.map(post => getBlogBrief({ post, fetchAbstract: true })),
     );
 }
 

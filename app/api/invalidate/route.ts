@@ -20,7 +20,8 @@ function getTagsFromRequest(req: Request): string[] {
 /** Optional comma-separated Notion tag names (for `/blog/tag/[tag]` cache rows). */
 function getPostTagsFromRequest(req: Request): string[] | undefined {
     const url = new URL(req.url);
-    const raw = url.searchParams.get('postTags') ?? url.searchParams.get('notionTags');
+    const raw =
+        url.searchParams.get('postTags') ?? url.searchParams.get('notionTags');
     if (!raw?.trim()) {
         return undefined;
     }
@@ -33,7 +34,8 @@ function getPostTagsFromRequest(req: Request): string[] | undefined {
 
 function getSlugFromRequest(req: Request): string | null {
     const url = new URL(req.url);
-    const slug = url.searchParams.get('slug') ?? url.searchParams.get('postSlug');
+    const slug =
+        url.searchParams.get('slug') ?? url.searchParams.get('postSlug');
     return slug?.trim() ? slug : null;
 }
 
@@ -71,8 +73,7 @@ export async function GET(req: Request) {
     if (tags.length === 0) {
         return new Response(
             JSON.stringify({
-                error:
-                    'Missing tags. Pass tag/tags, or use slug= (and optional postTags=) for full blog post invalidation.',
+                error: 'Missing tags. Pass tag/tags, or use slug= (and optional postTags=) for full blog post invalidation.',
             }),
             {
                 status: 400,

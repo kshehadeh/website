@@ -2,28 +2,30 @@ import { getBlogBrief, getBlogPosts } from '@/lib/blog';
 import { BLOG_RSS_CACHE_TAG } from '@/lib/blog-cache-tags';
 import { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
 import RSS from 'rss';
-import { cacheLife, cacheTag } from 'next/cache';
+import { unstable_cache } from 'next/cache';
 
-async function getCachedRssBriefs() {
-    'use cache';
-    cacheLife({ stale: 3600, revalidate: 3600 });
-    cacheTag(BLOG_RSS_CACHE_TAG);
+const getCachedRssBriefs = unstable_cache(
+    async () => {
+        const posts = await getBlogPosts({
+            sortBy: {
+                property: 'Posted',
+                direction: 'descending',
+            },
+        });
 
-    const posts = await getBlogPosts({
-        sortBy: {
-            property: 'Posted',
-            direction: 'descending',
-        },
-    });
+        const pageObjects = posts.filter(
+            (post): post is PageObjectResponse => !!post,
+        );
 
-    const pageObjects = posts.filter(
-        (post): post is PageObjectResponse => !!post,
-    );
-
-    return Promise.all(
-        pageObjects.map(post => getBlogBrief({ post, fetchAbstract: true })),
-    );
-}
+        return Promise.all(
+            pageObjects.map(post =>
+                getBlogBrief({ post, fetchAbstract: true }),
+            ),
+        );
+    },
+    ['blog-rss-briefs'],
+    { revalidate: 3600, tags: [BLOG_RSS_CACHE_TAG] },
+);
 
 export async function GET(): Promise<Response> {
     const briefs = await getCachedRssBriefs();

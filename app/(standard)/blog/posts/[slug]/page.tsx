@@ -5,15 +5,25 @@ import ContentLayout from '@/components/ContentLayout/ContentLayout';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
 import { Metadata } from 'next';
 import { cacheLife, cacheTag } from 'next/cache';
-import type { BlogPostFull } from '@/lib/blog';
+import { getRecentBlogPosts, type BlogPostFull } from '@/lib/blog';
 import {
     blogPostMetadataTag,
     blogPostPageTag,
     loadCachedBlogPostBySlug,
 } from './blog-post-data';
 
+const PREBUILT_POST_COUNT = 20;
+
 function normalizeSlug(slug: string): string {
     return decodeURIComponent(slug);
+}
+
+export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
+    const posts = await getRecentBlogPosts(PREBUILT_POST_COUNT, false);
+    return posts
+        .map(post => post.slug)
+        .filter(Boolean)
+        .map(slug => ({ slug }));
 }
 
 export async function generateMetadata(

@@ -25,13 +25,13 @@ export function PostBrief({
     return (
         <Card
             key={post.id}
-            className="flex flex-col justify-between m-0 p-0 h-full hover:shadow-lg transition-shadow"
+            className="flex flex-col m-0 p-0 h-full md:h-[32rem] overflow-hidden hover:shadow-lg transition-shadow"
         >
             <div
-                className="h-64 grow bg-cover hidden md:block rounded-t-xl"
+                className="hidden md:block w-full aspect-[4/3] flex-none bg-cover bg-center rounded-t-xl"
                 style={{ backgroundImage: `url(${post.coverUrl})` }}
             />
-            <CardHeader className="group relative pb-3">
+            <CardHeader className="group relative pb-3 min-h-0 flex-1 flex flex-col">
                 <h3 className="md:mt-3 mt-1 font-semibold text-lg leading-6 text-card-foreground group-hover:text-primary transition-colors font-mono">
                     <a href={post.href}>
                         <span className="absolute inset-0" />
@@ -47,7 +47,7 @@ export function PostBrief({
                 {!hideAbstract && (
                     <p
                         className={cn(
-                            'mt-5 line-clamp-3 leading-6 text-muted-foreground h-20 overflow-hidden text-ellipsis',
+                            'relative mt-5 leading-6 text-muted-foreground overflow-hidden flex-1',
                             'after:absolute after:bottom-0 after:left-0 after:right-0 after:h-16',
                             'after:bg-gradient-to-b after:to-card after:from-transparent',
                         )}

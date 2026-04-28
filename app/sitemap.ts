@@ -1,9 +1,15 @@
 import { getBlogPosts } from '@/lib/blog';
+import { BLOG_SITEMAP_CACHE_TAG } from '@/lib/blog-cache-tags';
 import { isDateProperty, isRichTextProperty } from '@/lib/notion';
 import { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
 import { MetadataRoute } from 'next';
+import { cacheLife, cacheTag } from 'next/cache';
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+async function getCachedPostsForSitemap(): Promise<PageObjectResponse[]> {
+    'use cache';
+    cacheLife({ stale: 3600, revalidate: 3600 });
+    cacheTag(BLOG_SITEMAP_CACHE_TAG);
+
     const posts = await getBlogPosts({
         sortBy: {
             property: 'Posted',
@@ -11,8 +17,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         },
     });
 
+    return posts.filter((post): post is PageObjectResponse => !!post);
+}
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+    const posts = await getCachedPostsForSitemap();
+
     const postNodes = posts
-        .filter((post): post is PageObjectResponse => !!post)
         .map(post => {
             const slug = isRichTextProperty(post.properties.Slug)
                 ? post.properties.Slug.rich_text[0].plain_text

@@ -15,8 +15,15 @@ function getTagsFromRequest(req: Request, body?: InvalidatePayload): string[] {
     const url = new URL(req.url);
     const fromRepeatedParams = url.searchParams.getAll('tag');
     const fromCsv =
-        url.searchParams.get('tags')?.split(',').map(t => t.trim()).filter(Boolean) ??
-        body?.tags?.split(',').map(t => t.trim()).filter(Boolean);
+        url.searchParams
+            .get('tags')
+            ?.split(',')
+            .map(t => t.trim())
+            .filter(Boolean) ??
+        body?.tags
+            ?.split(',')
+            .map(t => t.trim())
+            .filter(Boolean);
 
     const bodyTag = body?.tag;
     const allTags = [

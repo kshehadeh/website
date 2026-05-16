@@ -6,6 +6,7 @@ import { Sidecar } from '@/components/Sidecar/Sidecar';
 import { Metadata } from 'next';
 import { cacheLife, cacheTag } from 'next/cache';
 import { getRecentBlogPosts, type BlogPostFull } from '@/lib/blog';
+import { BLOG_CACHE_LIFE } from '@/lib/blog-cache-tags';
 import {
     blogPostMetadataTag,
     blogPostPageTag,
@@ -32,7 +33,7 @@ export async function generateMetadata(
     'use cache';
     const params = await props.params;
     const normalizedSlug = normalizeSlug(params.slug);
-    cacheLife({ stale: 3600, revalidate: 3600 });
+    cacheLife(BLOG_CACHE_LIFE);
     cacheTag(blogPostMetadataTag(normalizedSlug));
 
     const post = await loadCachedBlogPostBySlug(params.slug);
@@ -55,7 +56,7 @@ export async function generateMetadata(
 
 async function CachedBlogPostContent({ post }: { post: BlogPostFull }) {
     'use cache';
-    cacheLife({ stale: 3600, revalidate: 3600 });
+    cacheLife(BLOG_CACHE_LIFE);
     cacheTag(blogPostPageTag(post.slug));
     return (
         <ContentLayout
@@ -73,7 +74,7 @@ export default async function Page(
     'use cache';
     const params = await props.params;
     const normalizedSlug = normalizeSlug(params.slug);
-    cacheLife({ stale: 3600, revalidate: 3600 });
+    cacheLife(BLOG_CACHE_LIFE);
     cacheTag(blogPostPageTag(normalizedSlug));
 
     const post = await loadCachedBlogPostBySlug(params.slug);

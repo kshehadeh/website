@@ -5,10 +5,11 @@ import ContentLayout from '@/components/ContentLayout/ContentLayout';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
 import { HeadingWithRotatedBg } from '@/components/HeadingWithRotatedBg';
 import { cacheLife, cacheTag } from 'next/cache';
+import { BLOG_CACHE_LIFE } from '@/lib/blog-cache-tags';
 
 export async function generateMetadata() {
     'use cache';
-    cacheLife({ stale: 3600, revalidate: 3600 });
+    cacheLife(BLOG_CACHE_LIFE);
     cacheTag('blog-page-metadata');
 
     return {
@@ -25,7 +26,7 @@ export async function generateMetadata() {
 
 export default async function MainBlogPage() {
     'use cache';
-    cacheLife({ stale: 3600, revalidate: 3600 });
+    cacheLife(BLOG_CACHE_LIFE);
     cacheTag('blog-page');
 
     const posts = await getRecentBlogPosts(12, true);

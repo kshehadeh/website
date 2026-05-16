@@ -1,5 +1,5 @@
 import { getBlogPosts } from '@/lib/blog';
-import { BLOG_SITEMAP_CACHE_TAG } from '@/lib/blog-cache-tags';
+import { BLOG_CACHE_LIFE, BLOG_SITEMAP_CACHE_TAG } from '@/lib/blog-cache-tags';
 import { isDateProperty, isRichTextProperty } from '@/lib/notion';
 import { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
 import { MetadataRoute } from 'next';
@@ -7,7 +7,7 @@ import { cacheLife, cacheTag } from 'next/cache';
 
 async function getCachedPostsForSitemap(): Promise<PageObjectResponse[]> {
     'use cache';
-    cacheLife({ stale: 3600, revalidate: 3600 });
+    cacheLife(BLOG_CACHE_LIFE);
     cacheTag(BLOG_SITEMAP_CACHE_TAG);
 
     const posts = await getBlogPosts({

@@ -1,16 +1,29 @@
 import { revalidateTag } from 'next/cache';
 import { getBlogPostInvalidationTags } from '@/lib/blog-cache-tags';
 
-function getTagsFromRequest(req: Request): string[] {
+interface InvalidatePayload {
+    secret?: string;
+    slug?: string;
+    postSlug?: string;
+    tag?: string;
+    tags?: string;
+    postTags?: string;
+    notionTags?: string;
+}
+
+function getTagsFromRequest(req: Request, body?: InvalidatePayload): string[] {
     const url = new URL(req.url);
     const fromRepeatedParams = url.searchParams.getAll('tag');
-    const fromCsv = url.searchParams
-        .get('tags')
-        ?.split(',')
-        .map(tag => tag.trim())
-        .filter(Boolean);
+    const fromCsv =
+        url.searchParams.get('tags')?.split(',').map(t => t.trim()).filter(Boolean) ??
+        body?.tags?.split(',').map(t => t.trim()).filter(Boolean);
 
-    const allTags = [...fromRepeatedParams, ...(fromCsv ?? [])]
+    const bodyTag = body?.tag;
+    const allTags = [
+        ...fromRepeatedParams,
+        ...(fromCsv ?? []),
+        ...(bodyTag ? [bodyTag] : []),
+    ]
         .map(tag => decodeURIComponent(tag).trim())
         .filter(Boolean);
 
@@ -18,10 +31,16 @@ function getTagsFromRequest(req: Request): string[] {
 }
 
 /** Optional comma-separated Notion tag names (for `/blog/tag/[tag]` cache rows). */
-function getPostTagsFromRequest(req: Request): string[] | undefined {
+function getPostTagsFromRequest(
+    req: Request,
+    body?: InvalidatePayload,
+): string[] | undefined {
     const url = new URL(req.url);
     const raw =
-        url.searchParams.get('postTags') ?? url.searchParams.get('notionTags');
+        url.searchParams.get('postTags') ??
+        url.searchParams.get('notionTags') ??
+        body?.postTags ??
+        body?.notionTags;
     if (!raw?.trim()) {
         return undefined;
     }
@@ -32,11 +51,25 @@ function getPostTagsFromRequest(req: Request): string[] | undefined {
     return split.length ? split : undefined;
 }
 
-function getSlugFromRequest(req: Request): string | null {
+function getSlugFromRequest(
+    req: Request,
+    body?: InvalidatePayload,
+): string | null {
     const url = new URL(req.url);
     const slug =
-        url.searchParams.get('slug') ?? url.searchParams.get('postSlug');
+        url.searchParams.get('slug') ??
+        url.searchParams.get('postSlug') ??
+        body?.slug ??
+        body?.postSlug;
     return slug?.trim() ? slug : null;
+}
+
+function getSecretFromRequest(
+    req: Request,
+    body?: InvalidatePayload,
+): string | null {
+    const url = new URL(req.url);
+    return url.searchParams.get('secret') ?? body?.secret ?? null;
 }
 
 /**
@@ -51,19 +84,26 @@ function looksLikePartialBlogPostInvalidation(tags: string[]): boolean {
     return tags.every(postPrefix);
 }
 
-export async function GET(req: Request) {
-    const url = new URL(req.url);
-    const secret = url.searchParams.get('secret');
+async function handleInvalidation(req: Request): Promise<Response> {
+    let body: InvalidatePayload | undefined;
+    if (req.method === 'POST') {
+        try {
+            body = (await req.json()) as InvalidatePayload;
+        } catch {
+            body = undefined;
+        }
+    }
 
+    const secret = getSecretFromRequest(req, body);
     if (secret !== process.env.REVALIDATION_SECRET) {
         return new Response('Unauthorized', { status: 401 });
     }
 
-    const slug = getSlugFromRequest(req);
-    const notionPostTags = getPostTagsFromRequest(req);
+    const slug = getSlugFromRequest(req, body);
+    const notionPostTags = getPostTagsFromRequest(req, body);
     let expandedFromSlug: string[] | undefined;
 
-    let tags = getTagsFromRequest(req);
+    let tags = getTagsFromRequest(req, body);
 
     if (slug) {
         expandedFromSlug = getBlogPostInvalidationTags(slug, notionPostTags);
@@ -83,11 +123,11 @@ export async function GET(req: Request) {
     }
 
     const partialHint = looksLikePartialBlogPostInvalidation(
-        getTagsFromRequest(req),
+        getTagsFromRequest(req, body),
     );
 
     for (const tag of tags) {
-        revalidateTag(tag, 'max');
+        revalidateTag(tag, { expire: 0 });
     }
 
     return new Response(
@@ -103,4 +143,12 @@ export async function GET(req: Request) {
         }),
         { status: 200, headers: { 'Content-Type': 'application/json' } },
     );
+}
+
+export async function GET(req: Request) {
+    return handleInvalidation(req);
+}
+
+export async function POST(req: Request) {
+    return handleInvalidation(req);
 }

@@ -3,8 +3,22 @@
  * Post slug tags are built with the same normalization as blog routes (decodeURIComponent).
  */
 
+import type { cacheLife } from 'next/cache';
+
 export const BLOG_RSS_CACHE_TAG = 'blog-rss';
 export const BLOG_SITEMAP_CACHE_TAG = 'blog-sitemap';
+
+/**
+ * Shared cache-life profile for all blog surfaces.
+ * - stale 5 min: client-side router cache
+ * - revalidate 1 h: background refresh after 1 hour
+ * - expire 2 h: hard ceiling so stale data never lives forever
+ */
+export const BLOG_CACHE_LIFE: Parameters<typeof cacheLife>[0] = {
+    stale: 300,
+    revalidate: 3600,
+    expire: 7200,
+};
 
 export const BLOG_INDEX_CACHE_TAGS = [
     'blog-page',

@@ -5,10 +5,11 @@ import { Metadata } from 'next';
 import { PostList } from '@/components/Post/PostList';
 import { PostHero } from '@/components/Post/PostHero';
 import { cacheLife, cacheTag } from 'next/cache';
+import { BLOG_CACHE_LIFE } from '@/lib/blog-cache-tags';
 
 export async function generateMetadata(): Promise<Metadata> {
     'use cache';
-    cacheLife({ stale: 3600, revalidate: 3600 });
+    cacheLife(BLOG_CACHE_LIFE);
     cacheTag('home-page-metadata');
 
     return {
@@ -28,7 +29,7 @@ const getPageData = cache(async () => {
 
 export default async function Home() {
     'use cache';
-    cacheLife({ stale: 3600, revalidate: 3600 });
+    cacheLife(BLOG_CACHE_LIFE);
     cacheTag('home-page');
     const { recent } = await getPageData();
     const [heroPost, ...gridPosts] = recent;

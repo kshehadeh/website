@@ -1,5 +1,6 @@
 import { getBlogPostBySlug } from '@/lib/blog';
 import type { BlogPostFull } from '@/lib/blog';
+import { BLOG_CACHE_LIFE } from '@/lib/blog-cache-tags';
 import { cacheLife, cacheTag } from 'next/cache';
 
 function normalizeSlug(slug: string): string {
@@ -23,7 +24,7 @@ export async function loadCachedBlogPostBySlug(
 ): Promise<BlogPostFull | undefined> {
     'use cache';
     const normalized = normalizeSlug(slug);
-    cacheLife({ stale: 3600, revalidate: 3600 });
+    cacheLife(BLOG_CACHE_LIFE);
     cacheTag(blogPostMetadataTag(normalized));
     cacheTag(blogPostPageTag(normalized));
     return getBlogPostBySlug(normalized);

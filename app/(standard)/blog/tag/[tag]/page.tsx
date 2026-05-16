@@ -4,13 +4,14 @@ import { PostList } from '@/components/Post/PostList';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
 import ContentLayout from '@/components/ContentLayout/ContentLayout';
 import { cacheLife, cacheTag } from 'next/cache';
+import { BLOG_CACHE_LIFE } from '@/lib/blog-cache-tags';
 
 export async function generateMetadata(props: {
     params: Promise<{ tag: string }>;
 }) {
     'use cache';
     const params = await props.params;
-    cacheLife({ stale: 3600, revalidate: 3600 });
+    cacheLife(BLOG_CACHE_LIFE);
     cacheTag(`blog-tag-metadata-${params.tag}`);
 
     const { tag } = params;
@@ -32,7 +33,7 @@ export default async function PostsByTagPage(props: {
 }) {
     'use cache';
     const params = await props.params;
-    cacheLife({ stale: 3600, revalidate: 3600 });
+    cacheLife(BLOG_CACHE_LIFE);
     cacheTag(`blog-tag-page-${params.tag}`);
 
     const { tag } = params;

@@ -7,6 +7,7 @@ import { PageType } from '@/lib/page';
 import Link from 'next/link';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { CreateSpotReference } from './CreateSpotReference';
+import { DevDashReference } from './DevDashReference';
 
 const user = {
     name: 'Karim Shehadeh',
@@ -45,7 +46,10 @@ export default function Navigation({ current }: { current: PageType }) {
                                                 current={current === item.type}
                                             />
                                         ))}
-                                        <CreateSpotReference />
+                                        <div className="flex items-center gap-3">
+                                            <CreateSpotReference />
+                                            <DevDashReference />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -86,8 +90,9 @@ export default function Navigation({ current }: { current: PageType }) {
                                     current={current === item.type}
                                 />
                             ))}
-                            <div className="px-3 py-2 flex items-center gap-2">
+                            <div className="px-3 py-2 flex flex-wrap items-center gap-3">
                                 <CreateSpotReference />
+                                <DevDashReference />
                             </div>
                         </div>
                     </Disclosure.Panel>

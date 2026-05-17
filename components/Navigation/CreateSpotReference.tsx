@@ -14,7 +14,6 @@ export function CreateSpotReference() {
         setMounted(true);
     }, []);
 
-    // Use resolvedTheme to handle system theme preference
     const isDark = mounted && (resolvedTheme === 'dark' || theme === 'dark');
     const imageSrc = isDark
         ? '/create-spot-dark-mode.png'

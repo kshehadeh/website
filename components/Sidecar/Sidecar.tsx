@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { BlogPostFull, getBlogPostHeadings } from '@/lib/blog';
 import Link from 'next/link';
 import { TableOfContents } from '../Post/TableOfContents';
@@ -7,6 +7,8 @@ import { OtherThings } from './OtherThings/OtherThings';
 import { RecentPosts } from './RecentPosts/RecentPosts';
 import { PageType } from '@/lib/page';
 import { RecentBookmarks } from './RecentBookmarks/RecentBookmarks';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { HeadingWithRotatedBg } from '@/components/HeadingWithRotatedBg';
 
 export function ActiveLink({
     children,
@@ -24,7 +26,29 @@ export function ActiveLink({
     );
 }
 
-export async function Sidecar({
+function SidecarCardFallback({ title }: { title: string }) {
+    return (
+        <Card className="mb-4">
+            <CardHeader>
+                <HeadingWithRotatedBg
+                    as="h2"
+                    className="text-base font-semibold font-mono"
+                >
+                    {title}
+                </HeadingWithRotatedBg>
+            </CardHeader>
+            <CardContent>
+                <div className="space-y-3">
+                    <div className="h-4 rounded bg-muted animate-pulse" />
+                    <div className="h-4 rounded bg-muted animate-pulse" />
+                    <div className="h-4 rounded bg-muted animate-pulse" />
+                </div>
+            </CardContent>
+        </Card>
+    );
+}
+
+export function Sidecar({
     post,
     pageType,
     includeRecent,
@@ -42,7 +66,12 @@ export async function Sidecar({
     if (pageType === 'post' && post) {
         const headings = getBlogPostHeadings(post);
         if (headings.length > 0) {
-            headings.unshift({ level: 1, text: post.title, children: [] });
+            headings.unshift({
+                id: `post-title-${post.id}`,
+                level: 1,
+                text: post.title,
+                children: [],
+            });
             contextComponents.push(
                 <TableOfContents key="table-of-contents" headings={headings} />,
             );
@@ -52,8 +81,20 @@ export async function Sidecar({
     return (
         <div className={styles.sidecar}>
             {contextComponents}
-            {includeRecent && <RecentPosts currentPost={post} />}
-            {includeBookarks && <RecentBookmarks />}
+            {includeRecent && (
+                <Suspense
+                    fallback={<SidecarCardFallback title="Recent Posts" />}
+                >
+                    <RecentPosts currentPost={post} />
+                </Suspense>
+            )}
+            {includeBookarks && (
+                <Suspense
+                    fallback={<SidecarCardFallback title="Around The Web" />}
+                >
+                    <RecentBookmarks />
+                </Suspense>
+            )}
             <OtherThings pageType={pageType} />
         </div>
     );

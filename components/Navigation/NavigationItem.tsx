@@ -1,6 +1,7 @@
 'use client';
 import { cn } from '@/lib/util';
 import { Disclosure } from '@headlessui/react';
+import Link from 'next/link';
 import React from 'react';
 
 export default function NavigationItem({
@@ -15,7 +16,7 @@ export default function NavigationItem({
     return mobile ? (
         <Disclosure.Button
             key={item.name}
-            as="a"
+            as={Link}
             href={item.href}
             className={cn(
                 current
@@ -28,7 +29,7 @@ export default function NavigationItem({
             {item.name}
         </Disclosure.Button>
     ) : (
-        <a
+        <Link
             key={item.name}
             href={item.href}
             className={cn(
@@ -40,6 +41,6 @@ export default function NavigationItem({
             aria-current={current ? 'page' : undefined}
         >
             {item.name}
-        </a>
+        </Link>
     );
 }

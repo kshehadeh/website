@@ -1,5 +1,5 @@
 import React from 'react';
-import { BlogPostFull, getRecentBlogPosts } from '@/lib/blog';
+import { BlogPostFull, getRecentBlogPostTitles } from '@/lib/blog';
 import Link from 'next/link';
 import { ActiveLink } from '../Sidecar';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
@@ -11,7 +11,7 @@ async function loadRecentPosts() {
     'use cache';
     cacheLife(BLOG_CACHE_LIFE);
     cacheTag('sidecar-recent-posts');
-    return getRecentBlogPosts(10, false);
+    return getRecentBlogPostTitles(10);
 }
 
 export async function RecentPosts({

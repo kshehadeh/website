@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { getRecentBookmarks } from '@/lib/bookmarks';
+import { getRecentBookmarkLinks } from '@/lib/bookmarks';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { HeadingWithRotatedBg } from '@/components/HeadingWithRotatedBg';
 import { cacheLife, cacheTag } from 'next/cache';
@@ -10,7 +10,7 @@ async function loadRecentBookmarks() {
     'use cache';
     cacheLife(BLOG_CACHE_LIFE);
     cacheTag('sidecar-recent-bookmarks');
-    return getRecentBookmarks(10);
+    return getRecentBookmarkLinks(10);
 }
 
 export async function RecentBookmarks() {

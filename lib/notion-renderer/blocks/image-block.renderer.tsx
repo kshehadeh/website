@@ -5,7 +5,7 @@ import { ImageBlockObjectResponse } from '@notionhq/client/build/src/api-endpoin
 import { createBlockRenderer } from '../utils/create-block-renderer';
 import { Figure, Legend } from '@/components/primitives';
 import { getFinalFileUrl } from '@/lib/notion';
-import Image from 'next/image';
+import { NotionImage } from '@/components/NotionImage';
 
 export default createBlockRenderer<ImageBlockObjectResponse>(
     'image',
@@ -18,7 +18,7 @@ export default createBlockRenderer<ImageBlockObjectResponse>(
                 key={`figure-${data.id}`}
                 additionalClasses={['block', 'md:m-5']}
             >
-                <Image
+                <NotionImage
                     src={src}
                     alt={data.image.caption?.[0]?.plain_text || 'src'}
                     className="w-full h-auto"

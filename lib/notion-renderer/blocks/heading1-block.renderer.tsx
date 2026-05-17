@@ -19,6 +19,7 @@ export default createBlockRenderer<Heading1BlockObjectResponse>(
                         getPlainTextFromRichTextResponse(
                             data.heading_1.rich_text,
                         ),
+                        data.id,
                     )}
                 ></a>
                 {await renderer.render(...data.heading_1.rich_text)}

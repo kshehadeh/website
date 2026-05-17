@@ -9,7 +9,6 @@ import {
     ParagraphBlockObjectResponse,
     UserObjectResponse,
 } from '@notionhq/client/build/src/api-endpoints';
-import { r2FileExists, uploadToR2 } from './bucket';
 
 export const notion = new Client({
     auth: process.env.NOTION_TOKEN,
@@ -166,13 +165,21 @@ export function getFilesFromProperty(property: FilesProperty): string[] {
             ? file.file.url
             : isExternalFileProperty(file)
               ? file.external.url
-              : '',
+            : '',
     );
 }
 
 export function getFileNameFromUrl(url: string) {
     const urlObject = new URL(url);
     return urlObject.pathname.split('/').at(-1);
+}
+
+function makeMirroredFileRoute(sourceUrl: string, key: string) {
+    const params = new URLSearchParams({
+        source: sourceUrl,
+        key,
+    });
+    return `/api/notion-file?${params.toString()}`;
 }
 
 /**
@@ -190,12 +197,11 @@ export async function getFinalFileUrl(
 ) {
     if (isInternalFileProperty(image)) {
         const name = getFileNameFromUrl(image.file.url);
-        if (!name) throw new Error('Failed to extract file name from URL');
-        const url = await r2FileExists(`${folder}/${name}`);
-        if (!url) {
-            return await uploadToR2(image.file.url, `${folder}/${name}`);
+        if (!name) {
+            return image.file.url;
         }
-        return url;
+
+        return makeMirroredFileRoute(image.file.url, `${folder}/${name}`);
     } else if (isExternalFileProperty(image)) {
         return image.external.url;
     }
@@ -213,15 +219,7 @@ export async function getFinalFileUrls(
     const urls: string[] = [];
     for (const file of files.files) {
         if (isInternalFileProperty(file)) {
-            let url = await r2FileExists(`${folder}/${file.name}`);
-            if (!url) {
-                url = await uploadToR2(file.file.url, `${folder}/${file.name}`);
-            }
-            if (url) {
-                urls.push(url);
-            } else {
-                urls.push(file.file.url);
-            }
+            urls.push(makeMirroredFileRoute(file.file.url, `${folder}/${file.name}`));
         } else if (isExternalFileProperty(file)) {
             urls.push(file.external.url);
         }

@@ -13,7 +13,9 @@ const numberedListExtension: ExtensionFunc = async blocks => {
     const next = [];
 
     const pushList = () => {
+        const firstItem = items[0];
         next.push({
+            id: firstItem?.id,
             type: 'numbered_list',
             numbered_list: items,
         });

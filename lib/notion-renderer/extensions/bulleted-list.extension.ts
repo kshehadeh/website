@@ -13,7 +13,9 @@ const bulletedListExtension: ExtensionFunc = async blocks => {
     const next = [];
 
     const pushList = () => {
+        const firstItem = items[0];
         next.push({
+            id: firstItem?.id,
             type: 'bulleted_list',
             bulleted_list: items,
         });
@@ -37,6 +39,7 @@ const bulletedListExtension: ExtensionFunc = async blocks => {
             });
         } else if (start) {
             pushList();
+            next.push(block);
         } else {
             next.push(block);
         }

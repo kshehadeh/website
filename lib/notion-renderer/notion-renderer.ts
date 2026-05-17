@@ -8,7 +8,7 @@ import {
     BlockRendererFunc,
     ExtensionFunc,
 } from './types';
-import { ReactElement } from 'react';
+import { cloneElement, isValidElement, ReactElement } from 'react';
 
 export interface NotionRendererArgs {
     /**
@@ -67,7 +67,8 @@ export class NotionRenderer {
             blocks = await extension(blocks);
         }
 
-        const promises = blocks
+        const rendered = await Promise.all(
+            blocks
             .map(block => {
                 const renderer = this.renderers[block.type];
                 if (!renderer)
@@ -77,9 +78,24 @@ export class NotionRenderer {
                 return { block, renderer };
             })
             .filter(({ renderer }) => Boolean(renderer))
-            .map(({ block, renderer }) => renderer!(block, this));
+            .map(({ block, renderer }) => renderer!(block, this)),
+        );
 
-        return Promise.all(promises);
+        return rendered.map((element, index) => {
+            if (!isValidElement(element)) {
+                return element;
+            }
+
+            const block = blocks[index];
+            const fallbackKey =
+                (typeof block.id === 'string' && block.id) ||
+                (typeof block.plain_text === 'string' && block.plain_text) ||
+                `${block.type}-${index}`;
+
+            return cloneElement(element, {
+                key: element.key ?? fallbackKey,
+            });
+        });
     }
 
     public async renderBlock(blockId: string): Promise<ReactElement[]> {

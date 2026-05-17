@@ -1,6 +1,5 @@
 import React from 'react';
 import { PersonalReference } from '@/lib/about';
-import Image from 'next/image';
 
 function PersonalReferenceItem({
     reference,
@@ -23,7 +22,7 @@ function PersonalReferenceItem({
                 rel="noreferrer noopener"
             >
                 {reference.icon && (
-                    <Image
+                    <img
                         src={reference.icon}
                         title={reference.title}
                         alt={reference.title}

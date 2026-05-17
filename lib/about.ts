@@ -23,9 +23,7 @@ export interface AboutPageInterface extends PageObjectResponse {
     blocks: BlockObjectResponse[];
 }
 
-export async function getPersonalReferences(
-    page: AboutPageInterface,
-): Promise<PersonalReference[]> {
+function getReferencesDatabaseId(page: AboutPageInterface): string {
     const referencesDb = page.blocks.find(
         block =>
             block.type === 'child_database' &&
@@ -33,9 +31,18 @@ export async function getPersonalReferences(
     );
 
     if (!referencesDb) throw new Error('Unable to find references database');
+    return referencesDb.id;
+}
 
-    const rows = await fetchDatabaseRows(referencesDb.id, 10);
-    const results = await Promise.all(
+async function loadPersonalReferences(
+    referencesDbId: string,
+): Promise<PersonalReference[]> {
+    'use cache';
+    cacheLife({ stale: 3600, revalidate: 3600 });
+    cacheTag('about-page');
+
+    const rows = await fetchDatabaseRows(referencesDbId, 10);
+    return Promise.all(
         rows.results.filter(isPageObjectResponse).map(async row => ({
             id: row.id,
             title: isTitleProperty(row.properties.Name)
@@ -51,8 +58,21 @@ export async function getPersonalReferences(
                 : null,
         })),
     );
+}
 
-    return results;
+export async function getPersonalReferences(
+    page: AboutPageInterface,
+): Promise<PersonalReference[]> {
+    return loadPersonalReferences(getReferencesDatabaseId(page));
+}
+
+export async function getFooterReferences(): Promise<PersonalReference[]> {
+    'use cache';
+    cacheLife({ stale: 3600, revalidate: 3600 });
+    cacheTag('about-page');
+
+    const page = await getAboutPage();
+    return loadPersonalReferences(getReferencesDatabaseId(page));
 }
 
 export async function getAboutPage(): Promise<AboutPageInterface> {

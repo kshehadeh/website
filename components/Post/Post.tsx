@@ -5,7 +5,10 @@ import { NotionRenderer } from '@/lib/notion-renderer';
 import { HeadingWithRotatedBg } from '../HeadingWithRotatedBg';
 
 export async function Post({ post }: { post: BlogPostFull }) {
-    const renderer = new NotionRenderer({ client: notion });
+    const renderer = new NotionRenderer({
+        client: notion,
+        blockChildrenById: post.blockChildrenById,
+    });
     const postElements = await renderer.render(...(post?.blocks || []));
     const hasHero = Boolean(post.coverUrl);
 

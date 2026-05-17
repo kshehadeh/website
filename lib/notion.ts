@@ -259,10 +259,54 @@ export const fetchDatabaseRows = React.cache(
     },
 );
 
+async function listAllBlockChildren(
+    blockId: string,
+): Promise<BlockObjectResponse[]> {
+    const blocks: BlockObjectResponse[] = [];
+    let startCursor: string | undefined = undefined;
+
+    do {
+        const response = await notion.blocks.children.list({
+            block_id: blockId,
+            page_size: 100,
+            start_cursor: startCursor,
+        });
+        blocks.push(...(response.results as BlockObjectResponse[]));
+        startCursor = response.has_more
+            ? (response.next_cursor ?? undefined)
+            : undefined;
+    } while (startCursor);
+
+    return blocks;
+}
+
+async function buildBlockChildrenMap(
+    blockId: string,
+    map: Record<string, BlockObjectResponse[]>,
+): Promise<BlockObjectResponse[]> {
+    const children = await listAllBlockChildren(blockId);
+    map[blockId] = children;
+
+    await Promise.all(
+        children
+            .filter(block => block.has_children)
+            .map(block => buildBlockChildrenMap(block.id, map)),
+    );
+
+    return children;
+}
+
 export const fetchPageBlocks = React.cache(async (pageId: string) => {
-    return notion.blocks.children
-        .list({ block_id: pageId })
-        .then(res => res.results as BlockObjectResponse[]);
+    return listAllBlockChildren(pageId);
+});
+
+export const fetchPageBlockTree = React.cache(async (pageId: string) => {
+    const blockChildrenById: Record<string, BlockObjectResponse[]> = {};
+    const blocks = await buildBlockChildrenMap(pageId, blockChildrenById);
+    return {
+        blocks,
+        blockChildrenById,
+    };
 });
 
 export const fetchBlock = React.cache((blockId: string) => {

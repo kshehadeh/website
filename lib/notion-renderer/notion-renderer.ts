@@ -26,6 +26,12 @@ export interface NotionRendererArgs {
      * If not defined, blocks with children will not be fully supported.
      */
     client?: Client;
+
+    /**
+     * Optional preloaded map of block ID -> child blocks.
+     * When provided, renderers can avoid additional Notion API round-trips.
+     */
+    blockChildrenById?: Record<string, Block[]>;
 }
 
 export class NotionRenderer {
@@ -33,6 +39,7 @@ export class NotionRenderer {
     private renderers: Record<string, BlockRendererFunc<any>> = {};
     private readonly extensions: ExtensionFunc[] = [];
     public readonly client?: Client;
+    private readonly blockChildrenById: Record<string, Block[]>;
 
     constructor(args: NotionRendererArgs = {}) {
         [...BLOCK_RENDERERS, ...(args.renderers ?? [])].forEach(Block =>
@@ -44,6 +51,7 @@ export class NotionRenderer {
         );
 
         this.client = args.client;
+        this.blockChildrenById = args.blockChildrenById ?? {};
     }
 
     public addBlockRenderer<T extends Block>(renderer: BlockRenderer<T>): void {
@@ -75,6 +83,16 @@ export class NotionRenderer {
     }
 
     public async renderBlock(blockId: string): Promise<ReactElement[]> {
+        const children = await this.getBlockChildren(blockId);
+        return this.render(...children);
+    }
+
+    public async getBlockChildren(blockId: string): Promise<Block[]> {
+        const preloadedChildren = this.blockChildrenById[blockId];
+        if (preloadedChildren) {
+            return preloadedChildren;
+        }
+
         if (!this.client)
             throw new Error(
                 'You must define a Notion Client if you want to use this feature.',
@@ -82,8 +100,9 @@ export class NotionRenderer {
 
         const { results } = await this.client.blocks.children.list({
             block_id: blockId,
+            page_size: 100,
         });
-        return this.render(...(results as Block[]));
+        return results as Block[];
     }
 
     public async use(...plugins: ReturnType<Plugin>[]) {

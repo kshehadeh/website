@@ -6,6 +6,7 @@ import {
 } from '@notionhq/client/build/src/api-endpoints';
 import {
     fetchPageBlocks,
+    fetchPageBlockTree,
     getDataSourceIdFromDatabaseId,
     getFinalFileUrl,
     isAuthorProperty,
@@ -47,6 +48,7 @@ export interface BlogPostBrief {
 
 export interface BlogPostFull extends BlogPostBrief {
     blocks: Block[];
+    blockChildrenById?: Record<string, BlockObjectResponse[]>;
 }
 
 export function getPlainTextFromRichTextResponse(
@@ -182,12 +184,13 @@ export async function getBlogPostBySlug(
     const post = (await getBlogPosts({ limit: 1, slug, status: 'Any' }))?.[0];
 
     if (isPageObjectResponse(post)) {
-        // get the blocks for this page, including content
-        const blocks = await fetchPageBlocks(post.id);
+        // get the blocks for this page, including all nested children
+        const { blocks, blockChildrenById } = await fetchPageBlockTree(post.id);
 
         return {
             ...(await getBlogBrief({ post, blocks })),
             blocks,
+            blockChildrenById,
         };
     }
 }

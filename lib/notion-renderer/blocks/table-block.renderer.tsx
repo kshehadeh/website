@@ -16,18 +16,7 @@ function isTableRowBlock(block: Block): block is TableRowBlockObjectResponse {
 export default createBlockRenderer<TableBlockObjectResponse>(
     'table',
     async (data, renderer) => {
-        if (!renderer.client) {
-            return (
-                <Table key={`table-${data.id}`}>
-                    {await renderer.renderBlock(data.id)}
-                </Table>
-            );
-        }
-
-        const { results } = await renderer.client.blocks.children.list({
-            block_id: data.id,
-        });
-        const rows = results as Block[];
+        const rows = await renderer.getBlockChildren(data.id);
 
         const hasColumnHeader = data.table?.has_column_header ?? false;
         const hasRowHeader = data.table?.has_row_header ?? false;

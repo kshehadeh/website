@@ -21,6 +21,12 @@ export interface Bookmark {
     abstract: string;
 }
 
+export interface BookmarkLink {
+    id: string;
+    title: string;
+    url: string;
+}
+
 export function getSummaryFromBlocks(blocks: BlockObjectResponse[]): string {
     return getAbstractFromBlocks(blocks);
 }
@@ -55,7 +61,51 @@ export async function getRecentBookmarks(limit = 10): Promise<Bookmark[]> {
     }
 }
 
+export async function getRecentBookmarkLinks(
+    limit = 10,
+): Promise<BookmarkLink[]> {
+    const dataSourceId = await getDataSourceIdFromDatabaseId(
+        process.env.NOTION_BOOKMARKS_DATABASE_ID!,
+    );
+    const results = await notion.dataSources.query({
+        data_source_id: dataSourceId,
+        sorts: [
+            {
+                property: 'Created',
+                direction: 'descending',
+            },
+        ],
+        filter: {
+            property: 'Tags',
+            multi_select: {
+                contains: 'site',
+            },
+        },
+        page_size: limit,
+    });
+
+    if (results) {
+        return results.results
+            .filter(isPageObjectResponse)
+            .map(page => ({
+                id: page.id,
+                title: isTitleProperty(page.properties.Name)
+                    ? page.properties.Name.title[0].plain_text
+                    : '',
+                url: isUrlProperty(page.properties.URL)
+                    ? page.properties.URL.url || ''
+                    : '',
+            }));
+    } else {
+        return [];
+    }
+}
+
 export async function getBookmarksByTag(tag: string): Promise<Bookmark[]> {
+    if (!tag) {
+        return [];
+    }
+
     const dataSourceId = await getDataSourceIdFromDatabaseId(
         process.env.NOTION_BOOKMARKS_DATABASE_ID!,
     );
@@ -93,6 +143,40 @@ export async function getBookmarksByTag(tag: string): Promise<Bookmark[]> {
     } else {
         return [];
     }
+}
+
+export async function getBookmarkTags(): Promise<string[]> {
+    const dataSourceId = await getDataSourceIdFromDatabaseId(
+        process.env.NOTION_BOOKMARKS_DATABASE_ID!,
+    );
+    const results = await notion.dataSources.query({
+        data_source_id: dataSourceId,
+        filter: {
+            property: 'Tags',
+            multi_select: {
+                contains: 'site',
+            },
+        },
+        page_size: 100,
+    });
+
+    if (!results) {
+        return [];
+    }
+
+    return [
+        ...new Set(
+            results.results
+                .filter(isPageObjectResponse)
+                .flatMap(page =>
+                    isMultiSelectProperty(page.properties.Tags)
+                        ? page.properties.Tags.multi_select
+                              .filter(tag => tag.name !== 'site')
+                              .map(tag => tag.name)
+                        : [],
+                ),
+        ),
+    ].sort((left, right) => left.localeCompare(right));
 }
 
 async function mapPageToBookmark(page: PageObjectResponse): Promise<Bookmark> {

@@ -177,8 +177,18 @@ export async function POST(request: NextRequest) {
 
     const contentType = resolveContentType(databaseId);
     const properties = data.properties ?? {};
+    const pageId = data.id;
     let tags: string[] = [];
     let warmUrls: string[] = [];
+
+    // Invalidate Notion-level cache tags for this page's block tree
+    if (pageId) {
+        tags.push(
+            `notion-page-tree-${pageId}`,
+            `notion-page-blocks-${pageId}`,
+            `notion-block-children-${pageId}`,
+        );
+    }
 
     switch (contentType) {
         case 'blog': {

@@ -1,7 +1,8 @@
 import 'server-only';
 
 import { Client } from '@notionhq/client';
-import React from 'react';
+import { cacheLife, cacheTag } from 'next/cache';
+import { BLOG_CACHE_LIFE } from './blog-cache-tags';
 import {
     BlockObjectResponse,
     ImageBlockObjectResponse,
@@ -233,35 +234,42 @@ export async function getFinalFileUrls(
  * Gets the data source ID from a database ID.
  * In the new Notion API (2025-09-03), databases can contain multiple data sources.
  * This helper retrieves the database and returns the first data source ID.
- * Results are cached per request using React.cache.
+ * Results are persisted across requests using `use cache: remote`.
  */
-export const getDataSourceIdFromDatabaseId = React.cache(
-    async (databaseId: string): Promise<string> => {
-        const database = await notion.databases.retrieve({
-            database_id: databaseId,
-        });
-        if ('data_sources' in database && database.data_sources.length > 0) {
-            return database.data_sources[0].id;
-        }
-        // Fallback: if the database doesn't have data_sources (partial response),
-        // try using the database ID as the data source ID (for backward compatibility)
-        return databaseId;
-    },
-);
+export async function getDataSourceIdFromDatabaseId(
+    databaseId: string,
+): Promise<string> {
+    'use cache: remote';
+    cacheLife({ stale: 3600, revalidate: 3600, expire: 86400 });
+    cacheTag(`notion-datasource-id-${databaseId}`);
+    const database = await notion.databases.retrieve({
+        database_id: databaseId,
+    });
+    if ('data_sources' in database && database.data_sources.length > 0) {
+        return database.data_sources[0].id;
+    }
+    // Fallback: if the database doesn't have data_sources (partial response),
+    // try using the database ID as the data source ID (for backward compatibility)
+    return databaseId;
+}
 
-export const fetchDatabaseRows = React.cache(
-    async (dbId: string, limit: number) => {
-        const dataSourceId = await getDataSourceIdFromDatabaseId(dbId);
-        return notion.dataSources.query({
-            data_source_id: dataSourceId,
-            page_size: limit,
-        });
-    },
-);
+export async function fetchDatabaseRows(dbId: string, limit: number) {
+    'use cache: remote';
+    cacheLife(BLOG_CACHE_LIFE);
+    cacheTag(`notion-db-rows-${dbId}`);
+    const dataSourceId = await getDataSourceIdFromDatabaseId(dbId);
+    return notion.dataSources.query({
+        data_source_id: dataSourceId,
+        page_size: limit,
+    });
+}
 
 async function listAllBlockChildren(
     blockId: string,
 ): Promise<BlockObjectResponse[]> {
+    'use cache: remote';
+    cacheLife(BLOG_CACHE_LIFE);
+    cacheTag(`notion-block-children-${blockId}`);
     const blocks: BlockObjectResponse[] = [];
     let startCursor: string | undefined = undefined;
 
@@ -296,19 +304,28 @@ async function buildBlockChildrenMap(
     return children;
 }
 
-export const fetchPageBlocks = React.cache(async (pageId: string) => {
+export async function fetchPageBlocks(pageId: string) {
+    'use cache: remote';
+    cacheLife(BLOG_CACHE_LIFE);
+    cacheTag(`notion-page-blocks-${pageId}`);
     return listAllBlockChildren(pageId);
-});
+}
 
-export const fetchPageBlockTree = React.cache(async (pageId: string) => {
+export async function fetchPageBlockTree(pageId: string) {
+    'use cache: remote';
+    cacheLife(BLOG_CACHE_LIFE);
+    cacheTag(`notion-page-tree-${pageId}`);
     const blockChildrenById: Record<string, BlockObjectResponse[]> = {};
     const blocks = await buildBlockChildrenMap(pageId, blockChildrenById);
     return {
         blocks,
         blockChildrenById,
     };
-});
+}
 
-export const fetchBlock = React.cache((blockId: string) => {
+export async function fetchBlock(blockId: string) {
+    'use cache: remote';
+    cacheLife(BLOG_CACHE_LIFE);
+    cacheTag(`notion-block-${blockId}`);
     return notion.blocks.retrieve({ block_id: blockId });
-});
+}

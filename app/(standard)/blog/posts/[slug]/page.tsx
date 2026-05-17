@@ -5,7 +5,11 @@ import ContentLayout from '@/components/ContentLayout/ContentLayout';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
 import { Metadata } from 'next';
 import { getRecentBlogPostSlugs } from '@/lib/blog';
-import { loadCachedBlogPostBySlug } from './blog-post-data';
+import { BlogPostFull } from '@/lib/blog';
+import {
+    loadCachedBlogPostBySlug,
+    loadCachedBlogPostMetadataBySlug,
+} from './blog-post-data';
 
 const PREBUILT_POST_COUNT = 20;
 
@@ -18,7 +22,7 @@ export async function generateMetadata(
     props: Readonly<{ params: Promise<{ slug: string }> }>,
 ): Promise<Metadata> {
     const { slug } = await props.params;
-    const post = await loadCachedBlogPostBySlug(slug);
+    const post = await loadCachedBlogPostMetadataBySlug(slug);
     return {
         title: `Karim Shehadeh - ${post?.title}`,
         description: `${post?.abstract ?? ''}`,
@@ -59,21 +63,7 @@ function PostSidecarFallback() {
     );
 }
 
-async function BlogPostContent({ slug }: { slug: string }) {
-    const post = await loadCachedBlogPostBySlug(slug);
-    if (!post) {
-        notFound();
-    }
-
-    return <Post post={post} />;
-}
-
-async function BlogPostSidecar({ slug }: { slug: string }) {
-    const post = await loadCachedBlogPostBySlug(slug);
-    if (!post) {
-        return null;
-    }
-
+async function BlogPostSidecar({ post }: { post: BlogPostFull }) {
     return <Sidecar post={post} pageType={'post'} />;
 }
 
@@ -81,17 +71,21 @@ export default async function Page(
     props: Readonly<{ params: Promise<{ slug: string }> }>,
 ) {
     const { slug } = await props.params;
+    const post = await loadCachedBlogPostBySlug(slug);
+    if (!post) {
+        notFound();
+    }
 
     return (
         <ContentLayout
             pageType={'post'}
             sidecar={
                 <Suspense fallback={<PostSidecarFallback />}>
-                    <BlogPostSidecar slug={slug} />
+                    <BlogPostSidecar post={post} />
                 </Suspense>
             }
         >
-            <BlogPostContent slug={slug} />
+            <Post post={post} />
         </ContentLayout>
     );
 }

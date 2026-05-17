@@ -4,13 +4,34 @@ import Link from 'next/link';
 import { ActiveLink } from '../Sidecar';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { HeadingWithRotatedBg } from '@/components/HeadingWithRotatedBg';
+import { cacheLife, cacheTag } from 'next/cache';
+import { BLOG_CACHE_LIFE } from '@/lib/blog-cache-tags';
+
+async function loadRecentPosts() {
+    'use cache';
+    // #region agent log
+    console.info(
+        JSON.stringify({
+            sessionId: 'f75588',
+            runId: 'post-fix',
+            hypothesisId: 'H7',
+            location: 'components/Sidecar/RecentPosts/RecentPosts.tsx:14',
+            message: 'loadRecentPosts cache-miss execution',
+            data: { limit: 10 },
+        }),
+    );
+    // #endregion
+    cacheLife(BLOG_CACHE_LIFE);
+    cacheTag('sidecar-recent-posts');
+    return getRecentBlogPosts(10, false);
+}
 
 export async function RecentPosts({
     currentPost,
 }: {
     currentPost?: BlogPostFull;
 }) {
-    const recentPosts = await getRecentBlogPosts(10, false);
+    const recentPosts = await loadRecentPosts();
 
     return (
         <Card className="mb-4">

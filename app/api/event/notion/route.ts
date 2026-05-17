@@ -31,8 +31,8 @@ function getSlugFromProperties(
         typeof slugProp === 'object' &&
         'rich_text' in slugProp &&
         Array.isArray((slugProp as { rich_text: unknown[] }).rich_text) &&
-        (slugProp as { rich_text: { plain_text?: string }[] }).rich_text.length >
-            0
+        (slugProp as { rich_text: { plain_text?: string }[] }).rich_text
+            .length > 0
     ) {
         return (
             (slugProp as { rich_text: { plain_text?: string }[] }).rich_text[0]
@@ -42,9 +42,7 @@ function getSlugFromProperties(
     return null;
 }
 
-function getTagsFromProperties(
-    properties: Record<string, unknown>,
-): string[] {
+function getTagsFromProperties(properties: Record<string, unknown>): string[] {
     const tagsProp = properties['Tags'];
     if (
         tagsProp &&
@@ -83,7 +81,8 @@ function resolveContentType(databaseId: string): ContentType {
 
     // Notion sends unhyphenated IDs; env vars may use hyphenated form
     const normalize = (id: string) => id.replace(/-/g, '');
-    if (blogDbId && normalize(databaseId) === normalize(blogDbId)) return 'blog';
+    if (blogDbId && normalize(databaseId) === normalize(blogDbId))
+        return 'blog';
     if (bookmarksDbId && normalize(databaseId) === normalize(bookmarksDbId))
         return 'bookmarks';
 

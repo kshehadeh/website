@@ -48,7 +48,7 @@ export async function RecentPosts({
                             ) : (
                                 <Link
                                     href={`/blog/posts/${p.slug}`}
-                                    prefetch={false}
+                                    prefetch={true}
                                     className="hover:text-primary transition-colors"
                                 >
                                     {p.title}

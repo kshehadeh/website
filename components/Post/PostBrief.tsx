@@ -29,7 +29,7 @@ export function PostBrief({
             className="flex flex-col m-0 p-0 h-full md:h-[32rem] overflow-hidden hover:shadow-lg transition-shadow"
         >
             <div
-                className="hidden md:block w-full aspect-[4/3] flex-none bg-cover bg-center rounded-t-xl"
+                className="hidden md:block w-full aspect-[4/3] max-h-[16rem] flex-none bg-cover bg-center rounded-t-xl"
                 style={{ backgroundImage: `url(${post.coverUrl})` }}
             />
             <CardHeader className="group relative pb-3 min-h-0 flex-1 flex flex-col">

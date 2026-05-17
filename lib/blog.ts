@@ -195,6 +195,15 @@ export async function getBlogPostBySlug(
     }
 }
 
+export async function getBlogPostMetadataBySlug(
+    slug: string,
+): Promise<BlogPostBrief | undefined> {
+    const post = (await getBlogPosts({ limit: 1, slug, status: 'Any' }))?.[0];
+    if (isPageObjectResponse(post)) {
+        return getBlogBrief({ post, fetchAbstract: false });
+    }
+}
+
 export async function getBlogPostsByTag(
     tags: string[],
 ): Promise<BlogPostBrief[]> {

@@ -7,7 +7,11 @@ import { Metadata } from 'next';
 import { cacheLife, cacheTag } from 'next/cache';
 import { getRecentBlogPosts } from '@/lib/blog';
 import { BLOG_CACHE_LIFE } from '@/lib/blog-cache-tags';
-import { blogPostPageTag, loadCachedBlogPostBySlug } from './blog-post-data';
+import {
+    blogPostPageTag,
+    loadCachedBlogPostBySlug,
+    loadCachedBlogPostMetadataBySlug,
+} from './blog-post-data';
 
 const PREBUILT_POST_COUNT = 5;
 
@@ -23,13 +27,13 @@ export async function generateMetadata(
     props: Readonly<{ params: Promise<{ slug: string }> }>,
 ): Promise<Metadata> {
     const params = await props.params;
-    const post = await loadCachedBlogPostBySlug(params.slug);
+    const post = await loadCachedBlogPostMetadataBySlug(params.slug);
     return {
         title: `Karim Shehadeh - ${post?.title}`,
-        description: `${post?.abstract}`,
+        description: `${post?.abstract ?? ''}`,
         openGraph: {
             title: `Karim Shehadeh - ${post?.title}`,
-            description: `${post?.abstract}`,
+            description: `${post?.abstract ?? ''}`,
             images: post?.coverUrl,
         },
         alternates: {

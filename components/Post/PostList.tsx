@@ -7,7 +7,7 @@ export function PostListItem({
     ...rest
 }: React.PropsWithChildren<{ post: BlogPostBrief } & PostBriefViewOptions>) {
     return (
-        <li className="basis-full md:basis-[calc(33.333%-0.5rem)] min-w-[280px]">
+        <li className="basis-[280px] grow min-w-[280px] max-w-full">
             <PostBrief post={post} {...rest} hideAuthor={true} />
         </li>
     );

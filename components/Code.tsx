@@ -121,7 +121,7 @@ export function Code({ language, text }: { language: string; text: string }) {
                     boxShadow: isLightTheme
                         ? '0 1px 2px rgba(15, 23, 42, 0.06)'
                         : '0 6px 16px rgba(2, 6, 23, 0.35)',
-                    fontSize: '0.9rem',
+                    fontSize: 'inherit',
                     lineHeight: 1.6,
                 }}
                 codeTagProps={{

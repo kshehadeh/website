@@ -155,7 +155,7 @@ ol ol ol ol {
 }
 
 .prose code {
-    @apply bg-muted text-foreground font-mono text-sm;
+    @apply bg-muted text-foreground font-mono;
     @apply px-1.5 py-0.5 rounded;
 }
 

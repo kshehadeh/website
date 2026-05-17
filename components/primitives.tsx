@@ -100,7 +100,7 @@ export function Code({
     return (
         <code
             className={cn(
-                'text-sm bg-muted text-foreground p-1 rounded font-mono',
+                'bg-muted text-foreground p-1 rounded font-mono',
                 buildAdditionalClasses(additionalClasses),
             )}
             data-lang={language}
@@ -114,7 +114,7 @@ export function Pre({ children, additionalClasses }: PrimitiveProps) {
     return (
         <pre
             className={cn(
-                'bg-muted text-foreground p-4 rounded overflow-x-auto font-mono text-sm',
+                'bg-muted text-foreground p-4 rounded overflow-x-auto font-mono',
                 buildAdditionalClasses(additionalClasses),
             )}
         >
@@ -127,7 +127,7 @@ export function InlineCode({ children, additionalClasses }: PrimitiveProps) {
     return (
         <code
             className={cn(
-                'text-sm bg-muted text-foreground px-1.5 py-0.5 rounded font-mono',
+                'bg-muted text-foreground px-1.5 py-0.5 rounded font-mono',
                 buildAdditionalClasses(additionalClasses),
             )}
         >

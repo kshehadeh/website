@@ -7,9 +7,7 @@ export async function Footer() {
 
     return (
         <footer className="bg-card border-t border-border text-card-foreground text-center p-5 flex flex-row justify-between fixed bottom-0 w-[100%]">
-            <div className="text-muted-foreground">
-                &copy; Karim Shehadeh
-            </div>
+            <div className="text-muted-foreground">&copy; Karim Shehadeh</div>
             <PersonalReferencesList references={references} />
         </footer>
     );

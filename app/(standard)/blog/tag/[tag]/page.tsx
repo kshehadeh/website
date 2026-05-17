@@ -2,7 +2,7 @@ import React from 'react';
 import { getBlogTags } from '@/lib/blog';
 import { PostList } from '@/components/Post/PostList';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
-import ContentLayout from '@/components/ContentLayout/ContentLayout'; 
+import ContentLayout from '@/components/ContentLayout/ContentLayout';
 import { HeadingWithRotatedBg } from '@/components/HeadingWithRotatedBg';
 import { loadCachedBlogPostsByTag } from './blog-tag-data';
 

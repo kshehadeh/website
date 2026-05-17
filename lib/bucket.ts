@@ -1,7 +1,4 @@
-import {
-    PutObjectCommand,
-    S3Client,
-} from '@aws-sdk/client-s3';
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import http from 'node:http';
 import https from 'node:https';
 import { Readable } from 'stream';

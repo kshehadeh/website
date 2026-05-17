@@ -69,16 +69,16 @@ export class NotionRenderer {
 
         const rendered = await Promise.all(
             blocks
-            .map(block => {
-                const renderer = this.renderers[block.type];
-                if (!renderer)
-                    console.warn(
-                        `There is no renderer for block ${block.type}`,
-                    );
-                return { block, renderer };
-            })
-            .filter(({ renderer }) => Boolean(renderer))
-            .map(({ block, renderer }) => renderer!(block, this)),
+                .map(block => {
+                    const renderer = this.renderers[block.type];
+                    if (!renderer)
+                        console.warn(
+                            `There is no renderer for block ${block.type}`,
+                        );
+                    return { block, renderer };
+                })
+                .filter(({ renderer }) => Boolean(renderer))
+                .map(({ block, renderer }) => renderer!(block, this)),
         );
 
         return rendered.map((element, index) => {

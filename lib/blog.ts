@@ -237,9 +237,7 @@ export async function getBlogPostsByTag(
     return Promise.all(pages.map(post => getBlogBrief({ post })));
 }
 
-export async function getRecentBlogPostSlugs(
-    limit: number,
-): Promise<string[]> {
+export async function getRecentBlogPostSlugs(limit: number): Promise<string[]> {
     const posts = await getRecentBlogPostTitles(limit);
     return posts.map(post => post.slug).filter(Boolean);
 }

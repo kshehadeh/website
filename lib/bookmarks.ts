@@ -85,17 +85,15 @@ export async function getRecentBookmarkLinks(
     });
 
     if (results) {
-        return results.results
-            .filter(isPageObjectResponse)
-            .map(page => ({
-                id: page.id,
-                title: isTitleProperty(page.properties.Name)
-                    ? page.properties.Name.title[0].plain_text
-                    : '',
-                url: isUrlProperty(page.properties.URL)
-                    ? page.properties.URL.url || ''
-                    : '',
-            }));
+        return results.results.filter(isPageObjectResponse).map(page => ({
+            id: page.id,
+            title: isTitleProperty(page.properties.Name)
+                ? page.properties.Name.title[0].plain_text
+                : '',
+            url: isUrlProperty(page.properties.URL)
+                ? page.properties.URL.url || ''
+                : '',
+        }));
     } else {
         return [];
     }

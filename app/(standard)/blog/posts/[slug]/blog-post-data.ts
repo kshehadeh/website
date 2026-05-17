@@ -15,9 +15,9 @@ export function blogPostMetadataTag(slug: string): string {
     return `blog-post-metadata-${normalizeSlug(slug)}`;
 }
 
-export async function loadCachedBlogPostBySlug(slug: string): Promise<
-    BlogPostFull | undefined
-> {
+export async function loadCachedBlogPostBySlug(
+    slug: string,
+): Promise<BlogPostFull | undefined> {
     'use cache: remote';
     const normalized = normalizeSlug(slug);
     cacheLife(BLOG_CACHE_LIFE);

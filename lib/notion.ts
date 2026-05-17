@@ -165,7 +165,7 @@ export function getFilesFromProperty(property: FilesProperty): string[] {
             ? file.file.url
             : isExternalFileProperty(file)
               ? file.external.url
-            : '',
+              : '',
     );
 }
 
@@ -219,7 +219,9 @@ export async function getFinalFileUrls(
     const urls: string[] = [];
     for (const file of files.files) {
         if (isInternalFileProperty(file)) {
-            urls.push(makeMirroredFileRoute(file.file.url, `${folder}/${file.name}`));
+            urls.push(
+                makeMirroredFileRoute(file.file.url, `${folder}/${file.name}`),
+            );
         } else if (isExternalFileProperty(file)) {
             urls.push(file.external.url);
         }

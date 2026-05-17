@@ -17,9 +17,12 @@ export async function GET(request: NextRequest) {
     const key = request.nextUrl.searchParams.get('key');
 
     if (!source || !key || !isValidMirrorSource(source)) {
-        return NextResponse.json({ error: 'Invalid source or key.' }, {
-            status: 400,
-        });
+        return NextResponse.json(
+            { error: 'Invalid source or key.' },
+            {
+                status: 400,
+            },
+        );
     }
 
     const url = await getMirroredFileUrl(source, key);

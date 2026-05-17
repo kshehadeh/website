@@ -159,6 +159,11 @@ ol ol ol ol {
     @apply px-1.5 py-0.5 rounded;
 }
 
+.prose code::before,
+.prose code::after {
+    content: none;
+}
+
 .prose pre {
     @apply bg-muted text-foreground font-mono;
     @apply p-4 rounded-lg overflow-x-auto;

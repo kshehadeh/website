@@ -20,7 +20,6 @@ export default createBlockRenderer<CodeBlockObjectResponse>(
                     key={`code-${data.id}`}
                     language={data.code.language}
                     text={data.code.rich_text[0].plain_text}
-                    showLineNumbers={true}
                 />
             );
         }

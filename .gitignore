@@ -13,3 +13,4 @@ node_modules
 .secrets
 next-env.d.ts
 .cursor/*.log
+.vercel

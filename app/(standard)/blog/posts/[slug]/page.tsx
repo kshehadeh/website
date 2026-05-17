@@ -23,6 +23,18 @@ export async function generateMetadata(
     props: Readonly<{ params: Promise<{ slug: string }> }>,
 ): Promise<Metadata> {
     const params = await props.params;
+    // #region agent log
+    console.info(
+        JSON.stringify({
+            sessionId: 'f75588',
+            runId: 'baseline',
+            hypothesisId: 'H4',
+            location: 'app/(standard)/blog/posts/[slug]/page.tsx:27',
+            message: 'generateMetadata invoked',
+            data: { slug: params.slug },
+        }),
+    );
+    // #endregion
     const post = await loadCachedBlogPostBySlug(params.slug);
     return {
         title: `Karim Shehadeh - ${post?.title}`,
@@ -43,6 +55,18 @@ export async function generateMetadata(
 
 async function renderPostBySlug(slug: string) {
     'use cache';
+    // #region agent log
+    console.info(
+        JSON.stringify({
+            sessionId: 'f75588',
+            runId: 'baseline',
+            hypothesisId: 'H5',
+            location: 'app/(standard)/blog/posts/[slug]/page.tsx:49',
+            message: 'renderPostBySlug cache-miss execution',
+            data: { slug },
+        }),
+    );
+    // #endregion
     cacheLife(BLOG_CACHE_LIFE);
     cacheTag(blogPostPageTag(slug));
     const post = await loadCachedBlogPostBySlug(slug);

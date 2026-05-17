@@ -271,6 +271,27 @@ a.button:hover {
     transform: rotate(-2deg);
 }
 
+@keyframes sidecar-heading-hover-tilt {
+    0% {
+        transform: rotate(-2deg);
+    }
+    40% {
+        transform: rotate(-5deg);
+    }
+    70% {
+        transform: rotate(1deg);
+    }
+    100% {
+        transform: rotate(-2deg);
+    }
+}
+
+.sidecar-collapsible-trigger:hover .heading-with-rotated-bg__background,
+.sidecar-collapsible-trigger:focus-visible
+    .heading-with-rotated-bg__background {
+    animation: sidecar-heading-hover-tilt 220ms ease-out;
+}
+
 /* Dark mode: black text on white background */
 .dark .heading-with-rotated-bg {
     color: #000000 !important;

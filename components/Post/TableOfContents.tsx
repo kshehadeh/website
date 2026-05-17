@@ -24,7 +24,7 @@ function TocHeading({ heading }: { heading: Heading }) {
 
 export function TableOfContents({ headings }: { headings: Heading[] }) {
     return (
-        <Card className="mb-4">
+        <Card className="mb-4 border-0 shadow-none">
             <CardHeader>
                 <HeadingWithRotatedBg
                     as="h2"

@@ -1,11 +1,8 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import { notFound } from 'next/navigation';
 import { Post } from '@/components/Post/Post';
-import ContentLayout from '@/components/ContentLayout/ContentLayout';
-import { Sidecar } from '@/components/Sidecar/Sidecar';
 import { Metadata } from 'next';
 import { getRecentBlogPostSlugs } from '@/lib/blog';
-import { BlogPostFull } from '@/lib/blog';
 import {
     loadCachedBlogPostBySlug,
     loadCachedBlogPostMetadataBySlug,
@@ -40,33 +37,6 @@ export async function generateMetadata(
     };
 }
 
-function PostSidecarFallback() {
-    return (
-        <div className="space-y-4 animate-pulse">
-            <div className="rounded-xl border border-border bg-card p-6">
-                <div className="h-8 w-40 rounded bg-muted mb-6" />
-                <div className="space-y-4">
-                    <div className="h-4 w-3/4 rounded bg-muted" />
-                    <div className="h-4 w-2/3 rounded bg-muted" />
-                    <div className="h-4 w-4/5 rounded bg-muted" />
-                </div>
-            </div>
-            <div className="rounded-xl border border-border bg-card p-6">
-                <div className="h-8 w-32 rounded bg-muted mb-6" />
-                <div className="space-y-4">
-                    <div className="h-4 w-4/5 rounded bg-muted" />
-                    <div className="h-4 w-3/5 rounded bg-muted" />
-                    <div className="h-4 w-2/3 rounded bg-muted" />
-                </div>
-            </div>
-        </div>
-    );
-}
-
-async function BlogPostSidecar({ post }: { post: BlogPostFull }) {
-    return <Sidecar post={post} pageType={'post'} />;
-}
-
 export default async function Page(
     props: Readonly<{ params: Promise<{ slug: string }> }>,
 ) {
@@ -76,16 +46,5 @@ export default async function Page(
         notFound();
     }
 
-    return (
-        <ContentLayout
-            pageType={'post'}
-            sidecar={
-                <Suspense fallback={<PostSidecarFallback />}>
-                    <BlogPostSidecar post={post} />
-                </Suspense>
-            }
-        >
-            <Post post={post} />
-        </ContentLayout>
-    );
+    return <Post post={post} />;
 }

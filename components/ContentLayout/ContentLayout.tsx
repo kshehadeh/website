@@ -30,7 +30,7 @@ export default function ContentLayout({
             )}
         >
             <Navigation current={pageType} />
-            <div className="flex flex-row pb-24 md:pb-10">
+            <div className="flex flex-row">
                 <div
                     className={cn(
                         hasSidecar ? 'md:w-3/4' : 'w-full',

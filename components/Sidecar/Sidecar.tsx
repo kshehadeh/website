@@ -28,7 +28,7 @@ export function ActiveLink({
 
 function SidecarCardFallback({ title }: { title: string }) {
     return (
-        <Card className="mb-4">
+        <Card className="mb-4 border-0 shadow-none">
             <CardHeader>
                 <HeadingWithRotatedBg
                     as="h2"

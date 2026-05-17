@@ -178,18 +178,54 @@ export async function getRecentBlogPosts(
 export async function getBlogPostBySlug(
     slug: string,
 ): Promise<BlogPostFull | undefined> {
+    // #region agent log
+    console.info(
+        JSON.stringify({
+            sessionId: 'f75588',
+            runId: 'baseline',
+            hypothesisId: 'H3',
+            location: 'lib/blog.ts:182',
+            message: 'getBlogPostBySlug invoked',
+            data: { slug },
+        }),
+    );
+    // #endregion
     // get the page for this slug
     const post = (await getBlogPosts({ limit: 1, slug, status: 'Any' }))?.[0];
 
     if (isPageObjectResponse(post)) {
         // get the blocks for this page, including content
         const blocks = await fetchPageBlocks(post.id);
+        // #region agent log
+        console.info(
+            JSON.stringify({
+                sessionId: 'f75588',
+                runId: 'baseline',
+                hypothesisId: 'H3',
+                location: 'lib/blog.ts:190',
+                message: 'getBlogPostBySlug loaded post data',
+                data: { slug, postId: post.id, blockCount: blocks.length },
+            }),
+        );
+        // #endregion
 
         return {
             ...(await getBlogBrief({ post, blocks })),
             blocks,
         };
     }
+    // #region agent log
+    console.info(
+        JSON.stringify({
+            sessionId: 'f75588',
+            runId: 'baseline',
+            hypothesisId: 'H3',
+            location: 'lib/blog.ts:198',
+            message: 'getBlogPostBySlug returned empty',
+            data: { slug },
+        }),
+    );
+    // #endregion
 }
 
 export async function getBlogPostsByTag(

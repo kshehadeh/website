@@ -12,3 +12,4 @@ node_modules
 *resume.pdf
 .secrets
 next-env.d.ts
+.cursor/*.log

@@ -9,7 +9,7 @@ import { getRecentBlogPosts } from '@/lib/blog';
 import { BLOG_CACHE_LIFE } from '@/lib/blog-cache-tags';
 import { blogPostPageTag, loadCachedBlogPostBySlug } from './blog-post-data';
 
-const PREBUILT_POST_COUNT = 20;
+const PREBUILT_POST_COUNT = 1;
 
 export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
     const posts = await getRecentBlogPosts(PREBUILT_POST_COUNT, false);
@@ -64,7 +64,31 @@ export default async function Page(
     props: Readonly<{ params: Promise<{ slug: string }> }>,
 ) {
     const params = await props.params;
+    // #region agent log
+    console.info(
+        JSON.stringify({
+            sessionId: 'f75588',
+            runId: 'baseline',
+            hypothesisId: 'H2',
+            location: 'app/(standard)/blog/posts/[slug]/page.tsx:68',
+            message: 'Page request received',
+            data: { slug: params.slug },
+        }),
+    );
+    // #endregion
     const renderedPost = await renderPostBySlug(params.slug);
+    // #region agent log
+    console.info(
+        JSON.stringify({
+            sessionId: 'f75588',
+            runId: 'baseline',
+            hypothesisId: 'H2',
+            location: 'app/(standard)/blog/posts/[slug]/page.tsx:72',
+            message: 'Page renderPostBySlug resolved',
+            data: { slug: params.slug, wasNull: renderedPost === null },
+        }),
+    );
+    // #endregion
     if (!renderedPost) {
         notFound();
     }

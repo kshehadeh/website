@@ -92,18 +92,6 @@ function looksLikePartialBlogPostInvalidation(tags: string[]): boolean {
 }
 
 async function handleInvalidation(req: Request): Promise<Response> {
-    // #region agent log
-    console.info(
-        JSON.stringify({
-            sessionId: 'f75588',
-            runId: 'baseline',
-            hypothesisId: 'H1',
-            location: 'app/api/invalidate/route.ts:96',
-            message: 'invalidate endpoint hit',
-            data: { method: req.method, url: req.url },
-        }),
-    );
-    // #endregion
     let body: InvalidatePayload | undefined;
     if (req.method === 'POST') {
         try {
@@ -148,18 +136,6 @@ async function handleInvalidation(req: Request): Promise<Response> {
     for (const tag of tags) {
         revalidateTag(tag, { expire: 0 });
     }
-    // #region agent log
-    console.info(
-        JSON.stringify({
-            sessionId: 'f75588',
-            runId: 'baseline',
-            hypothesisId: 'H1',
-            location: 'app/api/invalidate/route.ts:141',
-            message: 'invalidate endpoint revalidated tags',
-            data: { slug, tagsCount: tags.length, tags },
-        }),
-    );
-    // #endregion
 
     return new Response(
         JSON.stringify({

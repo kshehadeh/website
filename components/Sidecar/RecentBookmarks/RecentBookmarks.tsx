@@ -8,19 +8,6 @@ import { BLOG_CACHE_LIFE } from '@/lib/blog-cache-tags';
 
 async function loadRecentBookmarks() {
     'use cache';
-    // #region agent log
-    console.info(
-        JSON.stringify({
-            sessionId: 'f75588',
-            runId: 'post-fix',
-            hypothesisId: 'H8',
-            location:
-                'components/Sidecar/RecentBookmarks/RecentBookmarks.tsx:14',
-            message: 'loadRecentBookmarks cache-miss execution',
-            data: { limit: 10 },
-        }),
-    );
-    // #endregion
     cacheLife(BLOG_CACHE_LIFE);
     cacheTag('sidecar-recent-bookmarks');
     return getRecentBookmarks(10);

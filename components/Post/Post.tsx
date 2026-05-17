@@ -5,22 +5,6 @@ import { NotionRenderer } from '@/lib/notion-renderer';
 import { HeadingWithRotatedBg } from '../HeadingWithRotatedBg';
 
 export async function Post({ post }: { post: BlogPostFull }) {
-    // #region agent log
-    console.info(
-        JSON.stringify({
-            sessionId: 'f75588',
-            runId: 'baseline',
-            hypothesisId: 'H5',
-            location: 'components/Post/Post.tsx:9',
-            message: 'Post component execution',
-            data: {
-                slug: post.slug,
-                topLevelBlockCount: post.blocks?.length ?? 0,
-                hasHero: Boolean(post.coverUrl),
-            },
-        }),
-    );
-    // #endregion
     const renderer = new NotionRenderer({ client: notion });
     const postElements = await renderer.render(...(post?.blocks || []));
     const hasHero = Boolean(post.coverUrl);

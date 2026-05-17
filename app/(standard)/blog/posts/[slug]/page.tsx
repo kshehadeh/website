@@ -19,30 +19,10 @@ export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
         .map(slug => ({ slug }));
 }
 
-async function loadPrebuiltSlugsForDebug(): Promise<string[]> {
-    'use cache';
-    const posts = await getRecentBlogPosts(PREBUILT_POST_COUNT, false);
-    return posts
-        .map(post => post.slug)
-        .filter((slug): slug is string => Boolean(slug));
-}
-
 export async function generateMetadata(
     props: Readonly<{ params: Promise<{ slug: string }> }>,
 ): Promise<Metadata> {
     const params = await props.params;
-    // #region agent log
-    console.info(
-        JSON.stringify({
-            sessionId: 'f75588',
-            runId: 'baseline',
-            hypothesisId: 'H4',
-            location: 'app/(standard)/blog/posts/[slug]/page.tsx:27',
-            message: 'generateMetadata invoked',
-            data: { slug: params.slug },
-        }),
-    );
-    // #endregion
     const post = await loadCachedBlogPostBySlug(params.slug);
     return {
         title: `Karim Shehadeh - ${post?.title}`,
@@ -62,19 +42,7 @@ export async function generateMetadata(
 }
 
 async function renderPostBySlug(slug: string) {
-    'use cache';
-    // #region agent log
-    console.info(
-        JSON.stringify({
-            sessionId: 'f75588',
-            runId: 'baseline',
-            hypothesisId: 'H5',
-            location: 'app/(standard)/blog/posts/[slug]/page.tsx:49',
-            message: 'renderPostBySlug cache-miss execution',
-            data: { slug },
-        }),
-    );
-    // #endregion
+    'use cache: remote';
     cacheLife(BLOG_CACHE_LIFE);
     cacheTag(blogPostPageTag(slug));
     const post = await loadCachedBlogPostBySlug(slug);
@@ -96,24 +64,6 @@ export default async function Page(
     props: Readonly<{ params: Promise<{ slug: string }> }>,
 ) {
     const params = await props.params;
-    const prebuiltSlugs = await loadPrebuiltSlugsForDebug();
-    const isPrebuiltSlug = prebuiltSlugs.includes(params.slug);
-    // #region agent log
-    console.info(
-        JSON.stringify({
-            sessionId: 'f75588',
-            runId: 'post-fix',
-            hypothesisId: 'H9',
-            location: 'app/(standard)/blog/posts/[slug]/page.tsx:106',
-            message: 'page slug prebuilt classification',
-            data: {
-                slug: params.slug,
-                isPrebuiltSlug,
-                prebuiltSample: prebuiltSlugs,
-            },
-        }),
-    );
-    // #endregion
     const renderedPost = await renderPostBySlug(params.slug);
     if (!renderedPost) {
         notFound();

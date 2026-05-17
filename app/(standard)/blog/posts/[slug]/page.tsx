@@ -5,19 +5,11 @@ import ContentLayout from '@/components/ContentLayout/ContentLayout';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
 import { Metadata } from 'next';
 import { cacheLife, cacheTag } from 'next/cache';
-import { getRecentBlogPosts, type BlogPostFull } from '@/lib/blog';
+import { getRecentBlogPosts } from '@/lib/blog';
 import { BLOG_CACHE_LIFE } from '@/lib/blog-cache-tags';
-import {
-    blogPostMetadataTag,
-    blogPostPageTag,
-    loadCachedBlogPostBySlug,
-} from './blog-post-data';
+import { blogPostPageTag, loadCachedBlogPostBySlug } from './blog-post-data';
 
 const PREBUILT_POST_COUNT = 20;
-
-function normalizeSlug(slug: string): string {
-    return decodeURIComponent(slug);
-}
 
 export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
     const posts = await getRecentBlogPosts(PREBUILT_POST_COUNT, false);
@@ -30,12 +22,7 @@ export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
 export async function generateMetadata(
     props: Readonly<{ params: Promise<{ slug: string }> }>,
 ): Promise<Metadata> {
-    'use cache';
     const params = await props.params;
-    const normalizedSlug = normalizeSlug(params.slug);
-    cacheLife(BLOG_CACHE_LIFE);
-    cacheTag(blogPostMetadataTag(normalizedSlug));
-
     const post = await loadCachedBlogPostBySlug(params.slug);
     return {
         title: `Karim Shehadeh - ${post?.title}`,
@@ -54,10 +41,15 @@ export async function generateMetadata(
     };
 }
 
-async function CachedBlogPostContent({ post }: { post: BlogPostFull }) {
+async function renderPostBySlug(slug: string) {
     'use cache';
     cacheLife(BLOG_CACHE_LIFE);
-    cacheTag(blogPostPageTag(post.slug));
+    cacheTag(blogPostPageTag(slug));
+    const post = await loadCachedBlogPostBySlug(slug);
+    if (!post) {
+        return null;
+    }
+
     return (
         <ContentLayout
             pageType={'post'}
@@ -71,15 +63,10 @@ async function CachedBlogPostContent({ post }: { post: BlogPostFull }) {
 export default async function Page(
     props: Readonly<{ params: Promise<{ slug: string }> }>,
 ) {
-    'use cache';
     const params = await props.params;
-    const normalizedSlug = normalizeSlug(params.slug);
-    cacheLife(BLOG_CACHE_LIFE);
-    cacheTag(blogPostPageTag(normalizedSlug));
-
-    const post = await loadCachedBlogPostBySlug(params.slug);
-    if (!post) {
+    const renderedPost = await renderPostBySlug(params.slug);
+    if (!renderedPost) {
         notFound();
     }
-    return <CachedBlogPostContent post={post} />;
+    return renderedPost;
 }

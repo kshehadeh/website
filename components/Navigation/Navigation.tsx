@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { CreateSpotReference } from './CreateSpotReference';
 import { DevDashReference } from './DevDashReference';
+import { TooltipProvider } from '@/components/ui/tooltip';
 
 const user = {
     name: 'Karim Shehadeh',
@@ -46,10 +47,12 @@ export default function Navigation({ current }: { current: PageType }) {
                                                 current={current === item.type}
                                             />
                                         ))}
-                                        <div className="flex items-center gap-3">
-                                            <CreateSpotReference />
-                                            <DevDashReference />
-                                        </div>
+                                        <TooltipProvider delayDuration={120}>
+                                            <div className="flex items-center gap-3">
+                                                <CreateSpotReference />
+                                                <DevDashReference />
+                                            </div>
+                                        </TooltipProvider>
                                     </div>
                                 </div>
                             </div>
@@ -91,8 +94,8 @@ export default function Navigation({ current }: { current: PageType }) {
                                 />
                             ))}
                             <div className="px-3 py-2 flex flex-wrap items-center gap-3">
-                                <CreateSpotReference />
-                                <DevDashReference />
+                                <CreateSpotReference showLabel />
+                                <DevDashReference showLabel />
                             </div>
                         </div>
                     </Disclosure.Panel>

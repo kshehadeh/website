@@ -13,7 +13,7 @@ import {
     loadCachedBlogPostMetadataBySlug,
 } from './blog-post-data';
 
-const PREBUILT_POST_COUNT = 5;
+const PREBUILT_POST_COUNT = 20;
 
 export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
     const posts = await getRecentBlogPosts(PREBUILT_POST_COUNT, false);

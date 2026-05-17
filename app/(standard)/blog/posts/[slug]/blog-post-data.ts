@@ -24,6 +24,18 @@ export async function loadCachedBlogPostBySlug(
 ): Promise<BlogPostFull | undefined> {
     'use cache';
     const normalized = normalizeSlug(slug);
+    // #region agent log
+    console.info(
+        JSON.stringify({
+            sessionId: 'f75588',
+            runId: 'baseline',
+            hypothesisId: 'H6',
+            location: 'app/(standard)/blog/posts/[slug]/blog-post-data.ts:30',
+            message: 'loadCachedBlogPostBySlug cache-miss execution',
+            data: { slug, normalized },
+        }),
+    );
+    // #endregion
     cacheLife(BLOG_CACHE_LIFE);
     cacheTag(blogPostMetadataTag(normalized));
     cacheTag(blogPostPageTag(normalized));

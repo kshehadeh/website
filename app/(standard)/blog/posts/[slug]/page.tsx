@@ -1,33 +1,24 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { Post } from '@/components/Post/Post';
 import ContentLayout from '@/components/ContentLayout/ContentLayout';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
 import { Metadata } from 'next';
-import { cacheLife, cacheTag } from 'next/cache';
-import { getRecentBlogPosts } from '@/lib/blog';
-import { BLOG_CACHE_LIFE } from '@/lib/blog-cache-tags';
-import {
-    blogPostPageTag,
-    loadCachedBlogPostBySlug,
-    loadCachedBlogPostMetadataBySlug,
-} from './blog-post-data';
+import { getRecentBlogPostSlugs } from '@/lib/blog';
+import { loadCachedBlogPostBySlug } from './blog-post-data';
 
 const PREBUILT_POST_COUNT = 20;
 
 export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
-    const posts = await getRecentBlogPosts(PREBUILT_POST_COUNT, false);
-    return posts
-        .map(post => post.slug)
-        .filter(Boolean)
-        .map(slug => ({ slug }));
+    const slugs = await getRecentBlogPostSlugs(PREBUILT_POST_COUNT);
+    return slugs.map(slug => ({ slug }));
 }
 
 export async function generateMetadata(
     props: Readonly<{ params: Promise<{ slug: string }> }>,
 ): Promise<Metadata> {
-    const params = await props.params;
-    const post = await loadCachedBlogPostMetadataBySlug(params.slug);
+    const { slug } = await props.params;
+    const post = await loadCachedBlogPostBySlug(slug);
     return {
         title: `Karim Shehadeh - ${post?.title}`,
         description: `${post?.abstract ?? ''}`,
@@ -37,7 +28,7 @@ export async function generateMetadata(
             images: post?.coverUrl,
         },
         alternates: {
-            canonical: `/blog/posts/${params.slug}`,
+            canonical: `/blog/posts/${slug}`,
             types: {
                 'application/rss+xml': 'https://www.karim.cloud/api/rss.xml',
             },
@@ -45,32 +36,62 @@ export async function generateMetadata(
     };
 }
 
-async function renderPostBySlug(slug: string) {
-    'use cache: remote';
-    cacheLife(BLOG_CACHE_LIFE);
-    cacheTag(blogPostPageTag(slug));
+function PostSidecarFallback() {
+    return (
+        <div className="space-y-4 animate-pulse">
+            <div className="rounded-xl border border-border bg-card p-6">
+                <div className="h-8 w-40 rounded bg-muted mb-6" />
+                <div className="space-y-4">
+                    <div className="h-4 w-3/4 rounded bg-muted" />
+                    <div className="h-4 w-2/3 rounded bg-muted" />
+                    <div className="h-4 w-4/5 rounded bg-muted" />
+                </div>
+            </div>
+            <div className="rounded-xl border border-border bg-card p-6">
+                <div className="h-8 w-32 rounded bg-muted mb-6" />
+                <div className="space-y-4">
+                    <div className="h-4 w-4/5 rounded bg-muted" />
+                    <div className="h-4 w-3/5 rounded bg-muted" />
+                    <div className="h-4 w-2/3 rounded bg-muted" />
+                </div>
+            </div>
+        </div>
+    );
+}
+
+async function BlogPostContent({ slug }: { slug: string }) {
+    const post = await loadCachedBlogPostBySlug(slug);
+    if (!post) {
+        notFound();
+    }
+
+    return <Post post={post} />;
+}
+
+async function BlogPostSidecar({ slug }: { slug: string }) {
     const post = await loadCachedBlogPostBySlug(slug);
     if (!post) {
         return null;
     }
 
-    return (
-        <ContentLayout
-            pageType={'post'}
-            sidecar={<Sidecar post={post} pageType={'post'} />}
-        >
-            <Post post={post} />
-        </ContentLayout>
-    );
+    return <Sidecar post={post} pageType={'post'} />;
 }
 
 export default async function Page(
     props: Readonly<{ params: Promise<{ slug: string }> }>,
 ) {
-    const params = await props.params;
-    const renderedPost = await renderPostBySlug(params.slug);
-    if (!renderedPost) {
-        notFound();
-    }
-    return renderedPost;
+    const { slug } = await props.params;
+
+    return (
+        <ContentLayout
+            pageType={'post'}
+            sidecar={
+                <Suspense fallback={<PostSidecarFallback />}>
+                    <BlogPostSidecar slug={slug} />
+                </Suspense>
+            }
+        >
+            <BlogPostContent slug={slug} />
+        </ContentLayout>
+    );
 }

@@ -14,7 +14,7 @@ function TocHeading({ heading }: { heading: Heading }) {
     const cls = IndentationMap[heading.level];
     return (
         <A
-            href={`#${getAnchorIdFromHeading(heading.text)}`}
+            href={`#${getAnchorIdFromHeading(heading.text, heading.id)}`}
             additionalClasses={[cls, 'block']}
         >
             {heading.text}
@@ -36,7 +36,7 @@ export function TableOfContents({ headings }: { headings: Heading[] }) {
             <CardContent>
                 <div className="m-0 p-0">
                     {headings.map(heading => (
-                        <TocHeading key={heading.text} heading={heading} />
+                        <TocHeading key={heading.id} heading={heading} />
                     ))}
                 </div>
             </CardContent>

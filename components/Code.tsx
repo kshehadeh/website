@@ -32,7 +32,7 @@ export function Code({
             customStyle={{
                 borderRadius: '0.5rem',
                 padding: '1rem',
-                backgroundColor: 'hsl(var(--muted))',
+                background: 'hsl(var(--muted))',
             }}
         >
             {text}

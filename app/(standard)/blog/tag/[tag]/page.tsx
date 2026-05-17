@@ -1,20 +1,20 @@
 import React from 'react';
-import { getBlogPostsByTag } from '@/lib/blog';
+import { getBlogTags } from '@/lib/blog';
 import { PostList } from '@/components/Post/PostList';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
-import ContentLayout from '@/components/ContentLayout/ContentLayout';
-import { cacheLife, cacheTag } from 'next/cache';
-import { BLOG_CACHE_LIFE } from '@/lib/blog-cache-tags';
+import ContentLayout from '@/components/ContentLayout/ContentLayout'; 
+import { HeadingWithRotatedBg } from '@/components/HeadingWithRotatedBg';
+import { loadCachedBlogPostsByTag } from './blog-tag-data';
+
+export async function generateStaticParams(): Promise<Array<{ tag: string }>> {
+    const tags = await getBlogTags();
+    return tags.map(tag => ({ tag }));
+}
 
 export async function generateMetadata(props: {
     params: Promise<{ tag: string }>;
 }) {
-    'use cache';
-    const params = await props.params;
-    cacheLife(BLOG_CACHE_LIFE);
-    cacheTag(`blog-tag-metadata-${params.tag}`);
-
-    const { tag } = params;
+    const { tag } = await props.params;
 
     return {
         title: `Karim Shehadeh - Posts by Tag "${tag}"`,
@@ -28,26 +28,29 @@ export async function generateMetadata(props: {
     };
 }
 
-export default async function PostsByTagPage(props: {
-    params: Promise<{ tag: string }>;
-}) {
-    'use cache';
-    const params = await props.params;
-    cacheLife(BLOG_CACHE_LIFE);
-    cacheTag(`blog-tag-page-${params.tag}`);
-
-    const { tag } = params;
-
-    const posts = await getBlogPostsByTag([tag]);
+async function TaggedBlogContent({ tag }: { tag: string }) {
+    const posts = await loadCachedBlogPostsByTag(tag);
     return (
-        <ContentLayout pageType={'tags'} sidecar={<Sidecar pageType="tags" />}>
-            <h1>{tag}</h1>
+        <>
+            <HeadingWithRotatedBg>{tag}</HeadingWithRotatedBg>
             <PostList
                 posts={posts}
                 hideAbstract={true}
                 hideAuthor={true}
                 hideTags={true}
             />
+        </>
+    );
+}
+
+export default async function PostsByTagPage(props: {
+    params: Promise<{ tag: string }>;
+}) {
+    const { tag } = await props.params;
+
+    return (
+        <ContentLayout pageType={'tags'} sidecar={<Sidecar pageType="tags" />}>
+            <TaggedBlogContent tag={tag} />
         </ContentLayout>
     );
 }

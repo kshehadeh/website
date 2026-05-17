@@ -22,6 +22,7 @@ import { Block } from './notion-renderer/types';
 import { notion } from './notion';
 
 export interface Heading {
+    id: string;
     level: number;
     text: string;
     children: Heading[];
@@ -49,6 +50,12 @@ export interface BlogPostBrief {
 export interface BlogPostFull extends BlogPostBrief {
     blocks: Block[];
     blockChildrenById?: Record<string, BlockObjectResponse[]>;
+}
+
+export interface BlogPostTitleOnly {
+    id: string;
+    slug: string;
+    title: string;
 }
 
 export function getPlainTextFromRichTextResponse(
@@ -177,6 +184,20 @@ export async function getRecentBlogPosts(
     );
 }
 
+export async function getRecentBlogPostTitles(
+    limit: number,
+): Promise<BlogPostTitleOnly[]> {
+    const result = await getBlogPosts({ limit });
+    const pages =
+        result?.filter(isPageObjectResponse) ?? ([] as PageObjectResponse[]);
+
+    return pages.map(post => ({
+        id: post.id,
+        slug: getSlugFromPage(post),
+        title: getTitleFromPage(post),
+    }));
+}
+
 export async function getBlogPostBySlug(
     slug: string,
 ): Promise<BlogPostFull | undefined> {
@@ -214,6 +235,33 @@ export async function getBlogPostsByTag(
 
     const pages = result.filter(isPageObjectResponse);
     return Promise.all(pages.map(post => getBlogBrief({ post })));
+}
+
+export async function getRecentBlogPostSlugs(
+    limit: number,
+): Promise<string[]> {
+    const posts = await getRecentBlogPostTitles(limit);
+    return posts.map(post => post.slug).filter(Boolean);
+}
+
+export async function getBlogTags(): Promise<string[]> {
+    const result = await getBlogPosts({
+        limit: 100,
+        status: 'Any',
+    });
+    const pages =
+        result?.filter(isPageObjectResponse) ?? ([] as PageObjectResponse[]);
+    const tags = new Set<string>();
+
+    for (const page of pages) {
+        for (const tag of getTagsFromPage(page)) {
+            if (tag) {
+                tags.add(tag);
+            }
+        }
+    }
+
+    return [...tags].sort((a, b) => a.localeCompare(b));
 }
 
 export async function getBlogPosts({
@@ -303,6 +351,7 @@ export function getBlogPostHeadings(post: BlogPostFull): Heading[] {
     for (const block of post.blocks) {
         if (block.type.startsWith('heading')) {
             headings.push({
+                id: block.id,
                 level: parseInt(block.type.split('_')[1]),
                 text: getPlainTextFromRichTextResponse(
                     block[block.type].rich_text,
@@ -315,6 +364,11 @@ export function getBlogPostHeadings(post: BlogPostFull): Heading[] {
     return headings;
 }
 
-export function getAnchorIdFromHeading(str: string) {
-    return str.toLowerCase().replace(/\s/g, '-');
+export function getAnchorIdFromHeading(str: string, id?: string) {
+    const base = str.toLowerCase().replace(/\s/g, '-');
+    if (!id) {
+        return base;
+    }
+
+    return `${base}-${id}`;
 }

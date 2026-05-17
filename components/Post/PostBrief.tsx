@@ -5,6 +5,7 @@ import { Author } from './Author';
 import { TagList } from '../TagList/TagList';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { cn } from '@/lib/util';
+import Link from 'next/link';
 
 export interface PostBriefViewOptions {
     hideAbstract?: boolean;
@@ -33,10 +34,10 @@ export function PostBrief({
             />
             <CardHeader className="group relative pb-3 min-h-0 flex-1 flex flex-col">
                 <h3 className="md:mt-3 mt-1 font-semibold text-lg leading-6 text-card-foreground group-hover:text-primary transition-colors font-mono">
-                    <a href={post.href}>
+                    <Link href={post.href}>
                         <span className="absolute inset-0" />
                         {post.title}
-                    </a>
+                    </Link>
                 </h3>
 
                 <div className="flex items-center gap-x-4 mt-2">

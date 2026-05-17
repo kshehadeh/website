@@ -2,6 +2,16 @@ import { revalidateTag } from 'next/cache';
 import { getBlogPostInvalidationTags } from '@/lib/blog-cache-tags';
 import { NextRequest, NextResponse } from 'next/server';
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? 'http://localhost:3000';
+
+function warmCache(urls: string[]) {
+    for (const url of urls) {
+        fetch(new URL(url, BASE_URL).toString(), { method: 'GET' }).catch(
+            () => {},
+        );
+    }
+}
+
 interface NotionWebhookBody {
     source?: {
         type?: string;
@@ -93,6 +103,24 @@ function getAboutInvalidationTags(): string[] {
     return ['about-page', 'about-page-metadata'];
 }
 
+function getBlogWarmUrls(slug: string | null, postTags: string[]): string[] {
+    const urls: string[] = ['/', '/blog'];
+    if (slug) urls.push(`/blog/posts/${slug}`);
+    for (const t of postTags) urls.push(`/blog/tag/${encodeURIComponent(t)}`);
+    return urls;
+}
+
+function getBookmarkWarmUrls(postTags: string[]): string[] {
+    const urls: string[] = ['/bookmarks'];
+    for (const t of postTags)
+        urls.push(`/bookmarks/tag/${encodeURIComponent(t)}`);
+    return urls;
+}
+
+function getAboutWarmUrls(): string[] {
+    return ['/about'];
+}
+
 function getBookmarkInvalidationTags(postTags?: string[]): string[] {
     const tags = [
         'bookmarks-page',
@@ -150,6 +178,7 @@ export async function POST(request: NextRequest) {
     const contentType = resolveContentType(databaseId);
     const properties = data.properties ?? {};
     let tags: string[] = [];
+    let warmUrls: string[] = [];
 
     switch (contentType) {
         case 'blog': {
@@ -172,15 +201,18 @@ export async function POST(request: NextRequest) {
                 ];
             }
             tags.push('sidecar-recent-posts');
+            warmUrls = getBlogWarmUrls(slug, postTags);
             break;
         }
         case 'bookmarks': {
             const postTags = getTagsFromProperties(properties);
             tags = getBookmarkInvalidationTags(postTags);
+            warmUrls = getBookmarkWarmUrls(postTags);
             break;
         }
         case 'about': {
             tags = getAboutInvalidationTags();
+            warmUrls = getAboutWarmUrls();
             break;
         }
         default: {
@@ -198,9 +230,13 @@ export async function POST(request: NextRequest) {
         revalidateTag(tag, { expire: 0 });
     }
 
+    // Fire-and-forget: warm the cache by fetching affected pages
+    warmCache(warmUrls);
+
     return NextResponse.json({
         revalidated: true,
         contentType,
         tags,
+        warmUrls,
     });
 }

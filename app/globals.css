@@ -176,7 +176,7 @@ ol ol ol ol {
 
 .prose blockquote {
     @apply border-l-4 border-muted-foreground/30;
-    @apply pl-4 my-4 italic text-muted-foreground;
+    @apply pl-4 my-4 not-italic text-muted-foreground;
 }
 
 .prose hr {

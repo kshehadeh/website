@@ -94,3 +94,136 @@ export function tailWindClassesFromTextAnnotations(
     }
     return classes;
 }
+
+export function tailWindClassesFromQuoteColor(color: string): string[] {
+    const baseQuoteTone = ['text-foreground', 'pr-4', 'py-3', 'rounded-r-md'];
+
+    switch (color) {
+        case 'gray':
+            return [
+                ...baseQuoteTone,
+                'border-l-muted-foreground/60',
+                'bg-muted/35',
+            ];
+        case 'brown':
+            return [
+                ...baseQuoteTone,
+                'border-l-amber-600/50',
+                'dark:border-l-amber-500/50',
+                'bg-amber-100/50',
+                'dark:bg-amber-900/20',
+            ];
+        case 'orange':
+            return [
+                ...baseQuoteTone,
+                'border-l-orange-600/50',
+                'dark:border-l-orange-500/50',
+                'bg-orange-100/50',
+                'dark:bg-orange-900/20',
+            ];
+        case 'yellow':
+            return [
+                ...baseQuoteTone,
+                'border-l-yellow-600/50',
+                'dark:border-l-yellow-500/50',
+                'bg-yellow-100/50',
+                'dark:bg-yellow-900/20',
+            ];
+        case 'green':
+            return [
+                ...baseQuoteTone,
+                'border-l-emerald-600/50',
+                'dark:border-l-emerald-500/50',
+                'bg-emerald-100/50',
+                'dark:bg-emerald-900/20',
+            ];
+        case 'blue':
+            return [
+                ...baseQuoteTone,
+                'border-l-blue-600/50',
+                'dark:border-l-blue-500/50',
+                'bg-blue-100/50',
+                'dark:bg-blue-900/20',
+            ];
+        case 'purple':
+            return [
+                ...baseQuoteTone,
+                'border-l-purple-600/50',
+                'dark:border-l-purple-500/50',
+                'bg-purple-100/50',
+                'dark:bg-purple-900/20',
+            ];
+        case 'pink':
+            return [
+                ...baseQuoteTone,
+                'border-l-pink-600/50',
+                'dark:border-l-pink-500/50',
+                'bg-pink-100/50',
+                'dark:bg-pink-900/20',
+            ];
+        case 'red':
+            return [
+                ...baseQuoteTone,
+                'border-l-red-600/50',
+                'dark:border-l-red-500/50',
+                'bg-red-100/50',
+                'dark:bg-red-900/20',
+            ];
+        case 'gray_background':
+            return [
+                ...baseQuoteTone,
+                'border-l-muted-foreground/60',
+                'bg-muted/45',
+            ];
+        case 'brown_background':
+            return [
+                ...baseQuoteTone,
+                'border-l-amber-600/50 dark:border-l-amber-500/50',
+                'bg-amber-100/60 dark:bg-amber-900/25',
+            ];
+        case 'orange_background':
+            return [
+                ...baseQuoteTone,
+                'border-l-orange-600/50 dark:border-l-orange-500/50',
+                'bg-orange-100/60 dark:bg-orange-900/25',
+            ];
+        case 'yellow_background':
+            return [
+                ...baseQuoteTone,
+                'border-l-yellow-600/50 dark:border-l-yellow-500/50',
+                'bg-yellow-100/60 dark:bg-yellow-900/25',
+            ];
+        case 'green_background':
+            return [
+                ...baseQuoteTone,
+                'border-l-emerald-600/50 dark:border-l-emerald-500/50',
+                'bg-emerald-100/60 dark:bg-emerald-900/25',
+            ];
+        case 'blue_background':
+            return [
+                ...baseQuoteTone,
+                'border-l-blue-600/50 dark:border-l-blue-500/50',
+                'bg-blue-100/60 dark:bg-blue-900/25',
+            ];
+        case 'purple_background':
+            return [
+                ...baseQuoteTone,
+                'border-l-purple-600/50 dark:border-l-purple-500/50',
+                'bg-purple-100/60 dark:bg-purple-900/25',
+            ];
+        case 'pink_background':
+            return [
+                ...baseQuoteTone,
+                'border-l-pink-600/50 dark:border-l-pink-500/50',
+                'bg-pink-100/60 dark:bg-pink-900/25',
+            ];
+        case 'red_background':
+            return [
+                ...baseQuoteTone,
+                'border-l-red-600/50 dark:border-l-red-500/50',
+                'bg-red-100/60 dark:bg-red-900/25',
+            ];
+        default:
+            return [];
+    }
+}

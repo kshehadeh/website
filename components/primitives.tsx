@@ -83,7 +83,7 @@ export function Blockquote({ children, additionalClasses }: PrimitiveProps) {
     return (
         <blockquote
             className={cn(
-                'border-l-4 border-muted-foreground/30 pl-4 my-4 text-muted-foreground italic',
+                'border-l-4 border-muted-foreground/30 pl-4 my-4 text-muted-foreground',
                 buildAdditionalClasses(additionalClasses),
             )}
         >

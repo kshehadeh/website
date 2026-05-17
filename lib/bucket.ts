@@ -1,9 +1,9 @@
 import {
-    HeadObjectCommand,
     PutObjectCommand,
     S3Client,
-    S3ServiceException,
 } from '@aws-sdk/client-s3';
+import http from 'node:http';
+import https from 'node:https';
 import { Readable } from 'stream';
 
 /**
@@ -43,6 +43,31 @@ export function makeR2UrlFromKey(key: string) {
     return `https://static.karim.cloud/${key}`;
 }
 
+function createR2Client() {
+    return new S3Client({
+        endpoint: process.env.R2_ENDPOINT as string,
+        region: 'us-east-1',
+        credentials: {
+            accessKeyId: process.env.R2_AWS_ACCESS_KEY_ID as string,
+            secretAccessKey: process.env.R2_AWS_SECRET_ACCESS_KEY as string,
+        },
+        forcePathStyle: true,
+    });
+}
+
+function headRequest(url: string): Promise<boolean> {
+    const transport = url.startsWith('https:') ? https : http;
+
+    return new Promise((resolve, reject) => {
+        const request = transport.request(url, { method: 'HEAD' }, response => {
+            resolve((response.statusCode ?? 500) < 400);
+        });
+
+        request.on('error', reject);
+        request.end();
+    });
+}
+
 /**
  * Upload a file to R2 and return the URL to the file.
  * @param fileUrl
@@ -50,16 +75,6 @@ export function makeR2UrlFromKey(key: string) {
  * @returns
  */
 export async function uploadToR2(fileUrl: string, key: string) {
-    const client = new S3Client({
-        endpoint: process.env.R2_ENDPOINT as string,
-        region: 'us-east-1', // 'us-east-1' is the default region for R2, but you can change it to your desired region
-        credentials: {
-            accessKeyId: process.env.R2_AWS_ACCESS_KEY_ID as string,
-            secretAccessKey: process.env.R2_AWS_SECRET_ACCESS_KEY as string,
-        },
-        forcePathStyle: true,
-    });
-
     const bucket = process.env.R2_BUCKET_NAME;
     if (!bucket) throw new Error('R2_BUCKET_NAME is not defined');
 
@@ -74,6 +89,8 @@ export async function uploadToR2(fileUrl: string, key: string) {
         if (response.bodyUsed || response.body.locked) {
             return;
         }
+
+        const client = createR2Client();
 
         const params = new PutObjectCommand({
             Bucket: bucket,
@@ -100,31 +117,28 @@ export async function uploadToR2(fileUrl: string, key: string) {
  * @returns
  */
 export async function r2FileExists(key: string): Promise<string | undefined> {
-    const client = new S3Client({
-        endpoint: process.env.R2_ENDPOINT as string,
-        region: 'us-east-1', // 'us-east-1' is the default region for R2, but you can change it to your desired region
-        credentials: {
-            accessKeyId: process.env.R2_AWS_ACCESS_KEY_ID as string,
-            secretAccessKey: process.env.R2_AWS_SECRET_ACCESS_KEY as string,
-        },
-        forcePathStyle: true,
-    });
-
-    const command = new HeadObjectCommand({
-        Bucket: process.env.R2_BUCKET_NAME,
-        Key: key,
-    });
+    const url = makeR2UrlFromKey(key);
 
     try {
-        const response = await client.send(command);
-        if (response.$metadata.httpStatusCode === 200) {
-            return makeR2UrlFromKey(key);
+        if (await headRequest(url)) {
+            return url;
         }
     } catch (e) {
-        if ((e as S3ServiceException).name !== 'NotFound') {
-            console.error('Error checking if file exists:', e);
-        }
+        console.error('Error checking if file exists:', e);
     }
 
     return undefined;
+}
+
+export async function getMirroredFileUrl(
+    sourceUrl: string,
+    key: string,
+): Promise<string> {
+    const existingUrl = await r2FileExists(key);
+    if (existingUrl) {
+        return existingUrl;
+    }
+
+    const uploadedUrl = await uploadToR2(sourceUrl, key);
+    return uploadedUrl ?? sourceUrl;
 }

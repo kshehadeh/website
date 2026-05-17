@@ -14,7 +14,8 @@ async function loadRecentBookmarks() {
             sessionId: 'f75588',
             runId: 'post-fix',
             hypothesisId: 'H8',
-            location: 'components/Sidecar/RecentBookmarks/RecentBookmarks.tsx:14',
+            location:
+                'components/Sidecar/RecentBookmarks/RecentBookmarks.tsx:14',
             message: 'loadRecentBookmarks cache-miss execution',
             data: { limit: 10 },
         }),

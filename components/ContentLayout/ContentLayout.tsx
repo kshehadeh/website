@@ -20,17 +20,11 @@ export default function ContentLayout({
 }: PropsWithChildren<Props>) {
     const hasSidecar = sidecar !== null;
     const isHomePage = pageType === 'home';
-    const isAboutPage = pageType === 'about';
 
     return (
-        <div
-            className={cn(
-                'min-h-screen relative z-10',
-                !isAboutPage && 'bg-background',
-            )}
-        >
+        <div className="min-h-screen relative z-10 flex flex-col bg-background">
             <Navigation current={pageType} />
-            <div className="flex flex-row">
+            <div className="flex flex-row flex-grow">
                 <div
                     className={cn(
                         hasSidecar ? 'md:w-3/4' : 'w-full',

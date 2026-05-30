@@ -7,7 +7,6 @@ import PersonalReferencesList from '@/components/About/References';
 import ContentLayout from '@/components/ContentLayout/ContentLayout';
 import { Sidecar } from '@/components/Sidecar/Sidecar';
 import { HeadingWithRotatedBg } from '@/components/HeadingWithRotatedBg';
-import { VideoBackground } from '@/components/About/VideoBackground';
 import { cacheLife, cacheTag } from 'next/cache';
 
 export async function generateMetadata() {
@@ -38,22 +37,17 @@ export default async function AboutMePage() {
         : 'About Me';
 
     return (
-        <>
-            <VideoBackground />
-            <ContentLayout
-                pageType={'about'}
-                sidecar={<Sidecar pageType="about" />}
-            >
-                <HeadingWithRotatedBg>{title}</HeadingWithRotatedBg>
-                <div className="">{postElements}</div>
-                <HR />
-                <HeadingWithRotatedBg as="h2">
-                    Find Me Here...
-                </HeadingWithRotatedBg>
-                <PersonalReferencesList
-                    references={references}
-                ></PersonalReferencesList>
-            </ContentLayout>
-        </>
+        <ContentLayout
+            pageType={'about'}
+            sidecar={<Sidecar pageType="about" />}
+        >
+            <HeadingWithRotatedBg>{title}</HeadingWithRotatedBg>
+            <div className="">{postElements}</div>
+            <HR />
+            <HeadingWithRotatedBg as="h2">Find Me Here...</HeadingWithRotatedBg>
+            <PersonalReferencesList
+                references={references}
+            ></PersonalReferencesList>
+        </ContentLayout>
     );
 }

@@ -38,7 +38,9 @@ export function TobyReference({ showLabel = false }: { showLabel?: boolean }) {
                         TB
                     </span>
                 )}
-                <span className="text-sm font-medium text-foreground">Toby</span>
+                <span className="text-sm font-medium text-foreground">
+                    Toby
+                </span>
             </Link>
         );
     }

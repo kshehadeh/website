@@ -1,4 +1,8 @@
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import {
+    GetObjectCommand,
+    PutObjectCommand,
+    S3Client,
+} from '@aws-sdk/client-s3';
 import http from 'node:http';
 import https from 'node:https';
 import { Readable } from 'stream';
@@ -125,6 +129,80 @@ export async function r2FileExists(key: string): Promise<string | undefined> {
     }
 
     return undefined;
+}
+
+export async function uploadBufferToR2(
+    buffer: Buffer,
+    key: string,
+    contentType: string,
+): Promise<string | undefined> {
+    const bucket = process.env.R2_BUCKET_NAME;
+    if (!bucket) throw new Error('R2_BUCKET_NAME is not defined');
+
+    try {
+        const client = createR2Client();
+        await client.send(
+            new PutObjectCommand({
+                Bucket: bucket,
+                Key: key,
+                Body: buffer,
+                ContentType: contentType,
+                ContentLength: buffer.length,
+            }),
+        );
+        return makeR2UrlFromKey(key);
+    } catch (err) {
+        console.error('Error uploading buffer to R2:', err);
+        return undefined;
+    }
+}
+
+export async function downloadFromR2(key: string): Promise<Buffer | null> {
+    const bucket = process.env.R2_BUCKET_NAME;
+    if (!bucket) throw new Error('R2_BUCKET_NAME is not defined');
+
+    try {
+        const client = createR2Client();
+        const response = await client.send(
+            new GetObjectCommand({ Bucket: bucket, Key: key }),
+        );
+        if (!response.Body) return null;
+        const chunks: Uint8Array[] = [];
+        for await (const chunk of response.Body as AsyncIterable<Uint8Array>) {
+            chunks.push(chunk);
+        }
+        return Buffer.concat(chunks);
+    } catch {
+        return null;
+    }
+}
+
+export async function purgeCloudflareCache(urls: string[]): Promise<void> {
+    const token = process.env.CLOUDFLARE_API_TOKEN;
+    const zone = process.env.CLOUDFLARE_ZONE_ID;
+    if (!token || !zone) {
+        console.warn(
+            'Cloudflare cache purge skipped: CLOUDFLARE_API_TOKEN or CLOUDFLARE_ZONE_ID not set',
+        );
+        return;
+    }
+
+    const res = await fetch(
+        `https://api.cloudflare.com/client/v4/zones/${zone}/purge_cache`,
+        {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ files: urls }),
+        },
+    );
+
+    if (!res.ok) {
+        const body = await res.text();
+        console.error(`Cloudflare cache purge failed (${res.status}): ${body}`);
+    }
 }
 
 export async function getMirroredFileUrl(

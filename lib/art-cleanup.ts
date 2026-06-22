@@ -1,5 +1,5 @@
 import { generateText } from 'ai';
-import sharp from 'sharp';
+import { normalizeImage } from '@/lib/image-transform';
 
 const CLEANUP_PROMPT = `Clean up this photograph of an artwork. Perform the following corrections:
 - Remove cast shadows caused by lighting or the camera angle
@@ -47,6 +47,6 @@ export async function cleanImageWithAI(
 }
 
 export async function stripRotationMetadata(buffer: Buffer): Promise<Buffer> {
-    // sharp auto-applies EXIF orientation to pixel data and strips all metadata
-    return sharp(buffer).rotate().toBuffer();
+    // applies EXIF orientation to pixel data and strips all metadata
+    return normalizeImage(buffer);
 }

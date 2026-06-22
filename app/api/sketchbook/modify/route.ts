@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import sharp from 'sharp';
+import { loadImage, toBuffer } from '@/lib/image-transform';
 import {
     downloadFromR2,
     makeR2UrlFromKey,
@@ -59,20 +59,20 @@ export async function POST(request: NextRequest) {
             { status: 404 },
         );
 
-    // .rotate() with no args applies EXIF orientation to pixel data first,
-    // so the subsequent user rotation starts from the correct visual orientation.
-    // sharp strips all metadata (including EXIF) by default, so no explicit call needed.
-    let pipeline = sharp(original).rotate();
+    // Load the image and apply EXIF orientation first so the subsequent user
+    // rotation starts from the correct visual orientation. The normalization
+    // step also strips all metadata (including EXIF).
+    const image = await loadImage(original);
 
     switch (operation) {
         case 'rotate-left':
-            pipeline = pipeline.rotate(-90);
+            image.rotate(90);
             break;
         case 'rotate-right':
-            pipeline = pipeline.rotate(90);
+            image.rotate(-90);
             break;
         case 'mirror':
-            pipeline = pipeline.flop();
+            image.flip({ horizontal: true, vertical: false });
             break;
         default:
             return NextResponse.json(
@@ -81,8 +81,8 @@ export async function POST(request: NextRequest) {
             );
     }
 
-    const modified = await pipeline.toBuffer();
     const contentType = extToMime(filename);
+    const modified = await toBuffer(image, contentType);
     const r2Key = `sketchbook/${filename}`;
     const url = await uploadBufferToR2(modified, r2Key, contentType);
     if (!url)

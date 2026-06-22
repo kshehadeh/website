@@ -8,8 +8,8 @@
  *
  * For each image:
  *   1. Cleans up the image via the Vercel AI Gateway (removes shadows, fixes perspective/rotation)
- *   2. Copies the result into public/images/art/
- *   3. Updates public/images/art/manifest.json
+ *   2. Uploads the result to R2 at sketchbook/
+ *   3. Updates the R2 sketchbook manifest
  *
  * Usage: bun scripts/add-art.ts
  *

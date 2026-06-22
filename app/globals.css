@@ -300,3 +300,21 @@ a.button:hover {
 .dark .heading-with-rotated-bg__background {
     background-color: #ffffff;
 }
+
+/* Sketchbook gallery: vertical strip on mobile */
+@media (max-width: 768px) {
+    .sketchbook-grid {
+        display: flex !important;
+        flex-direction: column;
+        height: auto !important;
+        gap: 14px;
+    }
+    .sketchbook-grid > * {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        transform: none !important;
+        width: 100% !important;
+        height: auto !important;
+    }
+}

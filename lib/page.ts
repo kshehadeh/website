@@ -5,4 +5,5 @@ export type PageType =
     | 'resume'
     | 'about'
     | 'tags'
-    | 'bookmarks';
+    | 'bookmarks'
+    | 'sketchbook';

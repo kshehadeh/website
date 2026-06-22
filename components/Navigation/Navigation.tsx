@@ -20,6 +20,7 @@ const user = {
 const navigation = [
     { name: 'Blog', href: '/blog', type: 'blog' },
     { name: 'Bookmarks', href: '/bookmarks', type: 'bookmarks' },
+    { name: 'Sketchbook', href: '/sketchbook', type: 'sketchbook' },
     { name: 'About', href: '/about', type: 'about' },
     { name: 'Resume', href: '/resume', type: 'resume' },
 ];

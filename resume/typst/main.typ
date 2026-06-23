@@ -28,7 +28,7 @@
   #company-heading(company.company, start: company.start, end: company.end)[
     #for exp in company.experience [
       #let bullets = exp.bullets.map(bullet => bullet.text)
-      #job-heading(exp.title, start: exp.duration, domain: exp.domain.at(0).Name, list(..bullets))
+      #job-heading(exp.title, start: exp.duration, domain: exp.domain.at(0, default: (Name: "")).Name, list(..bullets))
     ]
   ]
 ]

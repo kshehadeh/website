@@ -278,7 +278,7 @@ async function buildExperienceList(
                         bullet =>
                             bullet.properties.Experience.type === 'relation' &&
                             bullet.properties.Experience.relation[0]?.id ===
-                            exp.id,
+                                exp.id,
                     )
                     .reverse();
                 const { start, end, duration } = getPropertyDate(
@@ -391,10 +391,11 @@ async function buildEducationList(
         .run()
         .last();
     if (!output?.result.success) {
-        console.log(
+        spinner.fail(
             output?.result.message ||
                 `Error compiling template (error code ${output?.stat})`,
         );
+        process.exit(1);
     }
 
     spinner.stopAndPersist({ text: 'Resume built successfully' });

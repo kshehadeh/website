@@ -261,8 +261,8 @@ async function buildExperienceList(
 
         const expForCompany = experience.filter(
             exp =>
-                (exp.properties.Company.type === 'relation' &&
-                    exp.properties.Company.relation[0].id) === company.id,
+                exp.properties.Company.type === 'relation' &&
+                exp.properties.Company.relation[0]?.id === company.id,
         );
         expForCompany.sort(sortPropertiesByEndDates).reverse();
 
@@ -276,8 +276,8 @@ async function buildExperienceList(
                 const bulletsForExperience = experienceBullets
                     .filter(
                         bullet =>
-                            (bullet.properties.Experience.type === 'relation' &&
-                                bullet.properties.Experience.relation[0].id) ===
+                            bullet.properties.Experience.type === 'relation' &&
+                            bullet.properties.Experience.relation[0]?.id ===
                             exp.id,
                     )
                     .reverse();

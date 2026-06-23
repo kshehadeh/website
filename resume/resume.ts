@@ -99,17 +99,8 @@ async function getBlocks(id: string) {
 // Fetches rows from a Notion database
 async function getRows(databaseId: string) {
     try {
-        // Get the data source ID from the database ID
-        const database = await notion.databases.retrieve({
+        const response = await notion.databases.query({
             database_id: databaseId,
-        });
-        const dataSourceId =
-            'data_sources' in database && database.data_sources.length > 0
-                ? database.data_sources[0].id
-                : databaseId; // Fallback to database ID if no data sources found
-
-        const response = await notion.dataSources.query({
-            data_source_id: dataSourceId,
         });
         return response.results.filter(o => o.object === 'page');
     } catch (error) {

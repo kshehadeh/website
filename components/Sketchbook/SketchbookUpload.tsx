@@ -4,6 +4,7 @@ import React, { useCallback, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 type UploadResult = {
+    id: string;
     filename: string;
     url?: string;
     error?: string;
@@ -12,7 +13,8 @@ type UploadResult = {
 
 export function SketchbookUpload() {
     const router = useRouter();
-    const inFlightRef = useRef(0);
+    const uploadingRef = useRef(false);
+    const queueRef = useRef<{ id: string; file: File }[]>([]);
     const [secret, setSecret] = useState('');
     const [secretInput, setSecretInput] = useState('');
     const [secretSaved, setSecretSaved] = useState(false);
@@ -41,18 +43,16 @@ export function SketchbookUpload() {
         setSecretSaved(false);
     };
 
-    const uploadFile = useCallback(
-        async (file: File, title?: string) => {
-            const id = file.name;
-            inFlightRef.current += 1;
-            setResults(prev => [
-                ...prev,
-                { filename: file.name, status: 'uploading' },
-            ]);
+    const uploadOne = useCallback(
+        async (id: string, file: File) => {
+            setResults(prev =>
+                prev.map(r =>
+                    r.id === id ? { ...r, status: 'uploading' } : r,
+                ),
+            );
 
             const formData = new FormData();
             formData.append('file', file);
-            if (title) formData.append('title', title);
 
             try {
                 const res = await fetch('/api/sketchbook/upload', {
@@ -64,7 +64,7 @@ export function SketchbookUpload() {
                 if (!res.ok) {
                     setResults(prev =>
                         prev.map(r =>
-                            r.filename === id
+                            r.id === id
                                 ? { ...r, status: 'error', error: data.error }
                                 : r,
                         ),
@@ -72,7 +72,7 @@ export function SketchbookUpload() {
                 } else {
                     setResults(prev =>
                         prev.map(r =>
-                            r.filename === id
+                            r.id === id
                                 ? { ...r, status: 'done', url: data.url }
                                 : r,
                         ),
@@ -81,27 +81,58 @@ export function SketchbookUpload() {
             } catch (err) {
                 setResults(prev =>
                     prev.map(r =>
-                        r.filename === id
+                        r.id === id
                             ? { ...r, status: 'error', error: String(err) }
                             : r,
                     ),
                 );
-            } finally {
-                inFlightRef.current -= 1;
-                if (inFlightRef.current === 0) router.refresh();
             }
         },
-        [secret, router],
+        [secret],
     );
+
+    const processQueue = useCallback(async () => {
+        if (uploadingRef.current) return;
+        uploadingRef.current = true;
+
+        try {
+            while (queueRef.current.length > 0) {
+                const next = queueRef.current.shift();
+                if (!next) break;
+                await uploadOne(next.id, next.file);
+            }
+            router.refresh();
+        } finally {
+            uploadingRef.current = false;
+            if (queueRef.current.length > 0) {
+                void processQueue();
+            }
+        }
+    }, [uploadOne, router]);
 
     const handleFiles = useCallback(
         (files: FileList | File[]) => {
             const arr = Array.from(files);
-            for (const file of arr) {
-                uploadFile(file);
-            }
+            if (arr.length === 0) return;
+
+            const batch = arr.map(file => ({
+                id: crypto.randomUUID(),
+                file,
+            }));
+
+            setResults(prev => [
+                ...prev,
+                ...batch.map(({ id, file }) => ({
+                    id,
+                    filename: file.name,
+                    status: 'pending' as const,
+                })),
+            ]);
+
+            queueRef.current.push(...batch);
+            void processQueue();
         },
-        [uploadFile],
+        [processQueue],
     );
 
     const onDrop = useCallback(
@@ -183,9 +214,9 @@ export function SketchbookUpload() {
 
             {results.length > 0 && (
                 <ul className="space-y-2">
-                    {results.map((r, i) => (
+                    {results.map(r => (
                         <li
-                            key={i}
+                            key={r.id}
                             className="flex items-center gap-3 rounded-md border border-border px-4 py-3 font-mono text-sm"
                         >
                             <span
@@ -194,14 +225,18 @@ export function SketchbookUpload() {
                                         ? 'text-green-500'
                                         : r.status === 'error'
                                           ? 'text-red-500'
-                                          : 'text-muted-foreground animate-pulse'
+                                          : r.status === 'uploading'
+                                            ? 'text-muted-foreground animate-pulse'
+                                            : 'text-muted-foreground'
                                 }
                             >
                                 {r.status === 'done'
                                     ? '✓'
                                     : r.status === 'error'
                                       ? '✗'
-                                      : '…'}
+                                      : r.status === 'uploading'
+                                        ? '…'
+                                        : '○'}
                             </span>
                             <span className="flex-1 truncate">
                                 {r.filename}

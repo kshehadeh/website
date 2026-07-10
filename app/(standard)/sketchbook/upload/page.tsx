@@ -24,7 +24,7 @@ async function GallerySection({
     const { page: pageParam } = await searchParams;
     const page = Math.max(1, parseInt(pageParam ?? '1', 10) || 1);
 
-    const manifest = await getSketchbookManifest();
+    const manifest = await getSketchbookManifest({ fresh: true });
     const total = manifest.pages.length;
     if (total === 0) return null;
 

@@ -1,10 +1,13 @@
-import { uploadBufferToR2 } from './bucket';
+import { revalidatePath, revalidateTag } from 'next/cache';
+import { purgeCloudflareCache, uploadBufferToR2 } from './bucket';
 import type { ArtManifest, ArtPage } from './art';
 
 export type { ArtManifest, ArtPage };
 
 const MANIFEST_KEY = 'sketchbook/manifest.json';
 const R2_BASE = 'https://static.karim.cloud';
+export const SKETCHBOOK_MANIFEST_TAG = 'sketchbook-manifest';
+const MANIFEST_URL = `${R2_BASE}/${MANIFEST_KEY}`;
 
 export function getSketchbookImageUrl(filename: string): string {
     return `${R2_BASE}/sketchbook/${filename}`;
@@ -15,8 +18,10 @@ export async function getSketchbookManifest({
 }: { fresh?: boolean } = {}): Promise<ArtManifest> {
     try {
         const res = await fetch(
-            `${R2_BASE}/${MANIFEST_KEY}`,
-            fresh ? { cache: 'no-store' } : { next: { revalidate: 60 } },
+            MANIFEST_URL,
+            fresh
+                ? { cache: 'no-store' }
+                : { next: { revalidate: 60, tags: [SKETCHBOOK_MANIFEST_TAG] } },
         );
         if (!res.ok) return { pages: [] };
         const manifest: ArtManifest = await res.json();
@@ -33,6 +38,10 @@ export async function saveSketchbookManifest(
     manifest.pages.sort((a, b) => a.position - b.position);
     const json = JSON.stringify(manifest, null, 2) + '\n';
     await uploadBufferToR2(Buffer.from(json), MANIFEST_KEY, 'application/json');
+    await purgeCloudflareCache([MANIFEST_URL]);
+    revalidateTag(SKETCHBOOK_MANIFEST_TAG, { expire: 0 });
+    revalidatePath('/sketchbook');
+    revalidatePath('/sketchbook/upload');
 }
 
 export function nextPosition(manifest: ArtManifest): number {

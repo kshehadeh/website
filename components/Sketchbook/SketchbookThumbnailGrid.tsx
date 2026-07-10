@@ -95,6 +95,10 @@ export function SketchbookThumbnailGrid({
     // Cache-bust token per filename so the browser reloads after a modify
     const [versions, setVersions] = useState<Record<string, number>>({});
 
+    useEffect(() => {
+        setPages(initialPages);
+    }, [initialPages]);
+
     function stateOf(filename: string): ItemState {
         return states[filename] ?? { status: 'idle' };
     }

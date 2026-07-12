@@ -6,6 +6,7 @@ import {
     purgeCloudflareCache,
     uploadBufferToR2,
 } from '@/lib/bucket';
+import { uploadToGooglePhotos } from '@/lib/google-photos';
 import {
     getSketchbookManifest,
     saveSketchbookManifest,
@@ -93,10 +94,20 @@ export async function POST(request: NextRequest) {
     const version = Date.now();
     const manifest = await getSketchbookManifest({ fresh: true });
     const page = manifest.pages.find(p => p.filename === filename);
+
+    const gpResult = await uploadToGooglePhotos(
+        modified,
+        filename,
+        contentType,
+        page?.title ?? filename,
+    );
+
     if (page) {
         page.version = version;
         await saveSketchbookManifest(manifest);
     }
 
-    return NextResponse.json({ success: true, url, version });
+    const response: Record<string, unknown> = { success: true, url, version };
+    if (!gpResult.ok) response.warning = gpResult.warning;
+    return NextResponse.json(response);
 }

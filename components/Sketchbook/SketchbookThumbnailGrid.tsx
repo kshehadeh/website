@@ -165,12 +165,15 @@ export function SketchbookThumbnailGrid({
             body: JSON.stringify({ filename, operation }),
         });
         if (res.ok) {
-            const { version } = await res.json();
+            const { version, warning } = await res.json();
             setVersions(prev => ({
                 ...prev,
                 [filename]: version ?? Date.now(),
             }));
             setState(filename, { status: 'idle' });
+            if (warning) {
+                console.warn(`Google Photos warning for ${filename}: ${warning}`);
+            }
         } else {
             const { error } = await res.json();
             alert(`Modify failed: ${error}`);

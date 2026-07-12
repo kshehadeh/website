@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cleanImageWithAI, stripRotationMetadata } from '@/lib/art-cleanup';
 import { uploadBufferToR2 } from '@/lib/bucket';
+import { uploadToGooglePhotos } from '@/lib/google-photos';
 import {
     getSketchbookManifest,
     saveSketchbookManifest,
@@ -120,6 +121,13 @@ export async function POST(request: NextRequest) {
         );
     }
 
+    const gpResult = await uploadToGooglePhotos(
+        finalBuffer,
+        filename,
+        contentType,
+        derivedTitle,
+    );
+
     const manifest = await getSketchbookManifest({ fresh: true });
     const position = positionInput
         ? parseInt(positionInput, 10)
@@ -136,5 +144,7 @@ export async function POST(request: NextRequest) {
     insertPage(manifest, page);
     await saveSketchbookManifest(manifest);
 
-    return NextResponse.json({ success: true, url, page });
+    const response: Record<string, unknown> = { success: true, url, page };
+    if (!gpResult.ok) response.warning = gpResult.warning;
+    return NextResponse.json(response);
 }

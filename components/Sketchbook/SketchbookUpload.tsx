@@ -8,6 +8,7 @@ type UploadResult = {
     filename: string;
     url?: string;
     error?: string;
+    warning?: string;
     status: 'pending' | 'uploading' | 'done' | 'error';
 };
 
@@ -18,6 +19,12 @@ export function SketchbookUpload() {
     const [secret, setSecret] = useState('');
     const [secretInput, setSecretInput] = useState('');
     const [secretSaved, setSecretSaved] = useState(false);
+    const [googleConnected, setGoogleConnected] = useState(false);
+    const [googleConnecting, setGoogleConnecting] = useState(false);
+    const [googleMessage, setGoogleMessage] = useState<{
+        type: 'success' | 'error';
+        text: string;
+    } | null>(null);
 
     React.useEffect(() => {
         const stored = sessionStorage.getItem('sketchbook_upload_secret');
@@ -26,6 +33,40 @@ export function SketchbookUpload() {
             setSecretSaved(true);
         }
     }, []);
+
+    const checkGoogleStatus = useCallback(async (token: string) => {
+        try {
+            const res = await fetch('/api/auth/google/status', {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            if (res.ok) {
+                const data = await res.json();
+                setGoogleConnected(data.connected === true);
+            }
+        } catch {
+            // ignore — non-critical
+        }
+    }, []);
+
+    React.useEffect(() => {
+        if (!secretSaved || !secret) return;
+
+        // Check OAuth callback params
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('google_connected')) {
+            setGoogleMessage({ type: 'success', text: 'Google Photos connected.' });
+            // Clean up URL
+            window.history.replaceState({}, '', '/sketchbook/upload');
+        } else if (params.get('google_error')) {
+            setGoogleMessage({
+                type: 'error',
+                text: `Google connection failed: ${params.get('google_error')}`,
+            });
+            window.history.replaceState({}, '', '/sketchbook/upload');
+        }
+
+        void checkGoogleStatus(secret);
+    }, [secretSaved, secret, checkGoogleStatus]);
     const [results, setResults] = useState<UploadResult[]>([]);
     const [dragging, setDragging] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -41,6 +82,51 @@ export function SketchbookUpload() {
         setSecret('');
         setSecretInput('');
         setSecretSaved(false);
+        setGoogleConnected(false);
+        setGoogleMessage(null);
+    };
+
+    const connectGoogle = async () => {
+        setGoogleConnecting(true);
+        setGoogleMessage(null);
+        try {
+            const res = await fetch('/api/auth/google', {
+                method: 'POST',
+                headers: { Authorization: `Bearer ${secret}` },
+            });
+            const data = await res.json();
+            if (!res.ok || !data.url) {
+                setGoogleMessage({
+                    type: 'error',
+                    text: data.error || 'Failed to start Google OAuth',
+                });
+                setGoogleConnecting(false);
+                return;
+            }
+            window.location.href = data.url;
+        } catch (err) {
+            setGoogleMessage({
+                type: 'error',
+                text: `Failed to connect: ${err}`,
+            });
+            setGoogleConnecting(false);
+        }
+    };
+
+    const disconnectGoogle = async () => {
+        try {
+            await fetch('/api/auth/google/disconnect', {
+                method: 'POST',
+                headers: { Authorization: `Bearer ${secret}` },
+            });
+            setGoogleConnected(false);
+            setGoogleMessage({ type: 'success', text: 'Google Photos disconnected.' });
+        } catch (err) {
+            setGoogleMessage({
+                type: 'error',
+                text: `Failed to disconnect: ${err}`,
+            });
+        }
     };
 
     const uploadOne = useCallback(
@@ -73,7 +159,7 @@ export function SketchbookUpload() {
                     setResults(prev =>
                         prev.map(r =>
                             r.id === id
-                                ? { ...r, status: 'done', url: data.url }
+                                ? { ...r, status: 'done', url: data.url, warning: data.warning }
                                 : r,
                         ),
                     );
@@ -183,6 +269,45 @@ export function SketchbookUpload() {
                 </button>
             </div>
 
+            {/* Google Photos connection */}
+            <div className="flex items-center gap-3 rounded-md border border-border px-4 py-3 font-mono text-sm">
+                <span
+                    className={
+                        googleConnected
+                            ? 'text-green-500'
+                            : 'text-muted-foreground'
+                    }
+                >
+                    {googleConnected ? '✓' : '○'}
+                </span>
+                <span className="flex-1">
+                    Google Photos {googleConnected ? 'connected' : 'not connected'}
+                </span>
+                {googleConnected ? (
+                    <button
+                        onClick={disconnectGoogle}
+                        className="text-xs text-muted-foreground underline"
+                    >
+                        Disconnect
+                    </button>
+                ) : (
+                    <button
+                        onClick={connectGoogle}
+                        disabled={googleConnecting}
+                        className="rounded-md bg-foreground px-3 py-1.5 text-xs text-background disabled:opacity-40"
+                    >
+                        {googleConnecting ? 'Connecting…' : 'Connect'}
+                    </button>
+                )}
+            </div>
+            {googleMessage && (
+                <p
+                    className={`font-mono text-xs ${googleMessage.type === 'success' ? 'text-green-500' : 'text-red-400'}`}
+                >
+                    {googleMessage.text}
+                </p>
+            )}
+
             <div
                 onDragOver={e => {
                     e.preventDefault();
@@ -254,6 +379,11 @@ export function SketchbookUpload() {
                             {r.error && (
                                 <span className="text-xs text-red-400">
                                     {r.error}
+                                </span>
+                            )}
+                            {r.warning && (
+                                <span className="text-xs text-yellow-500">
+                                    {r.warning}
                                 </span>
                             )}
                         </li>

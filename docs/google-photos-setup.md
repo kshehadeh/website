@@ -33,8 +33,8 @@ interactive OAuth flow. The refresh token and album ID are stored in Vercel KV.
 4. Go to **APIs & Services > Credentials > Create credentials > OAuth client ID**.
 5. Choose **Web application**.
 6. Add these **Authorized redirect URIs**:
-   - `http://localhost:3000/api/auth/google/callback` (local dev)
-   - `https://karim.cloud/api/auth/google/callback` (production)
+    - `http://localhost:3000/api/auth/google/callback` (local dev)
+    - `https://karim.cloud/api/auth/google/callback` (production)
 7. Note the **Client ID** and **Client Secret**.
 
 ## Step 4: Set up Vercel KV

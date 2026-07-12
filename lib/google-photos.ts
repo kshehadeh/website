@@ -16,7 +16,8 @@ import { kv } from '@vercel/kv';
 
 const TOKEN_URL = 'https://oauth2.googleapis.com/token';
 const UPLOAD_URL = 'https://photoslibrary.googleapis.com/v1/uploads';
-const BATCH_CREATE_URL = 'https://photoslibrary.googleapis.com/v1/mediaItems:batchCreate';
+const BATCH_CREATE_URL =
+    'https://photoslibrary.googleapis.com/v1/mediaItems:batchCreate';
 const ALBUMS_URL = 'https://photoslibrary.googleapis.com/v1/albums';
 const AUTH_URL = 'https://accounts.google.com/o/oauth2/v2/auth';
 
@@ -34,9 +35,7 @@ type StoredTokens = {
     albumId: string;
 };
 
-export type GooglePhotosResult =
-    | { ok: true }
-    | { ok: false; warning: string };
+export type GooglePhotosResult = { ok: true } | { ok: false; warning: string };
 
 type OAuthCredentials = {
     clientId: string;
@@ -299,7 +298,11 @@ export async function uploadToGooglePhotos(
 
     try {
         const accessToken = await refreshAccessToken(stored.refreshToken);
-        const uploadToken = await uploadRawBytes(accessToken, buffer, contentType);
+        const uploadToken = await uploadRawBytes(
+            accessToken,
+            buffer,
+            contentType,
+        );
         await batchCreateMediaItem(
             accessToken,
             stored.albumId,

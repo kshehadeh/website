@@ -172,7 +172,9 @@ export function SketchbookThumbnailGrid({
             }));
             setState(filename, { status: 'idle' });
             if (warning) {
-                console.warn(`Google Photos warning for ${filename}: ${warning}`);
+                console.warn(
+                    `Google Photos warning for ${filename}: ${warning}`,
+                );
             }
         } else {
             const { error } = await res.json();

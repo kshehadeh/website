@@ -21,13 +21,19 @@ export async function GET(request: NextRequest) {
 
     if (error) {
         return NextResponse.redirect(
-            new URL(`${uploadUrl}?google_error=${encodeURIComponent(error)}`, request.url),
+            new URL(
+                `${uploadUrl}?google_error=${encodeURIComponent(error)}`,
+                request.url,
+            ),
         );
     }
 
     if (!code || !state) {
         return NextResponse.redirect(
-            new URL(`${uploadUrl}?google_error=missing_code_or_state`, request.url),
+            new URL(
+                `${uploadUrl}?google_error=missing_code_or_state`,
+                request.url,
+            ),
         );
     }
 
@@ -48,7 +54,10 @@ export async function GET(request: NextRequest) {
     } catch (err) {
         const message = err instanceof Error ? err.message : String(err);
         return NextResponse.redirect(
-            new URL(`${uploadUrl}?google_error=${encodeURIComponent(message)}`, request.url),
+            new URL(
+                `${uploadUrl}?google_error=${encodeURIComponent(message)}`,
+                request.url,
+            ),
         );
     }
 }

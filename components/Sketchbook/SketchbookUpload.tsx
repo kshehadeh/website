@@ -54,7 +54,10 @@ export function SketchbookUpload() {
         // Check OAuth callback params
         const params = new URLSearchParams(window.location.search);
         if (params.get('google_connected')) {
-            setGoogleMessage({ type: 'success', text: 'Google Photos connected.' });
+            setGoogleMessage({
+                type: 'success',
+                text: 'Google Photos connected.',
+            });
             // Clean up URL
             window.history.replaceState({}, '', '/sketchbook/upload');
         } else if (params.get('google_error')) {
@@ -120,7 +123,10 @@ export function SketchbookUpload() {
                 headers: { Authorization: `Bearer ${secret}` },
             });
             setGoogleConnected(false);
-            setGoogleMessage({ type: 'success', text: 'Google Photos disconnected.' });
+            setGoogleMessage({
+                type: 'success',
+                text: 'Google Photos disconnected.',
+            });
         } catch (err) {
             setGoogleMessage({
                 type: 'error',
@@ -159,7 +165,12 @@ export function SketchbookUpload() {
                     setResults(prev =>
                         prev.map(r =>
                             r.id === id
-                                ? { ...r, status: 'done', url: data.url, warning: data.warning }
+                                ? {
+                                      ...r,
+                                      status: 'done',
+                                      url: data.url,
+                                      warning: data.warning,
+                                  }
                                 : r,
                         ),
                     );
@@ -281,7 +292,8 @@ export function SketchbookUpload() {
                     {googleConnected ? '✓' : '○'}
                 </span>
                 <span className="flex-1">
-                    Google Photos {googleConnected ? 'connected' : 'not connected'}
+                    Google Photos{' '}
+                    {googleConnected ? 'connected' : 'not connected'}
                 </span>
                 {googleConnected ? (
                     <button

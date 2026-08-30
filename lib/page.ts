@@ -6,4 +6,5 @@ export type PageType =
     | 'about'
     | 'tags'
     | 'bookmarks'
-    | 'sketchbook';
+    | 'sketchbook'
+    | 'terms';

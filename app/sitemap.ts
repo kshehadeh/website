@@ -70,5 +70,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 1.0,
     });
 
+    postNodes.push({
+        url: 'https://karim.cloud/terms',
+        lastModified: new Date('2026-08-30'),
+        changeFrequency: 'yearly' as const,
+        priority: 0.3,
+    });
+
     return postNodes;
 }

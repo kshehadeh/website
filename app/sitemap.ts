@@ -23,7 +23,7 @@ async function getCachedPostsForSitemap(): Promise<PageObjectResponse[]> {
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const posts = await getCachedPostsForSitemap();
 
-    const postNodes = posts
+    const postNodes: MetadataRoute.Sitemap = posts
         .map(post => {
             const slug = isRichTextProperty(post.properties.Slug)
                 ? post.properties.Slug.rich_text[0].plain_text

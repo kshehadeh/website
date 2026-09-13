@@ -1,9 +1,20 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { Download, Pencil, RotateCw, Trash2 } from 'lucide-react';
 import type { ArtPage } from '@/lib/art';
+import { cn } from '@/lib/util';
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { SketchbookLightbox } from './SketchbookLightbox';
+
+const BASE_PATH = 'https://static.karim.cloud/sketchbook';
 
 type Props = {
     pages: ArtPage[];
@@ -84,6 +95,62 @@ function ModifyDialog({
     );
 }
 
+function IconAction({
+    label,
+    disabled,
+    onClick,
+    href,
+    download,
+    className,
+    children,
+}: {
+    label: string;
+    disabled?: boolean;
+    onClick?: (e: React.MouseEvent<HTMLElement>) => void;
+    href?: string;
+    download?: string;
+    className?: string;
+    children: React.ReactNode;
+}) {
+    const classes = cn(
+        'inline-flex items-center justify-center rounded p-0.5 text-foreground/70 hover:text-foreground disabled:opacity-40',
+        className,
+    );
+
+    const trigger = href ? (
+        <a
+            href={href}
+            download={download}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={onClick}
+            aria-label={label}
+            className={classes}
+        >
+            {children}
+        </a>
+    ) : (
+        <button
+            type="button"
+            disabled={disabled}
+            onClick={onClick}
+            aria-label={label}
+            className={classes}
+        >
+            {children}
+        </button>
+    );
+
+    return (
+        <Tooltip>
+            <TooltipTrigger asChild>{trigger}</TooltipTrigger>
+            <TooltipContent className="font-mono text-xs">
+                {label}
+            </TooltipContent>
+        </Tooltip>
+    );
+}
+
 export function SketchbookThumbnailGrid({
     pages: initialPages,
     secret,
@@ -92,12 +159,19 @@ export function SketchbookThumbnailGrid({
     const [pages, setPages] = useState(initialPages);
     const [states, setStates] = useState<Record<string, ItemState>>({});
     const [modifyModal, setModifyModal] = useState<ModifyModal | null>(null);
+    const [index, setIndex] = useState(-1);
     // Cache-bust token per filename so the browser reloads after a modify
     const [versions, setVersions] = useState<Record<string, number>>({});
 
     useEffect(() => {
         setPages(initialPages);
     }, [initialPages]);
+
+    useEffect(() => {
+        if (index >= pages.length) setIndex(-1);
+    }, [index, pages.length]);
+
+    const closeLightbox = useCallback(() => setIndex(-1), []);
 
     function stateOf(filename: string): ItemState {
         return states[filename] ?? { status: 'idle' };
@@ -192,7 +266,7 @@ export function SketchbookThumbnailGrid({
     }
 
     return (
-        <>
+        <TooltipProvider delayDuration={120}>
             {modifyModal && (
                 <ModifyDialog
                     onClose={() => setModifyModal(null)}
@@ -200,10 +274,10 @@ export function SketchbookThumbnailGrid({
                 />
             )}
 
-            <div className="grid grid-cols-5 gap-3">
-                {pages.map(p => {
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
+                {pages.map((p, i) => {
                     const v = versions[p.filename];
-                    const src = `https://static.karim.cloud/sketchbook/${p.filename}${v ? `?v=${v}` : ''}`;
+                    const src = `${BASE_PATH}/${p.filename}${v ? `?v=${v}` : ''}`;
                     const s = stateOf(p.filename);
                     const busy = s.status === 'busy';
 
@@ -212,7 +286,10 @@ export function SketchbookThumbnailGrid({
                             key={p.filename}
                             className="group relative flex flex-col gap-1"
                         >
-                            <div className="relative aspect-square overflow-hidden rounded-md bg-muted/40 ring-1 ring-border">
+                            <div
+                                onClick={() => !busy && setIndex(i)}
+                                className="relative aspect-square cursor-zoom-in overflow-hidden rounded-md bg-muted/40 ring-1 ring-border"
+                            >
                                 <Image
                                     src={src}
                                     alt={p.title}
@@ -275,54 +352,60 @@ export function SketchbookThumbnailGrid({
                                     </button>
                                 </form>
                             ) : (
-                                <div className="flex flex-col gap-0.5">
-                                    <div className="flex shrink-0 gap-1.5 opacity-0 transition-opacity group-hover:opacity-100">
-                                        <button
-                                            disabled={busy}
-                                            onClick={() =>
-                                                setState(p.filename, {
-                                                    status: 'renaming',
-                                                    draft: p.title,
-                                                })
-                                            }
-                                            className="font-mono text-[10px] text-foreground/70 hover:text-foreground disabled:opacity-40"
-                                        >
-                                            Rename
-                                        </button>
-                                        <span className="font-mono text-[10px] text-muted-foreground">
-                                            |
-                                        </span>
-                                        <button
-                                            disabled={busy}
-                                            onClick={() =>
-                                                setModifyModal({
-                                                    filename: p.filename,
-                                                    operation: 'rotate-left',
-                                                })
-                                            }
-                                            className="font-mono text-[10px] text-foreground/70 hover:text-foreground disabled:opacity-40"
-                                        >
-                                            Modify
-                                        </button>
-                                        <span className="font-mono text-[10px] text-muted-foreground">
-                                            |
-                                        </span>
-                                        <button
-                                            disabled={busy}
-                                            onClick={() =>
-                                                handleDelete(p.filename)
-                                            }
-                                            className="font-mono text-[10px] text-red-500 hover:text-red-400 disabled:opacity-40"
-                                        >
-                                            Delete
-                                        </button>
-                                    </div>
+                                <div className="flex items-center justify-between px-0.5">
+                                    <IconAction
+                                        label="Rename"
+                                        disabled={busy}
+                                        onClick={() =>
+                                            setState(p.filename, {
+                                                status: 'renaming',
+                                                draft: p.title,
+                                            })
+                                        }
+                                    >
+                                        <Pencil className="h-3.5 w-3.5" />
+                                    </IconAction>
+                                    <IconAction
+                                        label="Modify"
+                                        disabled={busy}
+                                        onClick={() =>
+                                            setModifyModal({
+                                                filename: p.filename,
+                                                operation: 'rotate-left',
+                                            })
+                                        }
+                                    >
+                                        <RotateCw className="h-3.5 w-3.5" />
+                                    </IconAction>
+                                    <IconAction
+                                        label="Download"
+                                        href={src}
+                                        download={p.filename}
+                                    >
+                                        <Download className="h-3.5 w-3.5" />
+                                    </IconAction>
+                                    <IconAction
+                                        label="Delete"
+                                        disabled={busy}
+                                        onClick={() => handleDelete(p.filename)}
+                                        className="text-red-500 hover:text-red-400"
+                                    >
+                                        <Trash2 className="h-3.5 w-3.5" />
+                                    </IconAction>
                                 </div>
                             )}
                         </div>
                     );
                 })}
             </div>
-        </>
+
+            <SketchbookLightbox
+                pages={pages}
+                basePath={BASE_PATH}
+                index={index}
+                onClose={closeLightbox}
+                versions={versions}
+            />
+        </TooltipProvider>
     );
 }

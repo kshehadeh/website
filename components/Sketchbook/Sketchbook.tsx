@@ -1,12 +1,10 @@
 'use client';
 
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import Image from 'next/image';
 import { PackingGrid } from '@egjs/react-grid';
-import Lightbox from 'yet-another-react-lightbox';
-import Zoom from 'yet-another-react-lightbox/plugins/zoom';
-import 'yet-another-react-lightbox/styles.css';
 import { ArtPage } from '@/lib/art';
+import { SketchbookLightbox } from './SketchbookLightbox';
 
 type Props = {
     pages: ArtPage[];
@@ -17,19 +15,6 @@ const BASE_DIM = 170;
 
 export function Sketchbook({ pages, basePath }: Props) {
     const [index, setIndex] = useState(-1);
-
-    const slides = useMemo(
-        () =>
-            pages.map(p => ({
-                src: p.version
-                    ? `${basePath}/${p.filename}?v=${p.version}`
-                    : `${basePath}/${p.filename}`,
-                alt: p.title,
-                width: p.width,
-                height: p.height,
-            })),
-        [pages, basePath],
-    );
 
     const openAt = useCallback((i: number) => setIndex(i), []);
     const close = useCallback(() => setIndex(-1), []);
@@ -84,14 +69,11 @@ export function Sketchbook({ pages, basePath }: Props) {
                 })}
             </PackingGrid>
 
-            <Lightbox
-                open={index >= 0}
-                index={Math.max(0, index)}
-                close={close}
-                slides={slides}
-                plugins={[Zoom]}
-                zoom={{ maxZoomPixelRatio: 4, scrollToZoom: true }}
-                carousel={{ finite: true }}
+            <SketchbookLightbox
+                pages={pages}
+                basePath={basePath}
+                index={index}
+                onClose={close}
             />
         </div>
     );

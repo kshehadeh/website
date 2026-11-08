@@ -14,7 +14,7 @@
  * Usage: bun scripts/add-art.ts
  *
  * Optional env var: AI_GATEWAY_API_KEY — if absent, cleanup is skipped and the original image is used.
- * Optional env var: AI_GATEWAY_IMAGE_MODEL — defaults to google/gemini-3.1-flash-image-preview.
+ * Optional env var: AI_GATEWAY_IMAGE_MODEL — defaults to google/gemini-3-pro-image.
  */
 
 import fs from 'fs';
@@ -164,7 +164,7 @@ const CLEANUP_PROMPT = `Clean up this photograph of an artwork. Perform the foll
 - Preserve all original artwork content, colors, and details — only fix the photographic artifacts
 Return only the corrected image with no background or border added.`;
 
-const DEFAULT_IMAGE_MODEL = 'google/gemini-3.1-flash-image-preview';
+const DEFAULT_IMAGE_MODEL = 'google/gemini-3-pro-image';
 
 async function cleanupWithAiGateway(
     imageBuffer: Buffer,

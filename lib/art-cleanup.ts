@@ -9,7 +9,7 @@ const CLEANUP_PROMPT = `Clean up this photograph of an artwork. Perform the foll
 - Preserve all original artwork content, colors, and details — only fix the photographic artifacts
 Return only the corrected image with no background or border added.`;
 
-const DEFAULT_IMAGE_MODEL = 'google/gemini-3.1-flash-image-preview';
+const DEFAULT_IMAGE_MODEL = 'google/gemini-3-pro-image';
 
 export async function cleanImageWithAI(
     imageBuffer: Buffer,

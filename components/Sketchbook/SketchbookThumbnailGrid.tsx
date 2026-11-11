@@ -156,6 +156,8 @@ export function SketchbookThumbnailGrid({
     secret,
 }: Props) {
     const router = useRouter();
+    const [previousInitialPages, setPreviousInitialPages] =
+        useState(initialPages);
     const [pages, setPages] = useState(initialPages);
     const [states, setStates] = useState<Record<string, ItemState>>({});
     const [modifyModal, setModifyModal] = useState<ModifyModal | null>(null);
@@ -163,13 +165,14 @@ export function SketchbookThumbnailGrid({
     // Cache-bust token per filename so the browser reloads after a modify
     const [versions, setVersions] = useState<Record<string, number>>({});
 
-    useEffect(() => {
+    if (initialPages !== previousInitialPages) {
+        setPreviousInitialPages(initialPages);
         setPages(initialPages);
-    }, [initialPages]);
+    }
 
-    useEffect(() => {
-        if (index >= pages.length) setIndex(-1);
-    }, [index, pages.length]);
+    if (index >= pages.length) {
+        setIndex(-1);
+    }
 
     const closeLightbox = useCallback(() => setIndex(-1), []);
 

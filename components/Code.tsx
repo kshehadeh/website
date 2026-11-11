@@ -4,15 +4,12 @@ import React from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { vs, vs2015 } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import { useTheme } from 'next-themes';
+import { useMounted } from '@/lib/use-mounted';
 
 export function Code({ language, text }: { language: string; text: string }) {
     const { theme } = useTheme();
-    const [mounted, setMounted] = React.useState(false);
+    const mounted = useMounted();
     const [copied, setCopied] = React.useState(false);
-
-    React.useEffect(() => {
-        setMounted(true);
-    }, []);
 
     React.useEffect(() => {
         if (!copied) {

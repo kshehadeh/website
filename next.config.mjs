@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     cacheComponents: true,
+    partialPrefetching: false,
     turbopack: {
         resolveAlias: {
             canvas: './empty-module.ts',

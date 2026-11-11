@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useMounted } from '@/lib/use-mounted';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -18,12 +19,8 @@ export function DevDashReference({
     showLabel?: boolean;
 }) {
     const { theme, resolvedTheme } = useTheme();
-    const [mounted, setMounted] = React.useState(false);
+    const mounted = useMounted();
     const [imageError, setImageError] = React.useState(false);
-
-    React.useEffect(() => {
-        setMounted(true);
-    }, []);
 
     const isDark = mounted && (resolvedTheme === 'dark' || theme === 'dark');
     const imageSrc = isDark
